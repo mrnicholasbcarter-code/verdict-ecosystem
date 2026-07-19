@@ -1,38 +1,52 @@
-# Nicholas Carter
+# Algorithmic Trading & LLM Gateway Ecosystem
 
-**Senior Software Engineer | Python · TypeScript · Real-Time Systems**
-North Port, FL (Remote) · [linkedin.com/in/nicholas-carter-dev](https://linkedin.com/in/nicholas-carter-dev)
+Welcome to my portfolio of high-performance quantitative trading tools, risk engines, and self-optimizing LLM routing interfaces. This codebase consists of 6 core production-ready components designed to work together under unified agent orchestration.
 
-I independently design and ship production systems — from a 57,000-line algorithmic
-trading platform with sub-second WebSocket execution to LLM routing middleware that
-dynamically dispatches work across 15+ model providers with tier-based criticality gates.
+---
 
-## Portfolio
+## 🚀 Repository Directory
 
-A set of cleanly extractable, production-grade libraries that showcase specific engineering skills.
+### 1. [llm-gate](https://github.com/llm-gate-ecosystem/llm-gate)
+> **Python (FastAPI + CLI) Intelligent Model Routing Gateway**
+* **Role**: Deterministic policy router, availability gate, and OpenAI-compatible proxy interface.
+* **Why**: Diverts non-complex tasks to low-cost or free models while enforcing privacy redaction and security policies. Saves over 60%+ in API costs.
+* **Key Specs**: Mandatory Ruflo/RuVector integration, `/ready`/`/v1/models` catalog syncing, and local safety fallback bounds.
 
-| Repo | What it is |
-|------|------------|
-| [**llm-gate**](https://github.com/mrnicholasbcarter-code/llm-gate) | AI criticality router. Mathematically prevents expensive models (Opus) from doing cheap formatting work — saves ~60% API cost. |
-| [**llm-gate-node**](https://github.com/mrnicholasbcarter-code/llm-gate-node) | TypeScript/Express equivalent of the router with strict `Zod` schemas. Proves enterprise backend-JS competence. |
-| [**trading-cockpit-ui**](https://github.com/mrnicholasbcarter-code/trading-cockpit-ui) | Next.js dashboard using `Zustand` to surgically render WebSockets at 60fps. |
-| [**prediction-market-sdk**](https://github.com/mrnicholasbcarter-code/prediction-market-sdk) | HFT Python SDK using zero-copy `msgspec` structs for Kalshi + Polymarket. |
-| [**trade-risk-engine**](https://github.com/mrnicholasbcarter-code/trade-risk-engine) | Pure-functional drawdown / circuit-breaker engine with a sub-millisecond kill-switch. |
-| [**edge-mining-framework**](https://github.com/mrnicholasbcarter-code/edge-mining-framework) | YAML-driven evaluation harness accounting for brutal exchange fee-ceilings. |
-| [**backtest-harness**](https://github.com/mrnicholasbcarter-code/backtest-harness) | High-fidelity Monte Carlo simulation engine with tick replay. |
+### 2. [llm-gate-node](https://github.com/llm-gate-ecosystem/llm-gate-node)
+> **TypeScript/Node Express & Next.js Routing Middleware**
+* **Role**: TS library representing the gateway integration layer.
+* **Why**: Brings native TypeScript compatibility to upstream routing.
+* **Key Specs**: Full Server-Sent Events (SSE) streaming proxy parity, connection heartbeats, and non-buffering headers.
 
-## Core Competencies
+### 3. [llm-gate-risk](https://github.com/llm-gate-ecosystem/llm-gate-risk)
+> **Real-Time Risk Management & Transaction Verification Engine**
+* **Role**: Transaction log serialization, cost validation, and risk constraints manager.
+* **Why**: Ensures no trades violate margin constraints, position sizing limits, or liquidity filters before execution.
+* **Key Specs**: Immutable Write-Ahead Logging (WAL) serialization, strict monotonic time-gates, and error alerts.
 
-- **Languages:** Python 3.11+, TypeScript/JavaScript (ES2022+), C#/.NET, Java, Rust (learning), SQL
-- **Real-Time:** asyncio, WebSockets, event-driven architecture, sub-second order execution
-- **Data/ML:** pandas, numpy, scipy, Monte Carlo, Kelly criterion, Wang Transform
-- **APIs:** REST, WebSocket, RSA-PSS auth, OAuth2/OIDC, rate limiting, OpenAPI
-- **Infra:** SQLite (WAL), systemd, Linux admin, Docker, Azure
-- **AI/LLM:** Multi-provider routing (15+ providers), Claude Code, 9router integration
+### 4. [llm-gate-cockpit](https://github.com/llm-gate-ecosystem/llm-gate-cockpit)
+> **Next.js & React Dashboard & Live Agent Stream Watcher**
+* **Role**: Frontend cockpit visualizer.
+* **Why**: Provides orderbook displays, bid/ask spreads, test performance stats, and a live coordinator watcher.
+* **Key Specs**: Direct socket.io / SSE streams, lightweight charting, and active coordination plan-trees via `/watch` command hooks.
 
-## Highlights
+### 5. [llm-gate-strategy](https://github.com/llm-gate-ecosystem/llm-gate-strategy)
+> **Quantitative Alpha Strategy Evaluator & Miner**
+* **Role**: Features miner and rule checking platform.
+* **Why**: Mine and catalog statistical arbitrage features without lookahead bias.
+* **Key Specs**: Continuous evaluator (EV), anti-lookahead cryptographic proofs (e.g. SHA-256 state hashing), and live rule parsing.
 
-- 57,000 lines of production Python across 130+ modules
-- 6 production bot versions (v35–v60), 3 running as systemd services
-- 30+ integrated data sources (Binance, Deribit, Polymarket, economic calendars, news APIs)
-- Risk system caught and prevented a $1,163 category loss from repeating
+### 6. [llm-gate-backtest](https://github.com/llm-gate-ecosystem/llm-gate-backtest)
+> **Monte Carlo Portfolio Simulator & Replay Harness**
+* **Role**: Backtest executor.
+* **Why**: Models transaction commission/execution fee models and performs path-based Monte Carlo risk assessments.
+* **Key Specs**: Numba JIT acceleration, interactive equity cone plots (`equity_cone.png`), and Walk-Forward optimization splits.
+
+---
+
+## 🎨 Unified Orchestration & System Design
+
+All tools are wired into the **Ruflo Agent Meta-Harness**, which handles memory namespaces, swarms, and coordination hooks.
+
+* **Federated Namespaces**: RAG memory states are partitioned to prevent low-cognitive workers from writing to high-priority indices.
+* **SONA Learning Loop**: Execution telemetry logs (latencies, success rates, token weights) are recycled through `ruflo hooks model-outcome` to train the gateway router on VPS targets.
