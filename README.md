@@ -1,52 +1,154 @@
-# Algorithmic Trading & LLM Gateway Ecosystem
+# Verdict Ecosystem — Policy-Gated LLM Routing Control Plane
 
-Welcome to my portfolio of high-performance quantitative trading tools, risk engines, and self-optimizing LLM routing interfaces. This codebase consists of 6 core production-ready components designed to work together under unified agent orchestration.
-
----
-
-## 🚀 Repository Directory
-
-### 1. [llm-gate](https://github.com/llm-gate-ecosystem/llm-gate)
-> **Python (FastAPI + CLI) Intelligent Model Routing Gateway**
-* **Role**: Deterministic policy router, availability gate, and OpenAI-compatible proxy interface.
-* **Why**: Diverts non-complex tasks to low-cost or free models while enforcing privacy redaction and security policies. Saves over 60%+ in API costs.
-* **Key Specs**: Mandatory Ruflo/RuVector integration, `/ready`/`/v1/models` catalog syncing, and local safety fallback bounds.
-
-### 2. [llm-gate-node](https://github.com/llm-gate-ecosystem/llm-gate-node)
-> **TypeScript/Node Express & Next.js Routing Middleware**
-* **Role**: TS library representing the gateway integration layer.
-* **Why**: Brings native TypeScript compatibility to upstream routing.
-* **Key Specs**: Full Server-Sent Events (SSE) streaming proxy parity, connection heartbeats, and non-buffering headers.
-
-### 3. [llm-gate-risk](https://github.com/llm-gate-ecosystem/llm-gate-risk)
-> **Real-Time Risk Management & Transaction Verification Engine**
-* **Role**: Transaction log serialization, cost validation, and risk constraints manager.
-* **Why**: Ensures no trades violate margin constraints, position sizing limits, or liquidity filters before execution.
-* **Key Specs**: Immutable Write-Ahead Logging (WAL) serialization, strict monotonic time-gates, and error alerts.
-
-### 4. [llm-gate-cockpit](https://github.com/llm-gate-ecosystem/llm-gate-cockpit)
-> **Next.js & React Dashboard & Live Agent Stream Watcher**
-* **Role**: Frontend cockpit visualizer.
-* **Why**: Provides orderbook displays, bid/ask spreads, test performance stats, and a live coordinator watcher.
-* **Key Specs**: Direct socket.io / SSE streams, lightweight charting, and active coordination plan-trees via `/watch` command hooks.
-
-### 5. [llm-gate-strategy](https://github.com/llm-gate-ecosystem/llm-gate-strategy)
-> **Quantitative Alpha Strategy Evaluator & Miner**
-* **Role**: Features miner and rule checking platform.
-* **Why**: Mine and catalog statistical arbitrage features without lookahead bias.
-* **Key Specs**: Continuous evaluator (EV), anti-lookahead cryptographic proofs (e.g. SHA-256 state hashing), and live rule parsing.
-
-### 6. [llm-gate-backtest](https://github.com/llm-gate-ecosystem/llm-gate-backtest)
-> **Monte Carlo Portfolio Simulator & Replay Harness**
-* **Role**: Backtest executor.
-* **Why**: Models transaction commission/execution fee models and performs path-based Monte Carlo risk assessments.
-* **Key Specs**: Numba JIT acceleration, interactive equity cone plots (`equity_cone.png`), and Walk-Forward optimization splits.
+> **The gate rules on each task** — deterministic safety verdicts, availability-aware routing, quantitative-trading-grade execution, closed-loop telemetry.
 
 ---
 
-## 🎨 Unified Orchestration & System Design
+## Repository Map
 
-All tools are wired into the **Ruflo Agent Meta-Harness**, which handles memory namespaces, swarms, and coordination hooks.
+| Repo | Purpose | Language | Status |
+|------|---------|----------|--------|
+| [`verdict-core`](https://github.com/verdict/verdict-core) | Python control plane (flagship) | Python | ✅ 321 tests |
+| [`verdict-node`](https://github.com/verdict/verdict-node) | Express/Next.js middleware | TypeScript | ✅ 139 tests |
+| [`verdict-cockpit`](https://github.com/verdict/verdict-cockpit) | Next.js dashboard | TypeScript | 🚧 |
+| [`verdict-risk`](https://github.com/verdict/verdict-risk) | Zero-allocation risk engine | Python | 🚧 |
+| [`verdict-edge`](https://github.com/verdict/verdict-edge) | Edge mining framework | Python | 🚧 |
+| [`verdict-backtest`](https://github.com/verdict/verdict-backtest) | Monte Carlo harness | Python | 🚧 |
+| `verdict` | Umbrella/meta repo | — | 🚧 |
 
-* **Federated Namespaces**: RAG memory states are partitioned to prevent low-cognitive workers from writing to high-priority indices.
-* **SONA Learning Loop**: Execution telemetry logs (latencies, success rates, token weights) are recycled through `ruflo hooks model-outcome` to train the gateway router on VPS targets.
+---
+
+## What is Verdict?
+
+Verdict is a **policy-gated, availability-aware LLM routing control plane** — not a simple proxy. It provides:
+
+- **Deterministic safety floors**: Hard gate checks (capability, budget, privacy, availability) run locally before any upstream call
+- **Availability-aware routing**: Bounded cache with stale-while-revalidate, explicit `unknown`/`error` states, concurrent refresh deduplication
+- **Explainability first**: `GET /v1/route/explain` surfaces observed_at, expires_at, age, source, confidence, candidate/eligible counts, per-candidate exclusion reasons, cache refresh/error state
+- **Quantitative-trading-grade execution**: Monte Carlo backtest harness, capacity admission with deterministic effort reservations, conservative runtime headroom
+- **Closed-loop telemetry**: SONA feedback loop feeds outcomes (latency, success, cost) back to RuVector for continuous MoE ranking improvement
+
+---
+
+## Quick Start
+
+```bash
+# Install Python control plane
+pipx install verdict-core
+
+# Or with server extras
+pipx install 'verdict-core[server]'
+
+# Configure
+verdict setup
+
+# Route a task
+verdict route "Refactor this Python module to use type hints" --terse
+```
+
+---
+
+## OmniRoute Integration
+
+Verdict integrates natively with **OmniRoute** (`http://localhost:20128/v1`) for:
+- **3,318+ models** across **250+ providers**
+- **107+ free tiers** — no API keys needed
+- Auto-fallback, RTK compression (15–95% token savings)
+- Smart routing: `auto/best-coding`, `auto/best-reasoning`, `auto/best-fast`
+
+```bash
+# Start OmniRoute
+docker run -d -p 20128:20128 omnibus/omniroute
+
+# Configure Verdict
+export OMNIROUTE_BASE_URL=http://localhost:20128
+verdict serve
+```
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        VERDICT CORE                              │
+├─────────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐              │
+│  │   Gate      │  │ Eligibility │  │ Intelligence│              │
+│  │  (Policy)   │──▶│  (Filter)   │──▶│  (Ranking)  │              │
+│  └─────────────┘  └─────────────┘  └─────────────┘              │
+│         │               │               │                        │
+│         ▼               ▼               ▼                        │
+│  ┌─────────────────────────────────────────────────┐             │
+│  │          Availability Cache (SWR)                │             │
+│  │  TTL + stale-window, explicit unknown/error,     │             │
+│  │  isolation by provider/model/policy-version      │             │
+│  └─────────────────────────────────────────────────┘             │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Core Components
+
+| Module | Purpose |
+|--------|---------|
+| `verdict.gate` | Deterministic policy enforcement — capability, budget, privacy, capacity |
+| `verdict.eligibility` | Availability-aware filtering with explicit unknown handling |
+| `verdict.intelligence` | Advisory ranking (cannot bypass hard gate) |
+| `verdict.availability_cache` | Bounded SWR cache, `explain_freshness()` for `/v1/route/explain` |
+| `verdict.omniroute` | Native OmniRoute transport (250+ providers, 90+ free tiers) |
+| `verdict.contracts` | Versioned Pydantic contracts for all public APIs |
+
+---
+
+## Ecosystem Integration
+
+```
+┌────────────────────────────────────────────────────────────────────┐
+│                         VERDICT ECOSYSTEM                           │
+├──────────────┬──────────────┬──────────────┬──────────────────────┤
+│  verdict     │  verdict     │  verdict     │  verdict             │
+│  -core       │  -node       │  -cockpit    │  -risk               │
+│  (Python)    │  (TypeScript)│  (Next.js)   │  (Python)            │
+│  Control     │  Middleware  │  Dashboard   │  Risk Engine         │
+│  Plane       │  Express/    │  Visualizer  │  Drawdown/           │
+│              │  Next.js     │              │  Position Sizing     │
+├──────────────┼──────────────┼──────────────┼──────────────────────┤
+│  verdict     │  verdict     │  RuVector    │  Ruflo               │
+│  -edge       │  -backtest   │  (Vector DB) │  (Agent Orch)        │
+│  (Python)    │  (Python)    │  Semantic    │  Swarms/             │
+│  Edge Mining │  Monte Carlo │  Search +    │  Hive Mind           │
+│  Framework   │  Harness     │  Graph RAG   │                      │
+└──────────────┴──────────────┴──────────────┴──────────────────────┘
+```
+
+---
+
+## Documentation
+
+- **Architecture**: [docs/architecture.md](verdict-core/docs/architecture.md)
+- **CLI Reference**: [docs/CLI_REFERENCE.md](verdict-core/docs/CLI_REFERENCE.md)
+- **API Reference**: [docs/API_REFERENCE.md](verdict-core/docs/API_REFERENCE.md)
+- **Configuration**: [docs/CONFIGURATION.md](verdict-core/docs/CONFIGURATION.md)
+- **Local Development**: [docs/guides/local-development.md](verdict-core/docs/guides/local-development.md)
+- **Production Deployment**: [docs/guides/production-deployment.md](verdict-core/docs/guides/production-deployment.md)
+- **Memory System**: [docs/guides/memory-system.md](verdict-core/docs/guides/memory-system.md)
+
+---
+
+## License
+
+MIT — see individual repos for details.
+
+---
+
+## Links
+
+- **Core**: https://github.com/verdict/verdict-core
+- **Node**: https://github.com/verdict/verdict-node
+- **Cockpit**: https://github.com/verdict/verdict-cockpit
+- **Risk**: https://github.com/verdict/verdict-risk
+- **Edge**: https://github.com/verdict/verdict-edge
+- **Backtest**: https://github.com/verdict/verdict-backtest
+- **OmniRoute**: https://github.com/verdict/omniroute
+- **RuVector**: https://github.com/ruvnet/ruvector
+- **Ruflo**: https://github.com/ruvnet/claude-flow
