@@ -1,0 +1,13 @@
+{
+  "schema_version": "1",
+  "contract_version": "1",
+  "repositories": [
+    {"id": "verdict-core", "path": "../verdict-core", "package": "verdict-core", "contract_version": "1", "test_command": "uv run pytest -q", "status": "required"},
+    {"id": "verdict-node", "path": "../verdict-node", "package": "@bodanglin/verdict-node", "contract_version": "1", "test_command": "npm test", "status": "required"},
+    {"id": "verdict-risk", "path": "../verdict-risk", "package": "llm-gate-risk", "contract_version": "1", "test_command": "uv run pytest -q", "status": "required"},
+    {"id": "verdict-strategy", "path": "../verdict-strategy", "package": "verdict-edge", "contract_version": "1", "test_command": "uv run pytest -q", "status": "required"},
+    {"id": "verdict-backtest", "path": "../verdict-backtest", "package": "llm-gate-backtest", "contract_version": "1", "test_command": "uv run pytest -q", "status": "required"},
+    {"id": "verdict-cockpit", "path": "../verdict-cockpit", "package": "verdict-cockpit", "contract_version": "1", "test_command": "npm test", "status": "required"},
+    {"id": "verdict-ecosystem", "path": ".", "package": "verdict-ecosystem", "contract_version": "1", "test_command": "python scripts/check_compatibility.py", "status": "required"}
+  ]
+}
