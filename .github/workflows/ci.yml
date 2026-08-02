@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  audit-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate audit documents
+        run: |
+          set -euo pipefail
+          test -s CURRENT_STATE_AUDIT.md
+          test -s ARCHITECTURE_GAP_ANALYSIS.md
+          test -s IMPLEMENTATION_LIFT_ANALYSIS.md
+          test -s IMPLEMENTATION_RESEARCH.md
+          test -s ROADMAP.md
+          git diff --check
