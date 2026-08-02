@@ -8,8 +8,8 @@
 
 | Repo | Purpose | Language | Status |
 |------|---------|----------|--------|
-| [`verdict-core`](https://github.com/verdict/verdict-core) | Python control plane (flagship) | Python | ✅ 321 tests |
-| [`verdict-node`](https://github.com/verdict/verdict-node) | Express/Next.js middleware | TypeScript | ✅ 139 tests |
+| [`verdict-core`](https://github.com/mrnicholasbcarter-code/verdict-core) | Python control plane (flagship) | Python | ✅ 321 tests |
+| [`verdict-node`](https://github.com/mrnicholasbcarter-code/verdict-node) | Express/Next.js middleware (`@bodanglin/verdict-node`) | TypeScript | ✅ 169 tests |
 | [`verdict-cockpit`](https://github.com/verdict/verdict-cockpit) | Next.js dashboard | TypeScript | 🚧 |
 | [`verdict-risk`](https://github.com/verdict/verdict-risk) | Zero-allocation risk engine | Python | 🚧 |
 | [`verdict-edge`](https://github.com/verdict/verdict-edge) | Edge mining framework | Python | 🚧 |
@@ -143,8 +143,8 @@ MIT — see individual repos for details.
 
 ## Links
 
-- **Core**: https://github.com/verdict/verdict-core
-- **Node**: https://github.com/verdict/verdict-node
+- **Core**: https://github.com/mrnicholasbcarter-code/verdict-core
+- **Node**: https://github.com/mrnicholasbcarter-code/verdict-node
 - **Cockpit**: https://github.com/verdict/verdict-cockpit
 - **Risk**: https://github.com/verdict/verdict-risk
 - **Edge**: https://github.com/verdict/verdict-edge
