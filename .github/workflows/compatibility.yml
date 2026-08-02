@@ -1,0 +1,25 @@
+name: Ecosystem Compatibility
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: verdict-ecosystem
+      - uses: actions/checkout@v4
+        with:
+          repository: verdict/verdict-core
+          path: verdict-core
+      - uses: actions/checkout@v4
+        with:
+          repository: verdict/verdict-node
+          path: verdict-node
+      - name: Validate manifest
+        working-directory: verdict-ecosystem
+        run: python scripts/check_compatibility.py
