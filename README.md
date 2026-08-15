@@ -1,154 +1,194 @@
-# Verdict Ecosystem — Policy-Gated LLM Routing Control Plane
+# Verdict Portfolio — Governed Autonomy for Software Teams
 
-> **The gate rules on each task** — deterministic safety verdicts, availability-aware routing, quantitative-trading-grade execution, closed-loop telemetry.
+> **Verdict is the policy and evidence layer for autonomous coding agents.**
+> It determines whether an exact change, produced from an exact source state by
+> an exact route, has earned the right to be accepted.
 
----
+## The problem
 
-## Repository Map
+Coding agents can already plan, edit, test, and open pull requests. Their own
+“task completed” message is not trustworthy evidence that:
 
-| Repo | Purpose | Language | Status |
-|------|---------|----------|--------|
-| [`verdict-core`](https://github.com/mrnicholasbcarter-code/verdict-core) | Python control plane (flagship) | Python | ✅ 321 tests |
-| [`verdict-node`](https://github.com/mrnicholasbcarter-code/verdict-node) | Express/Next.js middleware (`@bodanglin/verdict-node`) | TypeScript | ✅ 169 tests |
-| [`verdict-cockpit`](https://github.com/verdict/verdict-cockpit) | Next.js dashboard | TypeScript | 🚧 |
-| [`verdict-risk`](https://github.com/verdict/verdict-risk) | Zero-allocation risk engine | Python | 🚧 |
-| [`verdict-edge`](https://github.com/verdict/verdict-edge) | Edge mining framework | Python | 🚧 |
-| [`verdict-backtest`](https://github.com/verdict/verdict-backtest) | Monte Carlo harness | Python | 🚧 |
-| `verdict` | Umbrella/meta repo | — | 🚧 |
+- the required checks actually ran;
+- the patch stayed inside its authorized files and effects;
+- the selected model was live and qualified for the task;
+- the evidence belongs to the exact source being reviewed;
+- a cheaper route is genuinely good for this task category;
+- a learned recommendation is allowed to change production policy.
 
----
+Verdict turns those questions into a fail-closed development contract and a
+portable **Trusted Change Report**.
 
-## What is Verdict?
+This is not another router. It is the acceptance authority after a route
+produces a patch.
 
-Verdict is a **policy-gated, availability-aware LLM routing control plane** — not a simple proxy. It provides:
+## Flagship: AutoDev Route Lab
 
-- **Deterministic safety floors**: Hard gate checks (capability, budget, privacy, availability) run locally before any upstream call
-- **Availability-aware routing**: Bounded cache with stale-while-revalidate, explicit `unknown`/`error` states, concurrent refresh deduplication
-- **Explainability first**: `GET /v1/route/explain` surfaces observed_at, expires_at, age, source, confidence, candidate/eligible counts, per-candidate exclusion reasons, cache refresh/error state
-- **Quantitative-trading-grade execution**: Monte Carlo backtest harness, capacity admission with deterministic effort reservations, conservative runtime headroom
-- **Closed-loop telemetry**: SONA feedback loop feeds outcomes (latency, success, cost) back to RuVector for continuous MoE ranking improvement
+The portfolio's first vertical product evaluates and governs model or combo
+policies for software-development tasks using independently verified repository
+outcomes.
 
----
-
-## Quick Start
-
-```bash
-# Install Python control plane
-pipx install verdict-core
-
-# Or with server extras
-pipx install 'verdict-core[server]'
-
-# Configure
-verdict setup
-
-# Route a task
-verdict route "Refactor this Python module to use type hints" --terse
+```text
+Objective + source snapshot
+          |
+          v
+Bounded work-unit contract
+          |
+          v
+OmniRoute discovery and execution
+          |
+          v
+Verdict eligibility + protected-effect policy
+          |
+          v
+Ruflo/Codex/Claude worker
+          |
+          v
+Independent diff, test, policy, and CI evidence
+          |
+          v
+Trusted Change Report
+          |
+          v
+Advisory route recommendation
+          |
+          v
+shadow -> candidate -> canary -> active
+          or quarantine / rollback
 ```
 
----
+The important constraint is that learned ranking and analytics may reorder only
+routes that deterministic eligibility already admitted. A recommendation,
+counterfactual, or worker self-report cannot authorize mutation, promotion, or
+release.
 
-## OmniRoute Integration
+## Ecosystem boundary
 
-Verdict integrates natively with **OmniRoute** (`http://localhost:20128/v1`) for:
-- **3,318+ models** across **250+ providers**
-- **107+ free tiers** — no API keys needed
-- Auto-fallback, RTK compression (15–95% token savings)
-- Smart routing: `auto/best-coding`, `auto/best-reasoning`, `auto/best-fast`
+Verdict deliberately reuses the existing stack:
 
-```bash
-# Start OmniRoute
-docker run -d -p 20128:20128 omnibus/omniroute
+| System | Owns |
+|---|---|
+| [OmniRoute](https://github.com/diegosouzapw/OmniRoute) | provider/model transport, live discovery, task-aware combos, telemetry, scoring, fallback, and circuit breakers |
+| [Ruflo](https://github.com/ruvnet/ruflo) | orchestration, swarms, workflows, hooks, memory, worker lifecycle, and generic proof ledgers |
+| Codex, Claude, and other workers | planning, coding, review, and bounded command execution |
+| Git and CI | immutable source, diffs, checks, and build evidence |
+| **Verdict** | deterministic eligibility, protected-effect policy, source-state binding, acceptance evidence, outcome evaluation, and gated route-policy lifecycle |
 
-# Configure Verdict
-export OMNIROUTE_BASE_URL=http://localhost:20128
-verdict serve
-```
+In one line:
 
----
+> Ruflo coordinates, OmniRoute serves, workers change code, Git and CI provide
+> evidence, and Verdict decides what that evidence may authorize.
 
-## Architecture
+## Repositories
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        VERDICT CORE                              │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐              │
-│  │   Gate      │  │ Eligibility │  │ Intelligence│              │
-│  │  (Policy)   │──▶│  (Filter)   │──▶│  (Ranking)  │              │
-│  └─────────────┘  └─────────────┘  └─────────────┘              │
-│         │               │               │                        │
-│         ▼               ▼               ▼                        │
-│  ┌─────────────────────────────────────────────────┐             │
-│  │          Availability Cache (SWR)                │             │
-│  │  TTL + stale-window, explicit unknown/error,     │             │
-│  │  isolation by provider/model/policy-version      │             │
-│  └─────────────────────────────────────────────────┘             │
-└─────────────────────────────────────────────────────────────────┘
-```
+### AI development control plane
 
-### Core Components
+| Repository | Role |
+|---|---|
+| [`verdict-core`](https://github.com/mrnicholasbcarter-code/verdict-core) | Flagship policy and evidence authority: work units, eligibility, passports, receipts, evaluation, promotion, quarantine, and rollback |
+| [`verdict-node`](https://github.com/mrnicholasbcarter-code/verdict-node) | Thin typed client and Express/Next.js integration; no duplicate policy engine |
+| [`verdict-cockpit`](https://github.com/mrnicholasbcarter-code/verdict-cockpit) | Visual inspection of Trusted Change Reports, candidate funnels, verification, route comparisons, and lifecycle state |
+| [`verdict-ecosystem`](https://github.com/mrnicholasbcarter-code/verdict-ecosystem) | This portfolio map, demo guide, and evidence index |
 
-| Module | Purpose |
-|--------|---------|
-| `verdict.gate` | Deterministic policy enforcement — capability, budget, privacy, capacity |
-| `verdict.eligibility` | Availability-aware filtering with explicit unknown handling |
-| `verdict.intelligence` | Advisory ranking (cannot bypass hard gate) |
-| `verdict.availability_cache` | Bounded SWR cache, `explain_freshness()` for `/v1/route/explain` |
-| `verdict.omniroute` | Native OmniRoute transport (250+ providers, 90+ free tiers) |
-| `verdict.contracts` | Versioned Pydantic contracts for all public APIs |
+### Separate quantitative-systems case study
 
----
+| Repository | Role |
+|---|---|
+| [`verdict-risk`](https://github.com/mrnicholasbcarter-code/verdict-risk) | risk authorization and position sizing |
+| [`verdict-strategy`](https://github.com/mrnicholasbcarter-code/verdict-strategy) | strategy composition and validation |
+| [`verdict-backtest`](https://github.com/mrnicholasbcarter-code/verdict-backtest) | reproducible and Monte Carlo validation |
 
-## Ecosystem Integration
+The quantitative repositories demonstrate policy, risk, and evaluation
+engineering. They are not runtime dependencies of AutoDev Route Lab.
 
-```
-┌────────────────────────────────────────────────────────────────────┐
-│                         VERDICT ECOSYSTEM                           │
-├──────────────┬──────────────┬──────────────┬──────────────────────┤
-│  verdict     │  verdict     │  verdict     │  verdict             │
-│  -core       │  -node       │  -cockpit    │  -risk               │
-│  (Python)    │  (TypeScript)│  (Next.js)   │  (Python)            │
-│  Control     │  Middleware  │  Dashboard   │  Risk Engine         │
-│  Plane       │  Express/    │  Visualizer  │  Drawdown/           │
-│              │  Next.js     │              │  Position Sizing     │
-├──────────────┼──────────────┼──────────────┼──────────────────────┤
-│  verdict     │  verdict     │  RuVector    │  Ruflo               │
-│  -edge       │  -backtest   │  (Vector DB) │  (Agent Orch)        │
-│  (Python)    │  (Python)    │  Semantic    │  Swarms/             │
-│  Edge Mining │  Monte Carlo │  Search +    │  Hive Mind           │
-│  Framework   │  Harness     │  Graph RAG   │                      │
-└──────────────┴──────────────┴──────────────┴──────────────────────┘
-```
+`verdict-core-memory` is archived or experimental. The shared Codex/Claude
+memory initiative is abandoned and is not a portfolio pillar, installation
+dependency, or release blocker.
 
----
+## Portfolio demonstration
+
+The intended credential-free demo uses a small repository with a failing API
+authorization test and a protected policy file:
+
+1. Verdict binds the objective to an immutable source snapshot and bounded work
+   units.
+2. Fresh route qualification excludes a stale or unverified candidate.
+3. One candidate patch is denied because it edits a protected file or weakens a
+   test, regardless of the worker's success claim.
+4. A second patch stays in bounds and passes focused plus independent regression
+   checks.
+5. The Trusted Change Report shows requested, selected, and actual route;
+   source identity; policy decisions; diff; checks; failure class; latency; and
+   measured usage/cost when available.
+6. Route Lab compares verified outcomes by task category and recommends a
+   shadow or candidate transition without promoting itself.
+7. A regression observation demonstrates quarantine or rollback.
+
+Fixture provider responses are labelled simulations. Live mode uses qualified
+concrete `cx/gpt-*` routes through OmniRoute and reports unavailable or
+unprovable runtime state as `unknown`.
+
+## Demo command
+
+Not available yet. The release gate requires one credential-free command from
+a clean checkout that produces accepted, denied, route-recommendation, and
+rollback reports. This placeholder must be replaced with the verified command
+before the portfolio is described as presentable.
+
+## Evidence status
+
+The current repositories already contain useful primitives, but the integrated
+flagship demo is still in development.
+
+| Capability | Current evidence |
+|---|---|
+| Fail-closed model eligibility and capability passports | Evidence reported across Core branches; not yet reconciled into one default-branch release claim |
+| Durable receipt chains and integrity checks | Evidence reported across Core branches; not yet reconciled into one default-branch release claim |
+| Real bounded AutoDev patch execution and owned-file verification | Implemented on unmerged `feat/autodev-v0.1` at reviewed commit `cc34e89`; not a default-branch or release claim |
+| Replay-only counterfactuals | Source and tests exist on a feature branch; no live integrated proof |
+| `unqualified -> shadow -> candidate -> canary -> active` lifecycle | Source and tests exist on a feature branch with degradation, quarantine, kill switch, and rollback; not yet a shipped claim |
+| End-to-end Trusted Change Report | Planned integration slice |
+| Per-task-category Route Lab recommendations | Planned integration slice |
+| Cockpit using production report contracts | Planned integration slice |
+
+The strategy audit distinguishes four evidence states: documented,
+source-implemented, live-configured, and behaviorally verified. A lower state
+never implies a higher one.
+
+## What this portfolio does not claim
+
+- It is not another generic model router, proxy, swarm framework, or shared
+  agent-memory product.
+- It does not claim that catalog rows or `auto/*` aliases prove live model
+  availability.
+- It does not claim provider/model counts that were not verified against the
+  current runtime.
+- It does not label fixture measurements as live benchmarks.
+- It does not claim SONA/RuVector learning loops are part of the flagship.
+- It does not claim packages are published until registries and clean installs
+  are independently verified.
+- It does not claim a worker, route recommendation, or counterfactual can
+  authorize its own promotion or release.
 
 ## Documentation
 
-- **Architecture**: [docs/architecture.md](verdict-core/docs/architecture.md)
-- **CLI Reference**: [docs/CLI_REFERENCE.md](verdict-core/docs/CLI_REFERENCE.md)
-- **API Reference**: [docs/API_REFERENCE.md](verdict-core/docs/API_REFERENCE.md)
-- **Configuration**: [docs/CONFIGURATION.md](verdict-core/docs/CONFIGURATION.md)
-- **Local Development**: [docs/guides/local-development.md](verdict-core/docs/guides/local-development.md)
-- **Production Deployment**: [docs/guides/production-deployment.md](verdict-core/docs/guides/production-deployment.md)
-- **Memory System**: [docs/guides/memory-system.md](verdict-core/docs/guides/memory-system.md)
+- [Portfolio product strategy](PORTFOLIO_PRODUCT_STRATEGY.md) — product boundary, capability audit, flagship flow, delivery plan, and release gate
+- [Core repository](https://github.com/mrnicholasbcarter-code/verdict-core) — implementation workstream; installation claims require current default-branch and clean-install verification
+- [Node repository](https://github.com/mrnicholasbcarter-code/verdict-node) — typed integration boundary
+- [Cockpit repository](https://github.com/mrnicholasbcarter-code/verdict-cockpit) — visual portfolio surface
 
----
+## Current status
 
-## License
+Active development. The near-term objective is one reproducible, honest
+vertical demo with an accepted change, a denied change, source-bound evidence,
+an advisory route recommendation, and a tested rollback path.
 
-MIT — see individual repos for details.
+## Release gate
 
----
+This portfolio is presentable only after a clean checkout reproduces the
+credential-free demo, accepted and denied changes, source-bound report,
+advisory route recommendation, rollback path, clean-install checks,
+contract-conformance checks, and independent reproduction of every primary
+claim from the tagged source.
 
-## Links
-
-- **Core**: https://github.com/mrnicholasbcarter-code/verdict-core
-- **Node**: https://github.com/mrnicholasbcarter-code/verdict-node
-- **Cockpit**: https://github.com/verdict/verdict-cockpit
-- **Risk**: https://github.com/verdict/verdict-risk
-- **Edge**: https://github.com/verdict/verdict-edge
-- **Backtest**: https://github.com/verdict/verdict-backtest
-- **OmniRoute**: https://github.com/verdict/omniroute
-- **RuVector**: https://github.com/ruvnet/ruvector
-- **Ruflo**: https://github.com/ruvnet/claude-flow
+MIT — see individual repositories for license details.
