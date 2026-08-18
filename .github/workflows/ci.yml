@@ -33,8 +33,12 @@ jobs:
           set -euo pipefail
           test -s docs/ARTIFACT_INVENTORY.md
           test -s docs/ARTIFACT_HYGIENE_POLICY.md
+      # Publish gate: the scan runs before any evidence is treated as
+      # publishable, and a non-zero exit stops the job here.
       - name: Run secret/PII scan against this checkout
         run: python3 scripts/secret_scan.py .
+      - name: Verify stable evidence fixtures are reproducible
+        run: python3 scripts/build_evidence.py
       - name: Run local inventory check against this checkout
         run: python3 scripts/inventory_check.py .
       - name: Fail on unexpected generated drift

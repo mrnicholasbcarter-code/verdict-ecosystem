@@ -39,3 +39,9 @@ jobs:
       - name: Validate manifest
         working-directory: verdict-ecosystem
         run: python scripts/check_compatibility.py
+      # Run here rather than in ci.yml: tests/test_check_compatibility.py
+      # resolves the manifest's `../verdict-*` paths, so it needs the
+      # sibling checkouts this job already provides.
+      - name: Run unit tests
+        working-directory: verdict-ecosystem
+        run: python -m unittest discover -s tests -v

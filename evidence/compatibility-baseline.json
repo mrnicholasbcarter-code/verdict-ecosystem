@@ -1,0 +1,107 @@
+{
+  "contract_version": "1",
+  "evidence_timestamp": "2026-08-18T00:00:00Z",
+  "policy_version": "1",
+  "release_train": {
+    "deferred_checks": [
+      {
+        "blocked_by": "https://github.com/mrnicholasbcarter-code/verdict-core/issues/220",
+        "name": "schema-hashes"
+      },
+      {
+        "blocked_by": "https://github.com/mrnicholasbcarter-code/verdict-node/issues/31",
+        "name": "cross-repository-contract-smoke-tests"
+      }
+    ],
+    "id": "rel-001-partial-2026-08-18",
+    "migration_instructions": "docs/COMPATIBILITY_MIGRATION.md",
+    "rollback_instructions": "docs/COMPATIBILITY_ROLLBACK.md"
+  },
+  "repositories": [
+    {
+      "artifact_version": "0.1.0",
+      "contract_version": "1",
+      "id": "verdict-backtest",
+      "maturity": "alpha",
+      "package": "llm-gate-backtest",
+      "policy_version": "1",
+      "publication_status": "source-only",
+      "release_train_pin": "3c89fb8d4dca086a4ac05e476177243148279a91",
+      "status": "required",
+      "support_level": "experimental"
+    },
+    {
+      "artifact_version": "0.1.0",
+      "contract_version": "1",
+      "id": "verdict-cockpit",
+      "maturity": "alpha",
+      "package": "verdict-cockpit",
+      "policy_version": "1",
+      "publication_status": "private-application",
+      "release_train_pin": "4dbdf403adfbd68f97ed61a10aae64835c0a2e21",
+      "status": "required",
+      "support_level": "experimental"
+    },
+    {
+      "artifact_version": "0.1.0",
+      "contract_version": "1",
+      "id": "verdict-core",
+      "maturity": "alpha",
+      "package": "verdict-core",
+      "policy_version": "1",
+      "publication_status": "source-only",
+      "release_train_pin": "bc93e455ed4dd7f2c369ff66132b152cfa0da04f",
+      "status": "required",
+      "support_level": "experimental"
+    },
+    {
+      "artifact_version": "unreleased",
+      "contract_version": "1",
+      "id": "verdict-ecosystem",
+      "maturity": "alpha",
+      "package": "verdict-ecosystem",
+      "policy_version": "1",
+      "publication_status": "documentation-only",
+      "release_train_pin": "e0743cea8c9f63a0cd4bbf0d2177ff4c442e03cb",
+      "status": "required",
+      "support_level": "experimental"
+    },
+    {
+      "artifact_version": "0.1.0",
+      "contract_version": "1",
+      "id": "verdict-node",
+      "maturity": "alpha",
+      "package": "@bodanglin/verdict-node",
+      "policy_version": "1",
+      "publication_status": "published",
+      "release_train_pin": "48f8189c0e69bd915f1a1dfd7beec7e5e3e05e62",
+      "status": "required",
+      "support_level": "experimental"
+    },
+    {
+      "artifact_version": "0.1.0",
+      "contract_version": "1",
+      "id": "verdict-risk",
+      "maturity": "alpha",
+      "package": "llm-gate-risk",
+      "policy_version": "1",
+      "publication_status": "source-only",
+      "release_train_pin": "65477ec4a487d5893c988802e559a823202018e7",
+      "status": "required",
+      "support_level": "experimental"
+    },
+    {
+      "artifact_version": "0.1.0",
+      "contract_version": "1",
+      "id": "verdict-strategy",
+      "maturity": "alpha",
+      "package": "verdict-edge",
+      "policy_version": "1",
+      "publication_status": "source-only",
+      "release_train_pin": "d393ca0a829658e5b7078ed34dddde2aa9830114",
+      "status": "required",
+      "support_level": "experimental"
+    }
+  ],
+  "schema_version": "2"
+}
