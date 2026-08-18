@@ -1,0 +1,10 @@
+# Coordinator runtime checkpoint state (not tracked deliverables)
+.portfolio-state/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# OS/editor
+.DS_Store
