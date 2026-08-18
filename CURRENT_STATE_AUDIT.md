@@ -3,7 +3,8 @@
 - **Audit date:** 2026-08-02
 - **Scope:** `verdict-core`, `verdict-node`, `verdict-risk`, `verdict-strategy`, `verdict-backtest`, `verdict-cockpit`, and `verdict-ecosystem`
 - **Evidence:** local repository snapshots, source files, tests, manifests, ADRs, CI workflows, README files, Git history, and existing GitHub issue metadata
-- **Authority:** this audit describes the current repositories; learned-agent suggestions are advisory only
+- **Authority:** this audit describes the repository snapshot on its audit date; learned-agent suggestions are advisory only
+- **Status reconciled:** 2026-08-18; later merged work is called out explicitly below
 
 ## Executive Summary
 
@@ -206,7 +207,7 @@ Seven repositories have independent versions and workflows. A compatibility mani
 5. Learning/ranking exists, but governance, provenance, rollback, and proof that learning cannot bypass policy need a single public contract.
 6. The autonomous development workflow is described by specifications and repository instructions but is not yet a versioned plugin with portable `EnvironmentInventory`, `RepositoryUnderstanding`, `ImplementationResearch`, `AtomicWorkSlice`, and `SwarmSpec` contracts.
 7. Shared context support is fragmented across Core, memory bridges, code graph, OpenViking, and RuVector conventions.
-8. Cross-language and cross-repository CI does not yet provide a complete compatibility/release gate.
+8. **Updated 2026-08-18:** the seven-repository compatibility manifest, offline checker, and CI job have merged and pass. Broader release readiness remains open: the checker validates local source directories rather than released artifacts, and schema-hash validation plus cross-repository contract smoke tests are not yet implemented.
 9. Existing local untracked artifacts in some repositories must be preserved and classified before any cleanup or migration.
 
 ## Existing GitHub Work to Reuse

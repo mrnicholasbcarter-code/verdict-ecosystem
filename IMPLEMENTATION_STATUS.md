@@ -1,6 +1,7 @@
 # Verdict Ecosystem Story Completion
 
 - **Date:** 2026-08-02
+- **Status reconciled:** 2026-08-18
 - **Scope:** CON-001, NOD-002, CTX-002, PRO-001, SWARM-001
 - **Authority:** `verdict-core`; Node, Ruflo, memory, and domain repositories remain adapters/providers.
 - **Rule:** Reuse existing contracts and fail closed. No second policy authority.
@@ -9,11 +10,11 @@
 
 | ID | Story | Priority | Dependency | Status |
 | --- | --- | --- | --- | --- |
-| CON-001 | Cross-repository contract and release compatibility gate | P0 | Shared fixtures and package metadata | Planned |
-| NOD-002 | Enforce Core `ExecutionEnvelope` at the Node edge | P0 | Core envelope contract and TypeScript parity | Planned |
-| CTX-002 | Governed context and memory provider conformance | P1 | `MemoryGate`, `MemoryPlane`, context schemas | Planned |
-| PRO-001 | Standard provider receipts for risk, strategy, and backtest | P1 | Shared receipt contract | In progress |
-| SWARM-001 | Governed `SwarmSpec` and supervisor protocol | P1 | Envelope, evidence, and Ruflo lifecycle contracts | Planned |
+| CON-001 | Cross-repository contract and release compatibility gate | P0 | Shared fixtures and package metadata | Merged; issue #8 closed |
+| NOD-002 | Enforce Core `ExecutionEnvelope` at the Node edge | P0 | Core envelope contract and TypeScript parity | Merged; issue #10 closed |
+| CTX-002 | Governed context and memory provider conformance | P1 | `MemoryGate`, `MemoryPlane`, context schemas | Open; issue #9 |
+| PRO-001 | Standard provider receipts for risk, strategy, and backtest | P1 | Shared receipt contract | Open; issue #11 |
+| SWARM-001 | Governed `SwarmSpec` and supervisor protocol | P1 | Envelope, evidence, and Ruflo lifecycle contracts | Open; issue #12 |
 
 ## Existing Foundations
 
@@ -25,7 +26,11 @@
 - Node: `@bodanglin/verdict-contracts` is the canonical TypeScript dependency; `src/middleware/forwarder.ts` shares one pre-forward path for JSON and SSE.
 - Domain repositories: risk, strategy, and backtest expose deterministic APIs that must remain free of orchestration and network authority.
 
-## Execution Order
+## Original Execution Order
+
+This ordering remains a planning record; it is not a claim that every item is
+open or that every later item has shipped. Current issue state is recorded in
+the table above.
 
 1. Freeze Core Python/TypeScript/JSON fixtures for the shared envelope, context, receipt, and swarm contracts.
 2. Add Node envelope parsing and enforcement before upstream forwarding; use the same guard for streaming and non-streaming requests.
@@ -88,4 +93,12 @@ Generated evidence belongs in ignored or explicit evidence directories. Existing
 
 ## Current Implementation Note
 
-`verdict/provider_receipts.py` defines the first shared deterministic provider receipt primitive. It stores hashes instead of raw inputs, rejects sensitive metadata, validates schema/version, and remains informational rather than authoritative. Domain adapters and conformance tests must build on this primitive before the compatibility gate is finalized.
+CON-001 merged across the portfolio through ecosystem PR #24. The offline
+compatibility checker covers all seven repositories, and its `compatibility` CI
+job passed on the merged head. This is a local-source compatibility gate, not a
+claim that released artifacts or every cross-repository contract are validated.
+REL-001 remains open for that broader release work.
+
+NOD-002 is also merged and its issue is closed. CTX-002, PRO-001, and SWARM-001
+remain open. `verdict/provider_receipts.py` is a foundation for PRO-001, not
+evidence that its domain adapters and conformance tests are complete.
