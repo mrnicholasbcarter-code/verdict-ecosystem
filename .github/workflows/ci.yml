@@ -23,3 +23,25 @@ jobs:
           test -s IMPLEMENTATION_RESEARCH.md
           test -s ROADMAP.md
           git diff --check
+
+  drift-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate artifact hygiene documents exist
+        run: |
+          set -euo pipefail
+          test -s docs/ARTIFACT_INVENTORY.md
+          test -s docs/ARTIFACT_HYGIENE_POLICY.md
+      - name: Run secret/PII scan against this checkout
+        run: python3 scripts/secret_scan.py .
+      - name: Run local inventory check against this checkout
+        run: python3 scripts/inventory_check.py .
+      - name: Fail on unexpected generated drift
+        run: |
+          set -euo pipefail
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Unexpected drift detected by CI-run scripts:"
+            git status --porcelain
+            exit 1
+          fi
