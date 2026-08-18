@@ -1,0 +1,41 @@
+name: Ecosystem Compatibility
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: verdict-ecosystem
+      - uses: actions/checkout@v4
+        with:
+          repository: mrnicholasbcarter-code/verdict-core
+          path: verdict-core
+      - uses: actions/checkout@v4
+        with:
+          repository: mrnicholasbcarter-code/verdict-node
+          path: verdict-node
+      - uses: actions/checkout@v4
+        with:
+          repository: mrnicholasbcarter-code/verdict-risk
+          path: verdict-risk
+      - uses: actions/checkout@v4
+        with:
+          repository: mrnicholasbcarter-code/verdict-strategy
+          path: verdict-strategy
+      - uses: actions/checkout@v4
+        with:
+          repository: mrnicholasbcarter-code/verdict-backtest
+          path: verdict-backtest
+      - uses: actions/checkout@v4
+        with:
+          repository: mrnicholasbcarter-code/verdict-cockpit
+          path: verdict-cockpit
+      - name: Validate manifest
+        working-directory: verdict-ecosystem
+        run: python scripts/check_compatibility.py
