@@ -9,7 +9,7 @@
 
 | ID | Story | Priority | Dependency | Status |
 | --- | --- | --- | --- | --- |
-| CON-001 | Cross-repository contract and release compatibility gate | P0 | Shared fixtures and package metadata | Planned |
+| CON-001 | Cross-repository contract and release compatibility gate | P0 | Shared fixtures and package metadata | In progress — `verdict-core` manifest + fail-closed gate CLI (`verdict compat manifest`/`verdict compat check`, see [ADR-024](https://github.com/mrnicholasbcarter-code/verdict-core/blob/main/docs/adr/ADR-024-cross-repo-compatibility-gate.md)) implemented; per-repo declaration + CI wiring for Node/risk/strategy/backtest/cockpit still Planned |
 | NOD-002 | Enforce Core `ExecutionEnvelope` at the Node edge | P0 | Core envelope contract and TypeScript parity | Planned |
 | CTX-002 | Governed context and memory provider conformance | P1 | `MemoryGate`, `MemoryPlane`, context schemas | Planned |
 | PRO-001 | Standard provider receipts for risk, strategy, and backtest | P1 | Shared receipt contract | In progress |

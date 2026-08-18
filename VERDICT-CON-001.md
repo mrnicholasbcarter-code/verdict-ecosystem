@@ -1,0 +1,22 @@
+# CON-001 — Cross-repository contract and release compatibility gate
+
+- **ID:** CON-001
+- **Title:** Add cross-repository contract and release compatibility gate
+- **Epic:** Repository Alignment
+- **Priority:** P0
+- **User Story:** As a maintainer, I need one CI gate proving all Verdict repositories consume compatible contracts and versions.
+- **Problem Statement:** Repositories release independently; schema drift and branch/package naming differences can bypass review.
+- **Current State:** `verdict-ecosystem` has manifest issues #1/#2, but no demonstrated matrix gate across all repositories.
+- **Target State:** CI generates a compatibility matrix, validates schema/API fixtures, checks package versions, and blocks incompatible releases.
+- **Technical Design:** Define manifest listing repository, branch, package, contract version, adapter capabilities, test command, and release status. Run Python/TypeScript fixture parity and API diff checks.
+- **Architecture Impact:** Establishes contracts as ecosystem source of truth without centralizing implementation.
+- **Files/Repositories Affected:** `verdict-ecosystem`, all Verdict repos, CI workflows, contract fixture directory.
+- **API Changes:** Versioned compatibility manifest schema and CI report artifact.
+- **Dependencies:** verdict-core #218–#221; ecosystem #2.
+- **Acceptance Criteria:** (1) matrix covers core, node, risk, strategy, backtest, cockpit, and ecosystem; (2) incompatible schema or major version fails CI; (3) generated report identifies exact repo and field diff; (4) dry-run release validates all artifacts; (5) branch/package naming mismatches are explicit warnings or failures by policy.
+- **Non Functional Requirements:** Reproducible offline fixture checks; no credentials in artifacts.
+- **Security Considerations:** Reject untrusted generated schemas and prohibit secret-bearing fixtures.
+- **Testing Requirements:** Passing matrix, intentional drift failure, missing-repository failure, manifest schema tests.
+- **Documentation Requirements:** Document versioning and release procedure.
+- **Definition of Done:** Required CI checks are branch protections or documented release blockers.
+- **Demo Validation:** Introduce a fixture field drift and show the gate failing with a pinpointed diff.

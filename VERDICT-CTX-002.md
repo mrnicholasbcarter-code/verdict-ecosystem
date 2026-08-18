@@ -1,0 +1,22 @@
+# CTX-002 — Governed context and memory provider conformance
+
+- **ID:** CTX-002
+- **Title:** Add governed context-provider conformance and provenance checks
+- **Epic:** Shared Context Plane / Memory Governance
+- **Priority:** P1
+- **User Story:** As a governed workflow, I need retrieval to remain advisory and writes to require verification and provenance.
+- **Problem Statement:** Core, RuVector, OpenViking, code graph, and local memory use related but non-uniform conventions.
+- **Current State:** Core has context packs and memory ADRs; providers lack one conformance suite for namespaces, retention, authority, and verified writes.
+- **Target State:** Search/retrieve/ingest/store/outcome operations implement a provider-neutral contract with explicit health and write receipts.
+- **Technical Design:** Define context record, provenance, namespace, authority, retention, redaction, verification status, and rollback fields. Add fake provider and optional RuVector/OpenViking adapters.
+- **Architecture Impact:** Retrieval never creates eligibility; approved knowledge only enters learning after verification.
+- **Files/Repositories Affected:** Core context/memory modules, `verdict-core-memory`, ecosystem fixtures.
+- **API Changes:** Provider-neutral context and governed memory write APIs.
+- **Dependencies:** Core #223, #229, #235.
+- **Acceptance Criteria:** (1) retrieval cannot authorize a decision; (2) unverified writes are rejected or quarantined; (3) provenance and namespace survive round-trip; (4) retention/redaction/rollback tests pass; (5) unavailable providers return explicit health state.
+- **Non Functional Requirements:** Local-first operation; bounded latency; no raw secrets or PII in evidence.
+- **Security Considerations:** Prompt-injection/untrusted-document handling, provenance integrity, least privilege.
+- **Testing Requirements:** Fake provider conformance, poisoning attempt, redaction, rollback, outage tests.
+- **Documentation Requirements:** Provider and memory governance contract docs.
+- **Definition of Done:** Core and memory adapter suites pass with evidence.
+- **Demo Validation:** Submit a memory proposal, reject an unverified write, approve a verified proposal, and show provenance.

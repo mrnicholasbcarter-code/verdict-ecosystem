@@ -1,154 +1,114 @@
-# Verdict Ecosystem — Policy-Gated LLM Routing Control Plane
+# Verdict Ecosystem — Cross-Repository Coordination
 
-> **The gate rules on each task** — deterministic safety verdicts, availability-aware routing, quantitative-trading-grade execution, closed-loop telemetry.
+[![Build Status](https://github.com/mrnicholasbcarter-code/verdict-ecosystem/workflows/CI/badge.svg)](https://github.com/mrnicholasbcarter-code/verdict-ecosystem/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
----
+> **The coordination layer for the Verdict portfolio.** Ensures all repositories consume compatible contracts, versions, and APIs.
 
-## Repository Map
+## The Problem
 
-| Repo | Purpose | Language | Status |
-|------|---------|----------|--------|
-| [`verdict-core`](https://github.com/verdict/verdict-core) | Python control plane (flagship) | Python | ✅ 321 tests |
-| [`verdict-node`](https://github.com/verdict/verdict-node) | Express/Next.js middleware | TypeScript | ✅ 139 tests |
-| [`verdict-cockpit`](https://github.com/verdict/verdict-cockpit) | Next.js dashboard | TypeScript | 🚧 |
-| [`verdict-risk`](https://github.com/verdict/verdict-risk) | Zero-allocation risk engine | Python | 🚧 |
-| [`verdict-edge`](https://github.com/verdict/verdict-edge) | Edge mining framework | Python | 🚧 |
-| [`verdict-backtest`](https://github.com/verdict/verdict-backtest) | Monte Carlo harness | Python | 🚧 |
-| `verdict` | Umbrella/meta repo | — | 🚧 |
+The Verdict portfolio spans 7 repositories across Python and TypeScript. Without coordination:
 
----
+- Schema drift between Python/TypeScript contracts
+- Incompatible major versions deployed together
+- No single gate proving cross-repo compatibility
+- Release process is manual and error-prone
 
-## What is Verdict?
+## The Solution
 
-Verdict is a **policy-gated, availability-aware LLM routing control plane** — not a simple proxy. It provides:
+Verdict Ecosystem provides:
 
-- **Deterministic safety floors**: Hard gate checks (capability, budget, privacy, availability) run locally before any upstream call
-- **Availability-aware routing**: Bounded cache with stale-while-revalidate, explicit `unknown`/`error` states, concurrent refresh deduplication
-- **Explainability first**: `GET /v1/route/explain` surfaces observed_at, expires_at, age, source, confidence, candidate/eligible counts, per-candidate exclusion reasons, cache refresh/error state
-- **Quantitative-trading-grade execution**: Monte Carlo backtest harness, capacity admission with deterministic effort reservations, conservative runtime headroom
-- **Closed-loop telemetry**: SONA feedback loop feeds outcomes (latency, success, cost) back to RuVector for continuous MoE ranking improvement
+1. **Compatibility Matrix Gate** (CON-001) — CI validates all repos against shared contract fixtures
+2. **Versioned Contract Registry** — Single source of truth for schemas, APIs, receipts
+3. **Cross-Repo Release Automation** — Coordinated versioning and publishing
+4. **Architecture Decision Trail** — ADRs linked to implementation
 
----
+## Portfolio Repositories
+
+| Repository | Language | Role | Contracts | Status |
+|------------|----------|------|-----------|--------|
+| [`verdict-core`](https://github.com/mrnicholasbcarter-code/verdict-core) | Python | Control plane / routing | Core contracts, ADRs | ✅ Active |
+| [`verdict-node`](https://github.com/mrnicholasbcarter-code/verdict-node) | TypeScript | TS adapter / edge | Core contracts (generated) | ✅ Active |
+| [`verdict-risk`](https://github.com/mrnicholasbcarter-code/verdict-risk) | Python | Risk provider | ProviderReceipt v1 | 🚧 In progress |
+| [`verdict-strategy`](https://github.com/mrnicholasbcarter-code/verdict-strategy) | Python | Strategy provider | ProviderReceipt v1 | 🚧 In progress |
+| [`verdict-backtest`](https://github.com/mrnicholasbcarter-code/verdict-backtest) | Python | Backtest provider | ProviderReceipt v1 | 🚧 In progress |
+| [`verdict-cockpit`](https://github.com/mrnicholasbcarter-code/verdict-cockpit) | TypeScript | UI dashboard | Core contracts (generated) | 🚧 In progress |
+| **verdict-ecosystem** | — | Coordination | Manifest, CI gates | ✅ This repo |
+
+## Ecosystem Stories (Active)
+
+| ID | Title | Priority | Status | Tracking |
+|----|-------|----------|--------|----------|
+| **CON-001** | Cross-repo contract & release compatibility gate | P0 | 🚧 In progress | [#17](https://github.com/mrnicholasbcarter-code/verdict-ecosystem/issues/17) |
+| **NOD-002** | Enforce Core ExecutionEnvelope at Node edge | P0 | 📋 Planned | [#19](https://github.com/mrnicholasbcarter-code/verdict-ecosystem/issues/19) |
+| **CTX-002** | Governed context & memory provider conformance | P1 | 📋 Planned | [#20](https://github.com/mrnicholasbcarter-code/verdict-ecosystem/issues/20) |
+| **PRO-001** | Standard provider receipts for risk/strategy/backtest | P1 | 📋 Planned | [#21](https://github.com/mrnicholasbcarter-code/verdict-ecosystem/issues/21) |
+| **SWARM-001** | Governed SwarmSpec & supervisor protocol | P1 | 📋 Planned | [#22](https://github.com/mrnicholasbcarter-code/verdict-ecosystem/issues/22) |
+
+## Compatibility Manifest
+
+```json
+{
+  "schema_version": "1",
+  "repositories": [
+    {
+      "name": "verdict-core",
+      "branch": "main",
+      "package": "verdict-core",
+      "contract_version": "1.0.0",
+      "adapter_capabilities": ["routing", "eligibility", "evidence"],
+      "test_command": "pytest -x -q",
+      "release_status": "active"
+    },
+    {
+      "name": "verdict-node",
+      "branch": "main",
+      "package": "@bodanglin/verdict-contracts",
+      "contract_version": "1.0.0",
+      "adapter_capabilities": ["envelope_enforcement", "sse"],
+      "test_command": "npm test",
+      "release_status": "active"
+    }
+  ],
+  "validation_rules": {
+    "schema_drift": "fail",
+    "major_version_mismatch": "fail",
+    "branch_package_mismatch": "warn"
+  }
+}
+```
 
 ## Quick Start
 
 ```bash
-# Install Python control plane
-pipx install verdict-core
+# Validate compatibility across all repos
+python scripts/validate_compatibility.py
 
-# Or with server extras
-pipx install 'verdict-core[server]'
+# Generate compatibility report
+python scripts/generate_matrix.py --output results/compatibility_matrix.json
 
-# Configure
-verdict setup
-
-# Route a task
-verdict route "Refactor this Python module to use type hints" --terse
+# Dry-run release
+python scripts/dry_run_release.py --version 1.2.0
 ```
 
----
+## Architecture Decision Records
 
-## OmniRoute Integration
+| ADR | Title | Status | Repos Affected |
+|-----|-------|--------|----------------|
+| ADR-021 | Deterministic Provider Receipts | Accepted | core, risk, strategy, backtest |
+| ADR-020 | Cross-Repo Compatibility Gate | Proposed | all |
+| ADR-019 | Node Envelope Enforcement | Proposed | core, node |
+| ADR-018 | Context Provider Conformance | Proposed | core, memory |
+| ADR-017 | SwarmSpec Governance | Proposed | core, ruflo |
 
-Verdict integrates natively with **OmniRoute** (`http://localhost:20128/v1`) for:
-- **3,318+ models** across **250+ providers**
-- **107+ free tiers** — no API keys needed
-- Auto-fallback, RTK compression (15–95% token savings)
-- Smart routing: `auto/best-coding`, `auto/best-reasoning`, `auto/best-fast`
+## Contributing
 
-```bash
-# Start OmniRoute
-docker run -d -p 20128:20128 omnibus/omniroute
-
-# Configure Verdict
-export OMNIROUTE_BASE_URL=http://localhost:20128
-verdict serve
-```
-
----
-
-## Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        VERDICT CORE                              │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐              │
-│  │   Gate      │  │ Eligibility │  │ Intelligence│              │
-│  │  (Policy)   │──▶│  (Filter)   │──▶│  (Ranking)  │              │
-│  └─────────────┘  └─────────────┘  └─────────────┘              │
-│         │               │               │                        │
-│         ▼               ▼               ▼                        │
-│  ┌─────────────────────────────────────────────────┐             │
-│  │          Availability Cache (SWR)                │             │
-│  │  TTL + stale-window, explicit unknown/error,     │             │
-│  │  isolation by provider/model/policy-version      │             │
-│  └─────────────────────────────────────────────────┘             │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### Core Components
-
-| Module | Purpose |
-|--------|---------|
-| `verdict.gate` | Deterministic policy enforcement — capability, budget, privacy, capacity |
-| `verdict.eligibility` | Availability-aware filtering with explicit unknown handling |
-| `verdict.intelligence` | Advisory ranking (cannot bypass hard gate) |
-| `verdict.availability_cache` | Bounded SWR cache, `explain_freshness()` for `/v1/route/explain` |
-| `verdict.omniroute` | Native OmniRoute transport (250+ providers, 90+ free tiers) |
-| `verdict.contracts` | Versioned Pydantic contracts for all public APIs |
-
----
-
-## Ecosystem Integration
-
-```
-┌────────────────────────────────────────────────────────────────────┐
-│                         VERDICT ECOSYSTEM                           │
-├──────────────┬──────────────┬──────────────┬──────────────────────┤
-│  verdict     │  verdict     │  verdict     │  verdict             │
-│  -core       │  -node       │  -cockpit    │  -risk               │
-│  (Python)    │  (TypeScript)│  (Next.js)   │  (Python)            │
-│  Control     │  Middleware  │  Dashboard   │  Risk Engine         │
-│  Plane       │  Express/    │  Visualizer  │  Drawdown/           │
-│              │  Next.js     │              │  Position Sizing     │
-├──────────────┼──────────────┼──────────────┼──────────────────────┤
-│  verdict     │  verdict     │  RuVector    │  Ruflo               │
-│  -edge       │  -backtest   │  (Vector DB) │  (Agent Orch)        │
-│  (Python)    │  (Python)    │  Semantic    │  Swarms/             │
-│  Edge Mining │  Monte Carlo │  Search +    │  Hive Mind           │
-│  Framework   │  Harness     │  Graph RAG   │                      │
-└──────────────┴──────────────┴──────────────┴──────────────────────┘
-```
-
----
-
-## Documentation
-
-- **Architecture**: [docs/architecture.md](verdict-core/docs/architecture.md)
-- **CLI Reference**: [docs/CLI_REFERENCE.md](verdict-core/docs/CLI_REFERENCE.md)
-- **API Reference**: [docs/API_REFERENCE.md](verdict-core/docs/API_REFERENCE.md)
-- **Configuration**: [docs/CONFIGURATION.md](verdict-core/docs/CONFIGURATION.md)
-- **Local Development**: [docs/guides/local-development.md](verdict-core/docs/guides/local-development.md)
-- **Production Deployment**: [docs/guides/production-deployment.md](verdict-core/docs/guides/production-deployment.md)
-- **Memory System**: [docs/guides/memory-system.md](verdict-core/docs/guides/memory-system.md)
-
----
+See [CONTRIBUTING.md](CONTRIBUTING.md) for cross-repo development workflow.
 
 ## License
 
-MIT — see individual repos for details.
+MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-## Links
-
-- **Core**: https://github.com/verdict/verdict-core
-- **Node**: https://github.com/verdict/verdict-node
-- **Cockpit**: https://github.com/verdict/verdict-cockpit
-- **Risk**: https://github.com/verdict/verdict-risk
-- **Edge**: https://github.com/verdict/verdict-edge
-- **Backtest**: https://github.com/verdict/verdict-backtest
-- **OmniRoute**: https://github.com/verdict/omniroute
-- **RuVector**: https://github.com/ruvnet/ruvector
-- **Ruflo**: https://github.com/ruvnet/claude-flow
+**Part of the Verdict Portfolio** — Built by [Nicholas Carter](https://github.com/mrnicholasbcarter-code)

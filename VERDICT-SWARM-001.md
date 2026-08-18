@@ -1,0 +1,22 @@
+# SWARM-001 — Governed SwarmSpec and supervisor evidence
+
+- **ID:** SWARM-001
+- **Title:** Define governed SwarmSpec and supervisor protocol
+- **Epic:** Governed Swarms / Autonomous Development Workflow
+- **Priority:** P1
+- **User Story:** As a workflow owner, I need bounded multi-agent execution with explicit roles, context, model selection, and verification.
+- **Problem Statement:** Ruflo is the intended first-class runtime, but swarm roles and evidence semantics are not yet portable Core contracts.
+- **Current State:** Core has lifecycle/guidance concepts and Ruflo has swarm implementations; no universal SwarmSpec spanning adapters.
+- **Target State:** Core validates SwarmSpec and per-slice envelopes; Ruflo implements the adapter; alternate runtimes remain possible.
+- **Technical Design:** Define roles, agents, shared context references, model constraints, budgets, conflict policy, supervisor, pause/cancel, verification profile, and evidence references. Supervisor cannot weaken envelopes.
+- **Architecture Impact:** Ruflo is a replaceable implementation, not Core authority.
+- **Files/Repositories Affected:** Core contracts, Ruflo adapter, ecosystem fixtures.
+- **API Changes:** Versioned SwarmSpec and runtime adapter lifecycle methods.
+- **Dependencies:** Core #220, #221, #222, #225, #233.
+- **Acceptance Criteria:** (1) invalid roles, budgets, duplicate IDs, and missing verification are rejected; (2) each delegated slice has an envelope and evidence reference; (3) supervisor pause/cancel works; (4) conflict resolution is deterministic and recorded; (5) a runtime cannot execute outside its envelope.
+- **Non Functional Requirements:** Bounded concurrency, cancellation deadlines, replayable evidence.
+- **Security Considerations:** Agent/tool capability isolation, no privilege escalation through supervisor messages, secret redaction.
+- **Testing Requirements:** Contract, concurrency, cancellation, adversarial envelope-bypass, replay tests.
+- **Documentation Requirements:** SwarmSpec and adapter implementation guide.
+- **Definition of Done:** Ruflo conformance demo passes; adapter boundary remains optional.
+- **Demo Validation:** Execute two roles on one slice, deny an out-of-envelope tool, and display supervisor evidence.

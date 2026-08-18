@@ -1,0 +1,22 @@
+# PRO-001 — Standard provider receipts for risk, strategy, and backtest
+
+- **ID:** PRO-001
+- **Title:** Standardize provider receipts for risk, strategy, and backtest
+- **Epic:** Provider Architecture
+- **Priority:** P1
+- **User Story:** As Core, I need deterministic domain providers to return typed, provenance-bearing results without becoming policy authorities.
+- **Problem Statement:** Risk, strategy, and backtest are reusable libraries, but provider boundaries and portable receipts are not uniform.
+- **Current State:** Each repository has domain-specific decisions/results and tests; no shared provider receipt conformance gate.
+- **Target State:** Each provider implements a common evaluation interface, emits evidence-compatible receipts, and remains deterministic and side-effect bounded.
+- **Technical Design:** Define provider request/result schemas, provenance, run ID, inputs hash, configuration hash, outcome, and evidence references. Add thin adapters; do not import orchestration into hot paths.
+- **Architecture Impact:** Domain libraries remain replaceable providers; Core owns eligibility and authorization.
+- **Files/Repositories Affected:** `verdict-risk`, `verdict-strategy`, `verdict-backtest`, Core provider schemas and fixtures.
+- **API Changes:** Add provider adapter entry points and receipt schema.
+- **Dependencies:** Core #221, #226, #228; ecosystem #2.
+- **Acceptance Criteria:** (1) all three providers pass shared request/result fixtures; (2) receipts include provenance and input/config hashes; (3) replaying identical inputs is deterministic; (4) providers cannot authorize execution; (5) malformed or unavailable provider output becomes explicit degraded/unknown state.
+- **Non Functional Requirements:** Preserve existing numerical behavior; no network in deterministic hot paths.
+- **Security Considerations:** Validate inputs, redact secrets, prevent receipt forgery via canonical hashing.
+- **Testing Requirements:** Cross-repo fixtures, deterministic replay, malformed output, timeout/degraded tests.
+- **Documentation Requirements:** Adapter authoring and provider boundary docs.
+- **Definition of Done:** Existing provider suites remain green and conformance evidence is attached.
+- **Demo Validation:** Run risk, strategy, and backtest against one TaskSpec and display three portable receipts.

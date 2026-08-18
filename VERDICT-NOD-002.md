@@ -1,0 +1,22 @@
+# NOD-002 — Enforce Core ExecutionEnvelope at the Node edge
+
+- **ID:** NOD-002
+- **Title:** Enforce Core ExecutionEnvelope at the Node edge
+- **Epic:** Execution Envelope / Adapter Architecture
+- **Priority:** P0
+- **User Story:** As a Node integrator, I need the edge adapter to accept only Core-authorized envelopes so transport cannot bypass policy.
+- **Problem Statement:** Node currently provides transport and forwarding, but envelope enforcement and denial semantics are not established as a cross-language gate.
+- **Current State:** `verdict-node` has validation, forwarding, SSE handling, and Core contract consumption; no proven immutable-envelope enforcement boundary.
+- **Target State:** Node validates canonical envelope version/hash, forwards only allowed requests, and returns typed denial/degraded errors.
+- **Technical Design:** Consume generated Core schemas; verify decision ID, policy version, expiry, allowed model/tools/agents, budget, and verification requirements; never recalculate eligibility.
+- **Architecture Impact:** Node remains an edge adapter; Core remains authority.
+- **Files/Repositories Affected:** `verdict-node/src/middleware`, `verdict-node/src/adapters`, shared contract fixtures.
+- **API Changes:** Add envelope validation result and typed denial response; preserve existing transport API.
+- **Dependencies:** verdict-core #220, #221; verdict-ecosystem #2.
+- **Acceptance Criteria:** (1) valid canonical envelopes round-trip Python↔TypeScript; (2) expired, tampered, wrong-version, over-budget, and disallowed-model requests are rejected before forwarding; (3) no Node test makes an eligibility decision; (4) SSE and non-SSE paths share enforcement; (5) failure responses expose stable machine-readable codes.
+- **Non Functional Requirements:** p95 validation under 5ms excluding network; no secret logging; deterministic behavior.
+- **Security Considerations:** Fail closed on unknown fields, stale policy, hash mismatch, missing expiry, and provider substitution.
+- **Testing Requirements:** Contract fixtures, property tests for immutable fields, forwarding integration tests, negative/adversarial tests.
+- **Documentation Requirements:** Update adapter and migration docs with envelope lifecycle.
+- **Definition of Done:** Tests and build pass; shared conformance suite passes; evidence artifact attached.
+- **Demo Validation:** Submit one allowed request and show one tampered request denied before upstream execution.
