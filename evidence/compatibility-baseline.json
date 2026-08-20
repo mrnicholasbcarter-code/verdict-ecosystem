@@ -1,6 +1,6 @@
 {
   "contract_version": "1",
-  "evidence_timestamp": "2026-08-18T00:00:00Z",
+  "evidence_timestamp": "2026-08-20T00:00:00Z",
   "policy_version": "1",
   "release_train": {
     "deferred_checks": [
@@ -103,5 +103,5 @@
       "support_level": "experimental"
     }
   ],
-  "schema_version": "2"
+  "schema_version": "3"
 }

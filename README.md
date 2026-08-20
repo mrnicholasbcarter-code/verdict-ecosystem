@@ -173,6 +173,7 @@ never implies a higher one.
 ## Documentation
 
 - [Portfolio product strategy](PORTFOLIO_PRODUCT_STRATEGY.md) — product boundary, capability audit, flagship flow, delivery plan, and release gate
+- [Compatibility matrix](docs/COMPATIBILITY_MATRIX.md) — generated from [`compatibility-manifest.json`](compatibility-manifest.json); CI fails on drift, link rot, or a published artifact that does not install
 - [Core repository](https://github.com/mrnicholasbcarter-code/verdict-core) — implementation workstream; installation claims require current default-branch and clean-install verification
 - [Node repository](https://github.com/mrnicholasbcarter-code/verdict-node) — typed integration boundary
 - [Cockpit repository](https://github.com/mrnicholasbcarter-code/verdict-cockpit) — visual portfolio surface

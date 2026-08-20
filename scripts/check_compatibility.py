@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 
-SCHEMA_VERSION = "2"
+SCHEMA_VERSION = "3"
 VALIDATION_SCOPE = "local-source-directories"
 REQUIRED_IDS = {
     "verdict-core",
@@ -39,11 +39,14 @@ REQUIRED_FIELDS = {
     "support_level",
     "evidence_timestamp",
     "release_train_pin",
+    "legacy_aliases",
     "migration_instructions",
     "rollback_instructions",
     "test_command",
     "status",
 }
+LEGACY_ALIAS_FIELDS = {"name", "kind", "replacement", "migration_instructions", "sunset_date"}
+LEGACY_ALIAS_KINDS = {"package", "import", "cli", "repository"}
 PUBLICATION_STATUSES = {
     "published",
     "source-only",
@@ -205,6 +208,47 @@ def validate_repository(
 
     validate_instruction(root, item["migration_instructions"], f"{prefix}.migration_instructions", errors)
     validate_instruction(root, item["rollback_instructions"], f"{prefix}.rollback_instructions", errors)
+    validate_legacy_aliases(root, item["legacy_aliases"], f"{prefix}.legacy_aliases", errors)
+
+
+def validate_legacy_aliases(root: Path, value: object, field: str, errors: list[str]) -> None:
+    if not isinstance(value, list):
+        errors.append(f"{field} must be an array")
+        return
+    seen: set[str] = set()
+    for index, entry in enumerate(value):
+        prefix = f"{field}[{index}]"
+        if not isinstance(entry, dict) or set(entry) != LEGACY_ALIAS_FIELDS:
+            errors.append(f"{prefix} must contain exactly {sorted(LEGACY_ALIAS_FIELDS)}")
+            continue
+        name = entry["name"]
+        if not isinstance(name, str) or not re.fullmatch(r"[a-z][a-z0-9-]+", name):
+            errors.append(f"{prefix}.name must be a safe legacy identifier")
+            continue
+        if name in seen:
+            errors.append(f"{field}: duplicate legacy alias: {name}")
+        seen.add(name)
+        if entry["kind"] not in LEGACY_ALIAS_KINDS:
+            errors.append(f"{prefix}.kind must be one of {sorted(LEGACY_ALIAS_KINDS)}")
+        replacement = entry["replacement"]
+        if (
+            not isinstance(replacement, str)
+            or not re.fullmatch(r"[a-z][a-z0-9-]+", replacement)
+            or replacement == name
+        ):
+            errors.append(f"{prefix}.replacement must be a canonical name differing from the alias")
+        validate_instruction(root, entry["migration_instructions"], f"{prefix}.migration_instructions", errors)
+        validate_sunset_date(entry["sunset_date"], f"{prefix}.sunset_date", errors)
+
+
+def validate_sunset_date(value: object, field: str, errors: list[str]) -> None:
+    if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+        errors.append(f"{field} must be a calendar date (YYYY-MM-DD)")
+        return
+    try:
+        datetime.strptime(value, "%Y-%m-%d")
+    except ValueError:
+        errors.append(f"{field} must be a calendar date (YYYY-MM-DD)")
 
 
 def validate_release_train(root: Path, value: object, errors: list[str]) -> None:
