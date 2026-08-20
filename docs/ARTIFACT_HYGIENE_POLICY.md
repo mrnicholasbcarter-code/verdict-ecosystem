@@ -69,6 +69,55 @@ this repository's own CI (see below) and for manual local runs against
 sibling repositories. It is not wired into any sibling repository's own
 CI, because this audit has read-only access to those repositories.
 
+### Blocking behaviour is tested, not assumed
+
+`tests/test_secret_scan.py` proves the gate blocks rather than merely
+reports: one synthetic fixture per rule asserts a non-zero exit, a clean
+fixture asserts exit 0, and an unscannable target asserts exit 2 — an
+unreachable path must never be reported as a clean pass. The tests also
+assert the negative-disclosure guarantee, checking that the matched
+string never appears anywhere in the emitted report.
+
+Unsafe fixtures are synthesized into throwaway git repositories under the
+OS temp directory at run time. No secret-shaped string is committed to
+this repository, which would otherwise make `drift-check` fail on its own
+test suite; for the same reason the sample values in that module are
+assembled by concatenation, so no single line matches a scanner rule.
+
+## Stable published evidence fixtures (class 2)
+
+Class-2 artifacts live in `evidence/` and are the only committed files in
+this repository that are *generated*. Two properties are enforced, not
+merely asserted:
+
+**Reproducible.** Every fixture is a pure function of committed source —
+today, `compatibility-manifest.json` alone. The generator
+(`scripts/build_evidence.py`) reads no clock, no environment, no absolute
+path, and never probes the filesystem for sibling repositories. Machine-
+local fields such as `path` are projected out, precisely because a fixture
+containing one developer's `/home/<user>/dev/...` could not be regenerated
+byte-identically anywhere else. `evidence/EVIDENCE_MANIFEST.json` records
+the SHA-256 of each fixture *and* of the source it was derived from, so
+provenance is checkable without trusting the commit that introduced it.
+
+**Not overwritten by tests or demos.** The generator writes only under an
+explicit `--write` flag; its default mode is a read-only `--check` that
+regenerates in memory and diffs. Any caller that runs it without
+arguments — CI, a test, a demo, an agent — is structurally unable to
+mutate `evidence/`. `tests/test_evidence_fixture.py` asserts this
+directly: it snapshots the digests of `evidence/`, runs the fixture test
+suite, and fails if any digest moved.
+
+To change a fixture you must change its source and regenerate:
+
+```bash
+python3 scripts/build_evidence.py --write
+```
+
+A stale or hand-edited fixture fails CI with the exact path and both
+digests. Hand-editing a file under `evidence/` is never correct — the
+regeneration check will revert the meaning of the edit at the next build.
+
 ## CI drift check
 
 Sibling repositories are checked out fresh in `.github/workflows/*` and

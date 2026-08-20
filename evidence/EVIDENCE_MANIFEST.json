@@ -1,0 +1,15 @@
+{
+  "artifacts": [
+    {
+      "path": "evidence/compatibility-baseline.json",
+      "sha256": "502244e922a719f199c23545fa73ae497abae96e14050dd36667b390188eb8a6"
+    }
+  ],
+  "class": "2-stable-published-evidence",
+  "generator": "scripts/build_evidence.py",
+  "policy": "docs/ARTIFACT_HYGIENE_POLICY.md",
+  "source": {
+    "path": "compatibility-manifest.json",
+    "sha256": "f73642a54733d00ba27a4521af0f065ca7a647b68f2c40c1614fe8287be2b4f6"
+  }
+}
