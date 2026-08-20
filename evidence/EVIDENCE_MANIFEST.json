@@ -2,7 +2,7 @@
   "artifacts": [
     {
       "path": "evidence/compatibility-baseline.json",
-      "sha256": "502244e922a719f199c23545fa73ae497abae96e14050dd36667b390188eb8a6"
+      "sha256": "132ec0bf960bd79aec0858ad676f247ed3dfa2250499f44bd85643521c9751b4"
     }
   ],
   "class": "2-stable-published-evidence",
@@ -10,6 +10,6 @@
   "policy": "docs/ARTIFACT_HYGIENE_POLICY.md",
   "source": {
     "path": "compatibility-manifest.json",
-    "sha256": "f73642a54733d00ba27a4521af0f065ca7a647b68f2c40c1614fe8287be2b4f6"
+    "sha256": "676e32e874a805910c3a478a0571b4d9c9b84e00f3f3e5f8f4fd8a59b8678e83"
   }
 }

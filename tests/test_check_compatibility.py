@@ -98,6 +98,56 @@ class CompatibilityManifestTests(unittest.TestCase):
         )
         self.assertTrue(any("registry_url is required" in error for error in errors))
 
+    def test_missing_legacy_aliases_field_fails(self) -> None:
+        errors = self.validate(lambda value: value["repositories"][0].pop("legacy_aliases"))
+        self.assertTrue(any("missing fields" in error for error in errors))
+
+    def test_legacy_alias_requires_exact_fields(self) -> None:
+        errors = self.validate(
+            lambda value: value["repositories"][0].update(legacy_aliases=[{"name": "old-name"}])
+        )
+        self.assertTrue(any("must contain exactly" in error for error in errors))
+
+    def test_legacy_alias_invalid_kind_and_sunset_fail(self) -> None:
+        alias = {
+            "name": "llm-gate-core",
+            "kind": "branding",
+            "replacement": "verdict-core",
+            "migration_instructions": "docs/COMPATIBILITY_MIGRATION.md#verdict-core",
+            "sunset_date": "someday",
+        }
+        errors = self.validate(
+            lambda value: value["repositories"][0].update(legacy_aliases=[alias])
+        )
+        self.assertTrue(any(".kind must be one of" in error for error in errors))
+        self.assertTrue(any("calendar date" in error for error in errors))
+
+    def test_legacy_alias_replacement_must_differ(self) -> None:
+        alias = {
+            "name": "same-name",
+            "kind": "package",
+            "replacement": "same-name",
+            "migration_instructions": "docs/COMPATIBILITY_MIGRATION.md#verdict-core",
+            "sunset_date": "2026-12-31",
+        }
+        errors = self.validate(
+            lambda value: value["repositories"][0].update(legacy_aliases=[alias])
+        )
+        self.assertTrue(any("differing from the alias" in error for error in errors))
+
+    def test_duplicate_legacy_alias_fails(self) -> None:
+        alias = {
+            "name": "llm-gate-core",
+            "kind": "package",
+            "replacement": "verdict-core",
+            "migration_instructions": "docs/COMPATIBILITY_MIGRATION.md#verdict-core",
+            "sunset_date": "2026-12-31",
+        }
+        errors = self.validate(
+            lambda value: value["repositories"][0].update(legacy_aliases=[alias, dict(alias)])
+        )
+        self.assertTrue(any("duplicate legacy alias" in error for error in errors))
+
     def test_deferred_checks_and_blockers_are_fixed(self) -> None:
         errors = self.validate(
             lambda value: value["release_train"]["deferred_checks"].clear()

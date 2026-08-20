@@ -23,6 +23,10 @@ and [`verdict-node#31`](https://github.com/mrnicholasbcarter-code/verdict-node/i
 A successful checker run proves that the manifest is structurally valid and
 that its local directories exist. It does not prove registry publication,
 artifact integrity, schema compatibility, or cross-repository behavior.
+Registry publication and link integrity are verified separately by the
+`released-artifacts` CI job (`scripts/verify_links.py` and
+`scripts/consumer_smoke.py`), which installs each published artifact in an
+isolated consumer project and marks unreleased entries as skipped.
 
 ## verdict-core
 
@@ -41,7 +45,10 @@ it does not transfer policy authority from Verdict Core.
 
 Use the `trade_risk_engine` Python import. The primary CLI is
 `verdict-risk-benchmark`; the legacy `llm-gate-risk-benchmark` alias remains in
-source but is not the canonical manifest name. No published registry artifact
+source but is not the canonical manifest name. The legacy `llm-gate-risk`
+package name and the `llm-gate-risk-benchmark` CLI alias are recorded in the
+manifest with a sunset date of 2026-12-31; migrate to `verdict-risk` and
+`verdict-risk-benchmark` before that date. No published registry artifact
 was verified for this release train.
 
 ## verdict-strategy
@@ -53,7 +60,10 @@ explicit mapping during migration. No published registry artifact was verified.
 ## verdict-backtest
 
 Use the `backtest_harness` Python import from the `llm-gate-backtest` source
-distribution. No canonical CLI or published registry artifact was verified.
+distribution. The legacy `llm-gate-backtest` package name is recorded in the
+manifest with a sunset date of 2026-12-31; migrate to `verdict-backtest`
+before that date. No canonical CLI or published registry artifact was
+verified.
 
 ## verdict-cockpit
 

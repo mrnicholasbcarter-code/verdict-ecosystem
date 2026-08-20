@@ -39,9 +39,30 @@ jobs:
       - name: Validate manifest
         working-directory: verdict-ecosystem
         run: python scripts/check_compatibility.py
+      - name: Verify generated compatibility matrix is current
+        working-directory: verdict-ecosystem
+        run: python scripts/generate_compatibility_matrix.py
       # Run here rather than in ci.yml: tests/test_check_compatibility.py
       # resolves the manifest's `../verdict-*` paths, so it needs the
       # sibling checkouts this job already provides.
       - name: Run unit tests
         working-directory: verdict-ecosystem
         run: python -m unittest discover -s tests -v
+
+  # Released-artifact gate: verifies every repository/docs/registry link the
+  # manifest and docs publish, and installs each published artifact in an
+  # isolated consumer project. Unreleased entries are reported as skipped,
+  # never as passing installs.
+  released-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Verify repository, docs, and registry links
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/verify_links.py
+      - name: Install released artifacts in isolated consumer projects
+        run: python scripts/consumer_smoke.py
