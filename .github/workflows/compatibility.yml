@@ -12,30 +12,40 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: verdict-ecosystem
+          fetch-depth: 0
       - uses: actions/checkout@v4
         with:
           repository: mrnicholasbcarter-code/verdict-core
           path: verdict-core
+          fetch-depth: 0
       - uses: actions/checkout@v4
         with:
           repository: mrnicholasbcarter-code/verdict-node
           path: verdict-node
+          fetch-depth: 0
       - uses: actions/checkout@v4
         with:
           repository: mrnicholasbcarter-code/verdict-risk
           path: verdict-risk
+          fetch-depth: 0
       - uses: actions/checkout@v4
         with:
           repository: mrnicholasbcarter-code/verdict-strategy
           path: verdict-strategy
+          fetch-depth: 0
       - uses: actions/checkout@v4
         with:
           repository: mrnicholasbcarter-code/verdict-backtest
           path: verdict-backtest
+          fetch-depth: 0
       - uses: actions/checkout@v4
         with:
           repository: mrnicholasbcarter-code/verdict-cockpit
           path: verdict-cockpit
+          fetch-depth: 0
+      - name: Check out manifest release-train sources
+        working-directory: verdict-ecosystem
+        run: python scripts/checkout_manifest_sources.py
       - name: Validate manifest
         working-directory: verdict-ecosystem
         run: python scripts/check_compatibility.py
