@@ -27,7 +27,8 @@ and [`verdict-node#31`](https://github.com/mrnicholasbcarter-code/verdict-node/i
 ## verdict-core
 
 Restore the previous Core commit pin and the matching policy/version metadata.
-Do not infer compatibility from the separately published `verdict` project.
+Roll back the manifest from published `verdict-core 0.2.0` to the previous
+pinned source state only after recording a replacement compatibility receipt.
 
 ## verdict-node
 

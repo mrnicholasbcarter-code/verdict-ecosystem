@@ -5,13 +5,13 @@
 > Regenerate with `python3 scripts/generate_compatibility_matrix.py --write`;
 > CI fails if this file drifts from the manifest.
 
-Release train `rel-001-partial-2026-08-18` · schema `3` · contract `1` · policy `1` · validation scope `local-source-directories` · evidence timestamp `2026-08-20T00:00:00Z`
+Release train `rel-002-core-public-2026-08-22` · schema `3` · contract `1` · policy `1` · validation scope `local-source-directories` · evidence timestamp `2026-08-22T20:58:42Z`
 
 ## Repositories
 
 | Repository | Package | Import | CLI | Version | Publication | Registry | Runtime | Maturity | Support | Evidence date | Release-train pin |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| [verdict-core](https://github.com/mrnicholasbcarter-code/verdict-core) | `verdict-core` | `verdict` | `verdict` | `0.1.0` | source-only — no released artifact | **not published** | python >=3.10 | alpha | experimental | 2026-08-18T00:00:00Z | `bc93e455ed4dd7f2c369ff66132b152cfa0da04f` |
+| [verdict-core](https://github.com/mrnicholasbcarter-code/verdict-core) | `verdict-core` | `verdict` | `verdict` | `0.2.0` | published | [registry](https://pypi.org/project/verdict-core/0.2.0/) | python >=3.10 | alpha | experimental | 2026-08-22T20:58:42Z | `762335eef314ffd7e7fff4c098e586533d2ca3d6` |
 | [verdict-node](https://github.com/mrnicholasbcarter-code/verdict-node) | `@bodanglin/verdict-node` | `@bodanglin/verdict-node` | — | `0.1.0` | published | [registry](https://www.npmjs.com/package/@bodanglin/verdict-node) | node >=18 | alpha | experimental | 2026-08-18T00:00:00Z | `48f8189c0e69bd915f1a1dfd7beec7e5e3e05e62` |
 | [verdict-risk](https://github.com/mrnicholasbcarter-code/verdict-risk) | `llm-gate-risk` | `trade_risk_engine` | `verdict-risk-benchmark` | `0.1.0` | source-only — no released artifact | **not published** | python >=3.10 | alpha | experimental | 2026-08-20T00:00:00Z | `65477ec4a487d5893c988802e559a823202018e7` |
 | [verdict-strategy](https://github.com/mrnicholasbcarter-code/verdict-strategy) | `verdict-edge` | `edge_mining_framework` | — | `0.1.0` | source-only — no released artifact | **not published** | python >=3.10 | alpha | experimental | 2026-08-18T00:00:00Z | `d393ca0a829658e5b7078ed34dddde2aa9830114` |
