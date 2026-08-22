@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -21,6 +22,7 @@ REQUIRED_IDS = {
     "verdict-cockpit",
     "verdict-ecosystem",
 }
+CANONICAL_PATHS = {repo_id: ("." if repo_id == "verdict-ecosystem" else f"../{repo_id}") for repo_id in REQUIRED_IDS}
 REQUIRED_FIELDS = {
     "id",
     "path",
@@ -128,6 +130,9 @@ def validate_manifest(
             errors.append(f"duplicate repository id: {repo_id}")
         seen.add(repo_id)
 
+        if item["path"] != CANONICAL_PATHS.get(repo_id):
+            errors.append(f"{repo_id}: path must use its canonical workspace path {CANONICAL_PATHS.get(repo_id)!r}")
+
         path = validate_local_path(root, item["path"], f"{prefix}.path", errors)
         exists = path.is_dir() if path is not None else False
         row: dict[str, object] = {
@@ -141,6 +146,17 @@ def validate_manifest(
         rows.append(row)
         if path is not None and not exists:
             errors.append(f"{repo_id}: local repository directory missing: {path}")
+        elif path is not None and path != root:
+            pin_errors, resolved_revision, checked_out_revision = validate_source_pin(
+                repo_id,
+                path,
+                item["release_train_pin"],
+            )
+            errors.extend(pin_errors)
+            row["resolved_release_train_pin"] = resolved_revision
+            row["checked_out_revision"] = checked_out_revision
+        elif path == root:
+            row["source_pin_validation"] = "not-applicable-current-manifest"
 
         validate_repository(item, prefix, repo_id, contract_version, policy_version, root, errors)
         if repo_id == "verdict-strategy" and item["package"] != "verdict-edge":
@@ -153,6 +169,39 @@ def validate_manifest(
     errors.extend(f"missing repository: {repo_id}" for repo_id in sorted(missing_ids))
     errors.extend(f"unexpected repository: {repo_id}" for repo_id in sorted(unexpected_ids))
     return errors, warnings, rows
+
+
+def validate_source_pin(
+    repo_id: str,
+    path: Path,
+    release_train_pin: object,
+) -> tuple[list[str], str | None, str | None]:
+    if not isinstance(release_train_pin, str) or not re.fullmatch(r"[0-9a-f]{40}", release_train_pin):
+        return [], None, None
+
+    def git(*arguments: str) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            ["git", "-C", str(path), *arguments],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+    checked_out = git("rev-parse", "HEAD")
+    if checked_out.returncode != 0:
+        return [f"{repo_id}: local repository is not a readable Git checkout"], None, None
+    checked_out_revision = checked_out.stdout.strip()
+
+    resolved = git("rev-parse", "--verify", f"{release_train_pin}^{{commit}}")
+    if resolved.returncode != 0:
+        return [f"{repo_id}: release-train pin is unavailable in local checkout"], None, checked_out_revision
+    resolved_revision = resolved.stdout.strip()
+    if checked_out_revision != resolved_revision:
+        return [
+            f"{repo_id}: checked-out revision differs from release-train pin "
+            f"({checked_out_revision} != {resolved_revision})"
+        ], resolved_revision, checked_out_revision
+    return [], resolved_revision, checked_out_revision
 
 
 def validate_repository(
@@ -293,7 +342,17 @@ def validate_local_path(root: Path, value: object, field: str, errors: list[str]
     if path.is_absolute():
         errors.append(f"{field} must be a relative repository path")
         return None
-    resolved = (root / path).resolve()
+    resolved = root / path
+    normalized_parts: list[str] = []
+    for part in resolved.parts:
+        if part == "..":
+            if normalized_parts and normalized_parts[-1] != "..":
+                normalized_parts.pop()
+            else:
+                normalized_parts.append(part)
+        elif part != ".":
+            normalized_parts.append(part)
+    resolved = Path(*normalized_parts)
     if resolved != root and resolved.parent != root.parent:
         errors.append(f"{field} must resolve to the workspace root or one sibling")
         return None
