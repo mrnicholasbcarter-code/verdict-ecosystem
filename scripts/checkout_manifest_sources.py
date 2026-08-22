@@ -42,6 +42,8 @@ def main(root: Path | None = None) -> int:
             continue
 
         relative = Path(relative_path)
+        if relative == Path("."):
+            continue
         if relative.is_absolute() or not relative.parts or relative.parts[0] != ".." or ".." in relative.parts[1:]:
             errors.append(f"{repo_id}: local repository path must name the workspace root or one sibling")
             continue

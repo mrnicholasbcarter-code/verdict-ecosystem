@@ -286,6 +286,26 @@ class CheckoutManifestSourcesTests(unittest.TestCase):
             ],
         )
 
+    def test_current_manifest_repository_is_skipped(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory) / "verdict-ecosystem"
+            root.mkdir()
+            manifest = {
+                "repositories": [
+                    {
+                        "id": "verdict-ecosystem",
+                        "path": ".",
+                        "release_train_pin": "a" * 40,
+                    }
+                ]
+            }
+            (root / "compatibility-manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+            with patch.object(self.checkout, "run_git") as run_git:
+                exit_code = self.checkout.main(root)
+
+        self.assertEqual(exit_code, 0)
+        run_git.assert_not_called()
+
     def test_manifest_path_cannot_escape_the_workspace(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             workspace = Path(temporary_directory) / "workspace"
