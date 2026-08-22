@@ -1,6 +1,6 @@
 {
   "contract_version": "1",
-  "evidence_timestamp": "2026-08-20T00:00:00Z",
+  "evidence_timestamp": "2026-08-22T20:58:42Z",
   "policy_version": "1",
   "release_train": {
     "deferred_checks": [
@@ -13,7 +13,7 @@
         "name": "cross-repository-contract-smoke-tests"
       }
     ],
-    "id": "rel-001-partial-2026-08-18",
+    "id": "rel-002-core-public-2026-08-22",
     "migration_instructions": "docs/COMPATIBILITY_MIGRATION.md",
     "rollback_instructions": "docs/COMPATIBILITY_ROLLBACK.md"
   },
@@ -43,14 +43,14 @@
       "support_level": "experimental"
     },
     {
-      "artifact_version": "0.1.0",
+      "artifact_version": "0.2.0",
       "contract_version": "1",
       "id": "verdict-core",
       "maturity": "alpha",
       "package": "verdict-core",
       "policy_version": "1",
-      "publication_status": "source-only",
-      "release_train_pin": "bc93e455ed4dd7f2c369ff66132b152cfa0da04f",
+      "publication_status": "published",
+      "release_train_pin": "762335eef314ffd7e7fff4c098e586533d2ca3d6",
       "status": "required",
       "support_level": "experimental"
     },

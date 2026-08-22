@@ -31,8 +31,9 @@ isolated consumer project and marks unreleased entries as skipped.
 ## verdict-core
 
 Use the `verdict` Python import and `verdict` CLI. The manifest records source
-package version `0.1.0`. No registry artifact was verified as corresponding to
-this source distribution and release-train pin.
+package version `0.2.0`. The published PyPI artifact at that exact version was
+installed in an isolated consumer environment and bound to release-train pin
+`762335eef314ffd7e7fff4c098e586533d2ca3d6`.
 
 ## verdict-node
 

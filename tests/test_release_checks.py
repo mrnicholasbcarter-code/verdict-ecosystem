@@ -56,6 +56,7 @@ class LinkCollectionTests(unittest.TestCase):
     def test_manifest_urls_cover_repositories_registries_and_blockers(self) -> None:
         urls = LINKS.collect_manifest_urls(MANIFEST)
         self.assertIn("https://github.com/mrnicholasbcarter-code/verdict-core", urls)
+        self.assertIn("https://pypi.org/project/verdict-core/0.2.0/", urls)
         self.assertIn("https://www.npmjs.com/package/@bodanglin/verdict-node", urls)
         self.assertTrue(any("/issues/" in url for url in urls))
 
@@ -73,9 +74,9 @@ class LinkCollectionTests(unittest.TestCase):
 
     def test_registry_probe_pins_published_version(self) -> None:
         probes = LINKS.registry_probes(MANIFEST)
-        self.assertEqual(len(probes), 1)
-        self.assertEqual(probes[0]["id"], "verdict-node")
-        self.assertEqual(probes[0]["version"], "0.1.0")
+        self.assertEqual([probe["id"] for probe in probes], ["verdict-core", "verdict-node"])
+        self.assertEqual(probes[0]["version"], "0.2.0")
+        self.assertEqual(probes[1]["version"], "0.1.0")
 
 
 class ConsumerPlanTests(unittest.TestCase):
@@ -86,13 +87,16 @@ class ConsumerPlanTests(unittest.TestCase):
     def test_only_published_artifacts_are_installed(self) -> None:
         actions = SMOKE.plan_actions(MANIFEST)
         installs = [action for action in actions if action["action"] == "install"]
-        self.assertEqual([action["id"] for action in installs], ["verdict-node"])
-        self.assertEqual(installs[0]["version"], "0.1.0")
+        self.assertEqual(
+            [action["id"] for action in installs],
+            ["verdict-core", "verdict-node"],
+        )
+        self.assertEqual(installs[1]["version"], "0.1.0")
 
     def test_unreleased_entries_are_skipped_with_reason(self) -> None:
         actions = SMOKE.plan_actions(MANIFEST)
         skipped = [action for action in actions if action["action"] == "skipped"]
-        self.assertEqual(len(skipped), 6)
+        self.assertEqual(len(skipped), 5)
         self.assertTrue(all("no released artifact" in str(action["reason"]) for action in skipped))
 
     def test_cross_language_matrix_spans_python_and_node(self) -> None:
