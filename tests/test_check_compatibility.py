@@ -34,15 +34,21 @@ class CompatibilityManifestTests(unittest.TestCase):
         mutate(manifest)
         if not use_local_paths:
             for repository in manifest["repositories"]:
-                repository["path"] = "."
-        errors, _, _ = CHECKER.validate_manifest(self.validation_root, manifest)
+                repository["path"] = CHECKER.CANONICAL_PATHS[repository["id"]]
+        with patch.object(Path, "is_dir", return_value=True), patch.object(
+            CHECKER, "validate_source_pin", return_value=([], "a" * 40, "a" * 40)
+        ):
+            errors, _, _ = CHECKER.validate_manifest(self.validation_root, manifest)
         return errors
 
     def test_current_manifest_passes(self) -> None:
         manifest = copy.deepcopy(self.manifest)
         for repository in manifest["repositories"]:
-            repository["path"] = "."
-        errors, _, rows = CHECKER.validate_manifest(self.validation_root, manifest)
+            repository["path"] = CHECKER.CANONICAL_PATHS[repository["id"]]
+        with patch.object(Path, "is_dir", return_value=True), patch.object(
+            CHECKER, "validate_source_pin", return_value=([], "a" * 40, "a" * 40)
+        ):
+            errors, _, rows = CHECKER.validate_manifest(self.validation_root, manifest)
         self.assertEqual(errors, [])
         self.assertEqual(len(rows), 7)
 
@@ -64,6 +70,13 @@ class CompatibilityManifestTests(unittest.TestCase):
             use_local_paths=True,
         )
         self.assertTrue(any("workspace root or one sibling" in error for error in errors))
+
+    def test_external_repository_cannot_claim_current_manifest_path(self) -> None:
+        errors = self.validate(
+            lambda value: value["repositories"][0].update(path="."),
+            use_local_paths=True,
+        )
+        self.assertTrue(any("must use its canonical workspace path" in error for error in errors))
 
     def test_secret_bearing_url_metadata_fails(self) -> None:
         errors = self.validate(
@@ -306,6 +319,26 @@ class CheckoutManifestSourcesTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         run_git.assert_not_called()
 
+    def test_external_repository_cannot_claim_current_manifest_path(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory) / "verdict-ecosystem"
+            root.mkdir()
+            manifest = {
+                "repositories": [
+                    {
+                        "id": "verdict-core",
+                        "path": ".",
+                        "release_train_pin": "a" * 40,
+                    }
+                ]
+            }
+            (root / "compatibility-manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+            with patch.object(self.checkout, "run_git") as run_git:
+                exit_code = self.checkout.main(root)
+
+        self.assertEqual(exit_code, 1)
+        run_git.assert_not_called()
+
     def test_manifest_path_cannot_escape_the_workspace(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             workspace = Path(temporary_directory) / "workspace"
@@ -318,6 +351,30 @@ class CheckoutManifestSourcesTests(unittest.TestCase):
                     {
                         "id": "verdict-core",
                         "path": "../../outside",
+                        "release_train_pin": "a" * 40,
+                    }
+                ]
+            }
+            (root / "compatibility-manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+            with patch.object(self.checkout, "run_git") as run_git:
+                exit_code = self.checkout.main(root)
+
+        self.assertEqual(exit_code, 1)
+        run_git.assert_not_called()
+
+    def test_symlinked_sibling_cannot_escape_the_workspace(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            workspace = Path(temporary_directory) / "workspace"
+            root = workspace / "verdict-ecosystem"
+            root.mkdir(parents=True)
+            outside = Path(temporary_directory) / "outside"
+            outside.mkdir()
+            (workspace / "verdict-core").symlink_to(outside, target_is_directory=True)
+            manifest = {
+                "repositories": [
+                    {
+                        "id": "verdict-core",
+                        "path": "../verdict-core",
                         "release_train_pin": "a" * 40,
                     }
                 ]

@@ -9,6 +9,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+CURRENT_REPOSITORY_ID = "verdict-ecosystem"
+
 
 def main(root: Path | None = None) -> int:
     root = root or Path(__file__).resolve().parents[1]
@@ -41,14 +43,22 @@ def main(root: Path | None = None) -> int:
             errors.append(f"{repo_id}: release-train pin must be a full lowercase Git commit SHA")
             continue
 
+        canonical_path = "." if repo_id == CURRENT_REPOSITORY_ID else f"../{repo_id}"
+        if relative_path != canonical_path:
+            errors.append(f"{repo_id}: path must use its canonical workspace path {canonical_path!r}")
+            continue
+
         relative = Path(relative_path)
-        if relative == Path("."):
+        if repo_id == CURRENT_REPOSITORY_ID:
             continue
         if relative.is_absolute() or not relative.parts or relative.parts[0] != ".." or ".." in relative.parts[1:]:
             errors.append(f"{repo_id}: local repository path must name the workspace root or one sibling")
             continue
         path = root.parent / Path(*relative.parts[1:])
-        if path == root:
+        workspace = root.parent.resolve()
+        resolved_path = path.resolve()
+        if path.is_symlink() or resolved_path.parent != workspace or resolved_path != path.absolute():
+            errors.append(f"{repo_id}: local repository path must be a physical workspace sibling")
             continue
         if not path.is_dir():
             errors.append(f"{repo_id}: local repository directory missing: {path}")

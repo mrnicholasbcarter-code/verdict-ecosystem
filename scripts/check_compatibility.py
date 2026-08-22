@@ -22,6 +22,7 @@ REQUIRED_IDS = {
     "verdict-cockpit",
     "verdict-ecosystem",
 }
+CANONICAL_PATHS = {repo_id: ("." if repo_id == "verdict-ecosystem" else f"../{repo_id}") for repo_id in REQUIRED_IDS}
 REQUIRED_FIELDS = {
     "id",
     "path",
@@ -128,6 +129,9 @@ def validate_manifest(
         if repo_id in seen:
             errors.append(f"duplicate repository id: {repo_id}")
         seen.add(repo_id)
+
+        if item["path"] != CANONICAL_PATHS.get(repo_id):
+            errors.append(f"{repo_id}: path must use its canonical workspace path {CANONICAL_PATHS.get(repo_id)!r}")
 
         path = validate_local_path(root, item["path"], f"{prefix}.path", errors)
         exists = path.is_dir() if path is not None else False
