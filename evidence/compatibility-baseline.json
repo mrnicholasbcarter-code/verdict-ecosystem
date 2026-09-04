@@ -1,19 +1,15 @@
 {
   "contract_version": "1",
-  "evidence_timestamp": "2026-08-22T20:58:42Z",
+  "evidence_timestamp": "2026-09-04T00:00:00Z",
   "policy_version": "1",
   "release_train": {
     "deferred_checks": [
-      {
-        "blocked_by": "https://github.com/mrnicholasbcarter-code/verdict-core/issues/220",
-        "name": "schema-hashes"
-      },
       {
         "blocked_by": "https://github.com/mrnicholasbcarter-code/verdict-node/issues/31",
         "name": "cross-repository-contract-smoke-tests"
       }
     ],
-    "id": "rel-002-core-public-2026-08-22",
+    "id": "rel-001-schema-hashes-2026-09-04",
     "migration_instructions": "docs/COMPATIBILITY_MIGRATION.md",
     "rollback_instructions": "docs/COMPATIBILITY_ROLLBACK.md"
   },
@@ -103,5 +99,5 @@
       "support_level": "experimental"
     }
   ],
-  "schema_version": "3"
+  "schema_version": "4"
 }

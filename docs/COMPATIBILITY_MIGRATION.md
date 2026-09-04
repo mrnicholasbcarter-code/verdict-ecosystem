@@ -2,10 +2,10 @@
 
 This guide applies to the source pins in `compatibility-manifest.json`. The
 checker resolves local repository directories; it does not install or validate
-released artifacts. Schema hashes and cross-repository contract smoke tests are
-not part of this partial REL-001 gate. They remain blocked by
-[`verdict-core#220`](https://github.com/mrnicholasbcarter-code/verdict-core/issues/220)
-and [`verdict-node#31`](https://github.com/mrnicholasbcarter-code/verdict-node/issues/31).
+released artifacts. Schema hashes are recorded and drift-checked against each
+owning repository's local checkout. Cross-repository contract smoke tests are
+not yet part of this gate; they remain blocked by
+[`verdict-node#31`](https://github.com/mrnicholasbcarter-code/verdict-node/issues/31).
 
 ## Before changing a pin
 
@@ -33,14 +33,20 @@ isolated consumer project and marks unreleased entries as skipped.
 Use the `verdict` Python import and `verdict` CLI. The manifest records source
 package version `0.2.0`. The published PyPI artifact at that exact version was
 installed in an isolated consumer environment and bound to release-train pin
-`762335eef314ffd7e7fff4c098e586533d2ca3d6`.
+`762335eef314ffd7e7fff4c098e586533d2ca3d6`. The manifest also records a
+SHA-256 schema hash of `verdict/contracts.py`, recomputed and compared against
+the local checkout on every checker run.
 
 ## verdict-node
 
 Use the `@bodanglin/verdict-node` npm package on Node 18 or newer. The recorded
 version is published, but migrate by source pin until released-artifact
 validation is added. OmniRoute compatibility describes the adapter transport;
-it does not transfer policy authority from Verdict Core.
+it does not transfer policy authority from Verdict Core. Node does not
+currently own a schema in this contract family, so its manifest entry records
+`schema_hash: null`; cross-repository field parity with Core is tracked
+separately by the still-deferred `cross-repository-contract-smoke-tests`
+check.
 
 ## verdict-risk
 

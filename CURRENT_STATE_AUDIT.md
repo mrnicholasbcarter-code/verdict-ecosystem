@@ -208,6 +208,7 @@ Seven repositories have independent versions and workflows. A compatibility mani
 6. The autonomous development workflow is described by specifications and repository instructions but is not yet a versioned plugin with portable `EnvironmentInventory`, `RepositoryUnderstanding`, `ImplementationResearch`, `AtomicWorkSlice`, and `SwarmSpec` contracts.
 7. Shared context support is fragmented across Core, memory bridges, code graph, OpenViking, and RuVector conventions.
 8. **Updated 2026-08-18:** the seven-repository compatibility manifest, offline checker, and CI job have merged and pass. Broader release readiness remains open: the checker validates local source directories rather than released artifacts, and schema-hash validation plus cross-repository contract smoke tests are not yet implemented.
+   **Updated 2026-09-04:** schema-hash recording and drift-checking are now implemented for the repository that owns the ExecutionEnvelope contract (verdict-core, blocked by verdict-core#220, now closed); other repositories record `schema_hash: null` since they do not own a schema in this contract family. Cross-repository contract smoke tests remain not implemented, still blocked by verdict-node#31 (NOD-003, open).
 9. Existing local untracked artifacts in some repositories must be preserved and classified before any cleanup or migration.
 
 ## Existing GitHub Work to Reuse
