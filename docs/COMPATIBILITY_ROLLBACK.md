@@ -19,10 +19,10 @@ checks local source directories only.
 6. Record why the candidate train was rejected and keep schema/hash or contract
    claims open unless independent evidence proves them.
 
-The current rollback cannot verify schema hashes or cross-repository contract
-behavior. Those checks remain deferred to
-[`verdict-core#220`](https://github.com/mrnicholasbcarter-code/verdict-core/issues/220)
-and [`verdict-node#31`](https://github.com/mrnicholasbcarter-code/verdict-node/issues/31).
+Step 4's checker now verifies recorded schema hashes for the repositories that
+own a schema in this contract family. Cross-repository contract behavior
+remains deferred to
+[`verdict-node#31`](https://github.com/mrnicholasbcarter-code/verdict-node/issues/31).
 
 ## verdict-core
 

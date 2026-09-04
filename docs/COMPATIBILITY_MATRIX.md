@@ -5,21 +5,23 @@
 > Regenerate with `python3 scripts/generate_compatibility_matrix.py --write`;
 > CI fails if this file drifts from the manifest.
 
-Release train `rel-002-core-public-2026-08-22` · schema `3` · contract `1` · policy `1` · validation scope `local-source-directories` · evidence timestamp `2026-08-22T20:58:42Z`
+Release train `rel-001-schema-hashes-2026-09-04` · schema `4` · contract `1` · policy `1` · validation scope `local-source-directories` · evidence timestamp `2026-09-04T00:00:00Z`
 
 ## Repositories
 
-| Repository | Package | Import | CLI | Version | Publication | Registry | Runtime | Maturity | Support | Evidence date | Release-train pin |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| [verdict-core](https://github.com/mrnicholasbcarter-code/verdict-core) | `verdict-core` | `verdict` | `verdict` | `0.2.0` | published | [registry](https://pypi.org/project/verdict-core/0.2.0/) | python >=3.10 | alpha | experimental | 2026-08-22T20:58:42Z | `762335eef314ffd7e7fff4c098e586533d2ca3d6` |
-| [verdict-node](https://github.com/mrnicholasbcarter-code/verdict-node) | `@bodanglin/verdict-node` | `@bodanglin/verdict-node` | — | `0.1.0` | published | [registry](https://www.npmjs.com/package/@bodanglin/verdict-node) | node >=18 | alpha | experimental | 2026-08-18T00:00:00Z | `48f8189c0e69bd915f1a1dfd7beec7e5e3e05e62` |
-| [verdict-risk](https://github.com/mrnicholasbcarter-code/verdict-risk) | `llm-gate-risk` | `trade_risk_engine` | `verdict-risk-benchmark` | `0.1.0` | source-only — no released artifact | **not published** | python >=3.10 | alpha | experimental | 2026-08-20T00:00:00Z | `65477ec4a487d5893c988802e559a823202018e7` |
-| [verdict-strategy](https://github.com/mrnicholasbcarter-code/verdict-strategy) | `verdict-edge` | `edge_mining_framework` | — | `0.1.0` | source-only — no released artifact | **not published** | python >=3.10 | alpha | experimental | 2026-08-18T00:00:00Z | `d393ca0a829658e5b7078ed34dddde2aa9830114` |
-| [verdict-backtest](https://github.com/mrnicholasbcarter-code/verdict-backtest) | `llm-gate-backtest` | `backtest_harness` | — | `0.1.0` | source-only — no released artifact | **not published** | python >=3.10 | alpha | experimental | 2026-08-20T00:00:00Z | `3c89fb8d4dca086a4ac05e476177243148279a91` |
-| [verdict-cockpit](https://github.com/mrnicholasbcarter-code/verdict-cockpit) | `verdict-cockpit` | — | — | `0.1.0` | private application — not distributed | **not published** | node unspecified | alpha | experimental | 2026-08-18T00:00:00Z | `4dbdf403adfbd68f97ed61a10aae64835c0a2e21` |
-| [verdict-ecosystem](https://github.com/mrnicholasbcarter-code/verdict-ecosystem) | `verdict-ecosystem` | — | — | **unreleased** | documentation only — not distributed | **not published** | python unspecified | alpha | experimental | 2026-08-18T00:00:00Z | `e0743cea8c9f63a0cd4bbf0d2177ff4c442e03cb` |
+| Repository | Package | Import | CLI | Version | Publication | Registry | Runtime | Maturity | Support | Evidence date | Release-train pin | Schema hash |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| [verdict-core](https://github.com/mrnicholasbcarter-code/verdict-core) | `verdict-core` | `verdict` | `verdict` | `0.2.0` | published | [registry](https://pypi.org/project/verdict-core/0.2.0/) | python >=3.10 | alpha | experimental | 2026-09-04T00:00:00Z | `762335eef314ffd7e7fff4c098e586533d2ca3d6` | `aba33c84eb8d…` (`verdict/contracts.py`) |
+| [verdict-node](https://github.com/mrnicholasbcarter-code/verdict-node) | `@bodanglin/verdict-node` | `@bodanglin/verdict-node` | — | `0.1.0` | published | [registry](https://www.npmjs.com/package/@bodanglin/verdict-node) | node >=18 | alpha | experimental | 2026-08-18T00:00:00Z | `48f8189c0e69bd915f1a1dfd7beec7e5e3e05e62` | not applicable |
+| [verdict-risk](https://github.com/mrnicholasbcarter-code/verdict-risk) | `llm-gate-risk` | `trade_risk_engine` | `verdict-risk-benchmark` | `0.1.0` | source-only — no released artifact | **not published** | python >=3.10 | alpha | experimental | 2026-08-20T00:00:00Z | `65477ec4a487d5893c988802e559a823202018e7` | not applicable |
+| [verdict-strategy](https://github.com/mrnicholasbcarter-code/verdict-strategy) | `verdict-edge` | `edge_mining_framework` | — | `0.1.0` | source-only — no released artifact | **not published** | python >=3.10 | alpha | experimental | 2026-08-18T00:00:00Z | `d393ca0a829658e5b7078ed34dddde2aa9830114` | not applicable |
+| [verdict-backtest](https://github.com/mrnicholasbcarter-code/verdict-backtest) | `llm-gate-backtest` | `backtest_harness` | — | `0.1.0` | source-only — no released artifact | **not published** | python >=3.10 | alpha | experimental | 2026-08-20T00:00:00Z | `3c89fb8d4dca086a4ac05e476177243148279a91` | not applicable |
+| [verdict-cockpit](https://github.com/mrnicholasbcarter-code/verdict-cockpit) | `verdict-cockpit` | — | — | `0.1.0` | private application — not distributed | **not published** | node unspecified | alpha | experimental | 2026-08-18T00:00:00Z | `4dbdf403adfbd68f97ed61a10aae64835c0a2e21` | not applicable |
+| [verdict-ecosystem](https://github.com/mrnicholasbcarter-code/verdict-ecosystem) | `verdict-ecosystem` | — | — | **unreleased** | documentation only — not distributed | **not published** | python unspecified | alpha | experimental | 2026-08-18T00:00:00Z | `e0743cea8c9f63a0cd4bbf0d2177ff4c442e03cb` | not applicable |
 
 Rows marked **not published** or **unreleased** have no released artifact; they are validated from pinned local source only.
+
+Schema hash records a SHA-256 digest of the repository's canonical contract source; `scripts/check_compatibility.py` recomputes it against the local checkout on every run and fails on drift. **not applicable** means the repository does not currently own a schema in this contract family.
 
 ## Legacy names and migration deadlines
 
@@ -33,7 +35,6 @@ Rows marked **not published** or **unreleased** have no released artifact; they 
 
 | Check | Blocked by |
 |---|---|
-| `schema-hashes` | https://github.com/mrnicholasbcarter-code/verdict-core/issues/220 |
 | `cross-repository-contract-smoke-tests` | https://github.com/mrnicholasbcarter-code/verdict-node/issues/31 |
 
 ## Migration and rollback

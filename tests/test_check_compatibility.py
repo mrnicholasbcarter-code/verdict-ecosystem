@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import importlib.util
 import json
 import subprocess
@@ -177,6 +178,91 @@ class CompatibilityManifestTests(unittest.TestCase):
             lambda value: value["release_train"]["deferred_checks"].clear()
         )
         self.assertTrue(any("ratified REL-001 blockers" in error for error in errors))
+
+    def test_missing_schema_hash_field_fails(self) -> None:
+        errors = self.validate(
+            lambda value: value["repositories"][0].pop("schema_hash")
+        )
+        self.assertTrue(any("missing fields" in error for error in errors))
+
+    def test_schema_hash_requires_pairing(self) -> None:
+        errors = self.validate(
+            lambda value: value["repositories"][0].update(schema_hash_source=None)
+        )
+        self.assertTrue(
+            any("must both be set or both be null" in error for error in errors)
+        )
+
+    def test_schema_hash_invalid_format_fails(self) -> None:
+        errors = self.validate(
+            lambda value: value["repositories"][0].update(schema_hash="not-a-valid-hash")
+        )
+        self.assertTrue(
+            any("lowercase SHA-256 hex digest" in error for error in errors)
+        )
+
+    def test_schema_hash_source_rejects_path_traversal(self) -> None:
+        errors = self.validate(
+            lambda value: value["repositories"][0].update(
+                schema_hash_source="../../etc/passwd"
+            )
+        )
+        self.assertTrue(any("safe relative path" in error for error in errors))
+
+    def test_schema_hash_null_pair_passes(self) -> None:
+        errors = self.validate(
+            lambda value: value["repositories"][0].update(
+                schema_hash=None, schema_hash_source=None
+            )
+        )
+        self.assertEqual(errors, [])
+
+
+class SchemaHashValidationTests(unittest.TestCase):
+    def test_schema_hash_drift_is_detected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            repo_path = Path(temporary_directory)
+            contract_file = repo_path / "verdict" / "contracts.py"
+            contract_file.parent.mkdir(parents=True)
+            contract_file.write_text("changed contents", encoding="utf-8")
+            item = {
+                "schema_hash": "a" * 64,
+                "schema_hash_source": "verdict/contracts.py",
+            }
+            errors: list[str] = []
+            CHECKER.validate_schema_hash(
+                item, "repositories[0]", "verdict-core", repo_path, True, errors
+            )
+            self.assertTrue(
+                any("schema_hash drift detected" in error for error in errors)
+            )
+
+    def test_schema_hash_matches_local_checkout(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            repo_path = Path(temporary_directory)
+            contract_file = repo_path / "verdict" / "contracts.py"
+            contract_file.parent.mkdir(parents=True)
+            contract_file.write_text("matching contents", encoding="utf-8")
+            digest = hashlib.sha256(contract_file.read_bytes()).hexdigest()
+            item = {"schema_hash": digest, "schema_hash_source": "verdict/contracts.py"}
+            errors: list[str] = []
+            CHECKER.validate_schema_hash(
+                item, "repositories[0]", "verdict-core", repo_path, True, errors
+            )
+            self.assertEqual(errors, [])
+
+    def test_schema_hash_source_missing_file_skips_silently(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            repo_path = Path(temporary_directory)
+            item = {
+                "schema_hash": "a" * 64,
+                "schema_hash_source": "verdict/contracts.py",
+            }
+            errors: list[str] = []
+            CHECKER.validate_schema_hash(
+                item, "repositories[0]", "verdict-core", repo_path, True, errors
+            )
+            self.assertEqual(errors, [])
 
 
 class SourcePinResolutionTests(unittest.TestCase):

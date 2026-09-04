@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import subprocess
@@ -11,7 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 
-SCHEMA_VERSION = "3"
+SCHEMA_VERSION = "4"
 VALIDATION_SCOPE = "local-source-directories"
 REQUIRED_IDS = {
     "verdict-core",
@@ -41,6 +42,8 @@ REQUIRED_FIELDS = {
     "support_level",
     "evidence_timestamp",
     "release_train_pin",
+    "schema_hash",
+    "schema_hash_source",
     "legacy_aliases",
     "migration_instructions",
     "rollback_instructions",
@@ -59,7 +62,6 @@ MATURITY_LEVELS = {"experimental", "alpha", "beta", "stable", "deprecated"}
 SUPPORT_LEVELS = {"experimental", "community", "maintained", "long-term", "unsupported"}
 RUNTIME_NAMES = {"python", "node"}
 DEFERRED_CHECKS = {
-    "schema-hashes": "https://github.com/mrnicholasbcarter-code/verdict-core/issues/220",
     "cross-repository-contract-smoke-tests": "https://github.com/mrnicholasbcarter-code/verdict-node/issues/31",
 }
 SECRET_TOKENS = ("token=", "api_key", "password", "secret")
@@ -158,7 +160,7 @@ def validate_manifest(
         elif path == root:
             row["source_pin_validation"] = "not-applicable-current-manifest"
 
-        validate_repository(item, prefix, repo_id, contract_version, policy_version, root, errors)
+        validate_repository(item, prefix, repo_id, contract_version, policy_version, root, path, exists, errors)
         if repo_id == "verdict-strategy" and item["package"] != "verdict-edge":
             warnings.append("verdict-strategy: repository/package naming differs (verdict-edge)")
         if repo_id in {"verdict-risk", "verdict-backtest"} and not str(item["package"]).startswith("llm-gate-"):
@@ -211,6 +213,8 @@ def validate_repository(
     contract_version: str | None,
     policy_version: str | None,
     root: Path,
+    path: Path | None,
+    exists: bool,
     errors: list[str],
 ) -> None:
     validate_https_url(item["repository_url"], f"{prefix}.repository_url", errors, github_only=True)
@@ -258,6 +262,48 @@ def validate_repository(
     validate_instruction(root, item["migration_instructions"], f"{prefix}.migration_instructions", errors)
     validate_instruction(root, item["rollback_instructions"], f"{prefix}.rollback_instructions", errors)
     validate_legacy_aliases(root, item["legacy_aliases"], f"{prefix}.legacy_aliases", errors)
+    validate_schema_hash(item, prefix, repo_id, path, exists, errors)
+
+
+def validate_schema_hash(
+    item: dict[str, object],
+    prefix: str,
+    repo_id: str,
+    path: Path | None,
+    exists: bool,
+    errors: list[str],
+) -> None:
+    schema_hash = item["schema_hash"]
+    schema_hash_source = item["schema_hash_source"]
+    if schema_hash is None and schema_hash_source is None:
+        return
+    if schema_hash is None or schema_hash_source is None:
+        errors.append(f"{prefix}.schema_hash and {prefix}.schema_hash_source must both be set or both be null")
+        return
+    if not isinstance(schema_hash, str) or not re.fullmatch(r"[0-9a-f]{64}", schema_hash):
+        errors.append(f"{prefix}.schema_hash must be a lowercase SHA-256 hex digest")
+        return
+    if not isinstance(schema_hash_source, str) or not schema_hash_source:
+        errors.append(f"{prefix}.schema_hash_source must be a non-empty relative path")
+        return
+    source_path = Path(schema_hash_source)
+    if source_path.is_absolute() or ".." in source_path.parts:
+        errors.append(f"{prefix}.schema_hash_source must be a safe relative path")
+        return
+    if not exists or path is None:
+        return
+    resolved_source = path / source_path
+    try:
+        if not resolved_source.is_file():
+            return
+        digest = hashlib.sha256(resolved_source.read_bytes()).hexdigest()
+    except OSError:
+        return
+    if digest != schema_hash:
+        errors.append(
+            f"{repo_id}: schema_hash drift detected for {schema_hash_source} "
+            f"(recorded {schema_hash}, computed {digest})"
+        )
 
 
 def validate_legacy_aliases(root: Path, value: object, field: str, errors: list[str]) -> None:

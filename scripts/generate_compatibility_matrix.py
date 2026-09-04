@@ -40,6 +40,13 @@ def code(value: object) -> str:
     return f"`{value}`" if value is not None else "—"
 
 
+def schema_hash_cell(repo: dict) -> str:
+    schema_hash = repo["schema_hash"]
+    if schema_hash is None:
+        return "not applicable"
+    return f"`{schema_hash[:12]}…` (`{repo['schema_hash_source']}`)"
+
+
 def render(manifest: dict) -> str:
     train = manifest["release_train"]
     lines = [HEADER]
@@ -55,9 +62,9 @@ def render(manifest: dict) -> str:
     lines.append("")
     lines.append(
         "| Repository | Package | Import | CLI | Version | Publication | Registry |"
-        " Runtime | Maturity | Support | Evidence date | Release-train pin |"
+        " Runtime | Maturity | Support | Evidence date | Release-train pin | Schema hash |"
     )
-    lines.append("|---|---|---|---|---|---|---|---|---|---|---|---|")
+    lines.append("|---|---|---|---|---|---|---|---|---|---|---|---|---|")
     for repo in manifest["repositories"]:
         runtime = ", ".join(
             f"{name} {constraint}" for name, constraint in sorted(repo["runtime_constraints"].items())
@@ -72,12 +79,19 @@ def render(manifest: dict) -> str:
             f" {code(repo['import_name'])} | {code(repo['cli_name'])} | {version_cell} |"
             f" {PUBLICATION_LABELS[repo['publication_status']]} | {registry} | {runtime} |"
             f" {repo['maturity']} | {repo['support_level']} | {repo['evidence_timestamp']} |"
-            f" {code(repo['release_train_pin'])} |"
+            f" {code(repo['release_train_pin'])} | {schema_hash_cell(repo)} |"
         )
     lines.append("")
     lines.append(
         "Rows marked **not published** or **unreleased** have no released artifact;"
         " they are validated from pinned local source only."
+    )
+    lines.append("")
+    lines.append(
+        "Schema hash records a SHA-256 digest of the repository's canonical contract"
+        " source; `scripts/check_compatibility.py` recomputes it against the local"
+        " checkout on every run and fails on drift. **not applicable** means the"
+        " repository does not currently own a schema in this contract family."
     )
 
     lines.append("")
