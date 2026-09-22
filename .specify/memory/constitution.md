@@ -1,28 +1,25 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.0 → 1.1.0 (MINOR: materially expanded delivery and quality
-  governance without removing or redefining an existing principle).
+- Version change: 1.1.0 → 1.2.0 (MINOR: establishes the canonical Spec Kit Lite
+  significant-change contract and corrects the V2 product boundary).
 - Modified principles:
-  - I. Coordination Is Governance, Execution Is Delivery (added authoritative
-    source-of-truth ordering and stale-state verification).
-  - III. Repository Boundaries Are Non-Negotiable (added cross-repository contract
-    ownership and rollout requirements).
-  - IV. Verification Is Part of the Change (defined repository-native quality gates
-    and evidence requirements).
-- Added sections: Quality Gates.
+  - I. Coordination Is Governance, Execution Is Delivery (names Linear, Git/GitHub,
+    CI, and runtime evidence as authorities; removes Ruflo as the implied owner).
+- Added sections: Spec Kit Lite Contract.
 - Modified sections: Delivery and Review Workflow; Governance.
 - Removed sections: none.
 - Follow-up TODOs: original ratification date is not recorded and must be recovered if
   historical governance provenance is required.
 -->
-# Ruflo Portfolio Constitution
+# Verdict V2 Ecosystem Constitution
 
 ## Core Principles
 
 ### I. Coordination Is Governance, Execution Is Delivery
-Ruflo and related coordination systems MAY recommend routes, record decisions, and
-maintain shared state, but they MUST NOT be treated as implementation. Coding agents
-remain responsible for inspecting sources, changing files, and running validation.
+Linear and agent coordination systems MAY record plans, ownership, and decisions,
+but they MUST NOT be treated as implementation. Git and GitHub own source, review,
+and merge truth; CI and runtime receipts own verification. Coding agents remain
+responsible for inspecting sources, changing files, and running validation.
 A coordination record is not evidence that work was executed or completed. When
 records disagree, current repository source and Git state, authoritative remote
 state, and build or runtime evidence take precedence over transcripts, plans,
@@ -94,6 +91,16 @@ MUST run after every five completed work units, or before release when fewer tha
 five are in scope, to reconcile contracts, documentation, issue state, and rollout
 order.
 
+## Spec Kit Lite Contract
+
+Every significant Verdict V2 change MUST satisfy the canonical
+[Spec Kit Lite contract](../../docs/SPEC_KIT_LITE.md) before implementation. The
+contract is lightweight and MAY live in the owning Linear story or repository-native
+specification path. It MUST NOT require generated full-Spec-Kit artifacts merely for
+ceremony. Repository-local rules MAY be stricter but MUST preserve the contract's
+evidence boundaries, interface ownership, trust analysis, proof, ADR/documentation
+impact, and migration/rollback decisions.
+
 ## Quality Gates
 
 Before a change is merged or represented as complete:
@@ -133,4 +140,4 @@ changes clarify wording without changing obligations. Compliance MUST be checked
 during planning, implementation, review, and release. Any exception MUST record its
 scope, rationale, approver, evidence, expiry or follow-up, and affected repositories.
 
-**Version**: 1.1.0 | **Ratified**: TODO(RATIFICATION_DATE): historical adoption date not recorded | **Last Amended**: 2026-08-19
+**Version**: 1.2.0 | **Ratified**: TODO(RATIFICATION_DATE): historical adoption date not recorded | **Last Amended**: 2026-09-22

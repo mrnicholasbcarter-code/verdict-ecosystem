@@ -1,96 +1,76 @@
-# Verdict Portfolio — Governed Autonomy for Software Teams
+# Verdict V2 Ecosystem — Prime + Verdict + OmniRoute
 
-> **Verdict is the policy and evidence layer for autonomous coding agents.**
-> It determines whether an exact change, produced from an exact source state by
-> an exact route, has earned the right to be accepted.
+> **Verdict is the policy-gated decision and evidence layer for model routing.**
+> Prime owns the agent experience and work orchestration. OmniRoute exposes and
+> executes model routes. Verdict applies hard eligibility and spend policy, selects
+> only from admitted routes, and records why a route was accepted or dropped.
 
 ## The problem
 
-Coding agents can already plan, edit, test, and open pull requests. Their own
-“task completed” message is not trustworthy evidence that:
+An agent needs more than a model list or fallback proxy. It needs to know whether a
+route is qualified for the task, whether required capabilities and context are
+available, whether a cheaper route is allowed, why candidates were excluded, and
+what evidence supports the final decision. Catalog presence and a worker's own
+success message are not enough.
 
-- the required checks actually ran;
-- the patch stayed inside its authorized files and effects;
-- the selected model was live and qualified for the task;
-- the evidence belongs to the exact source being reviewed;
-- a cheaper route is genuinely good for this task category;
-- a learned recommendation is allowed to change production policy.
+Verdict V2 combines three explicit owners:
 
-Verdict turns those questions into a fail-closed development contract and a
-portable **Trusted Change Report**.
-
-This is not another router. It is the acceptance authority after a route
-produces a patch.
-
-## Flagship: AutoDev Route Lab
-
-The portfolio's first vertical product evaluates and governs model or combo
-policies for software-development tasks using independently verified repository
-outcomes.
+| System | V2 ownership |
+|---|---|
+| **Prime** | user-facing agent/controller, task execution, tools, bounded worker orchestration, and presentation of the result |
+| **Verdict** | task and spend policy, hard eligibility, model metadata authority, context-plan/receipt contracts, deterministic selection reasons, and verification/evidence policy |
+| **OmniRoute** | model/provider inventory, protocol transport, route execution, and observed route health; it is not Verdict's policy or model-metadata authority |
 
 ```text
-Objective + source snapshot
-          |
-          v
-Bounded work-unit contract
-          |
-          v
-OmniRoute discovery and execution
-          |
-          v
-Verdict eligibility + protected-effect policy
-          |
-          v
-Ruflo/Codex/Claude worker
-          |
-          v
-Independent diff, test, policy, and CI evidence
-          |
-          v
-Trusted Change Report
-          |
-          v
-Advisory route recommendation
-          |
-          v
-shadow -> candidate -> canary -> active
-          or quarantine / rollback
+User task in Prime
+        |
+        v
+Verdict task requirements + hard eligibility + spend policy
+        |
+        v
+Verdict-selected admitted route and context/proof contract
+        |
+        v
+OmniRoute transport and model execution
+        |
+        v
+Prime tools / bounded work execution
+        |
+        v
+Verification + Verdict receipt / named failure or drop reason
 ```
 
-The important constraint is that learned ranking and analytics may reorder only
-routes that deterministic eligibility already admitted. A recommendation,
-counterfactual, or worker self-report cannot authorize mutation, promotion, or
-release.
+This is the frozen V2 boundary. Generic harness orchestration, Ruflo/swarm
+architecture, gateway agnosticism, and a shared cross-harness memory product are not
+V2 product scope. Historical AutoDev Route Lab and Trusted Change Report documents
+remain planning history until they are either archived or reconciled. They must not
+be cited as shipped V2 behavior.
 
-## Ecosystem boundary
+## Shipped versus planned
 
-Verdict deliberately reuses the existing stack:
+The current default branches contain Core routing and receipt primitives plus Node
+and Cockpit integration surfaces. This statement is source-level only. Exact behavior, package, and release claims
+must be checked against each repository's default branch, registry, CI, and runtime
+evidence. The ecosystem compatibility manifest is a bounded source-pin/schema check;
+it does not by itself prove end-to-end runtime compatibility.
 
-| System | Owns |
-|---|---|
-| [OmniRoute](https://github.com/diegosouzapw/OmniRoute) | provider/model transport, live discovery, task-aware combos, telemetry, scoring, fallback, and circuit breakers |
-| [Ruflo](https://github.com/ruvnet/ruflo) | orchestration, swarms, workflows, hooks, memory, worker lifecycle, and generic proof ledgers |
-| Codex, Claude, and other workers | planning, coding, review, and bounded command execution |
-| Git and CI | immutable source, diffs, checks, and build evidence |
-| **Verdict** | deterministic eligibility, protected-effect policy, source-state binding, acceptance evidence, outcome evaluation, and gated route-policy lifecycle |
-
-In one line:
-
-> Ruflo coordinates, OmniRoute serves, workers change code, Git and CI provide
-> evidence, and Verdict decides what that evidence may authorize.
+A credential-free, cross-repository V2 demo and canonical Cockpit receipt explorer
+remain planned work. The [Compatibility matrix](docs/COMPATIBILITY_MATRIX.md) and
+owning Linear stories record narrower states; planned work must remain labeled
+planned.
 
 ## Repositories
 
-### AI development control plane
+### V2 active repositories
 
 | Repository | Role |
 |---|---|
-| [`verdict-core`](https://github.com/mrnicholasbcarter-code/verdict-core) | Flagship policy and evidence authority: work units, eligibility, passports, receipts, evaluation, promotion, quarantine, and rollback |
+| [`verdict-core`](https://github.com/mrnicholasbcarter-code/verdict-core) | V2 policy authority: task requirements, hard eligibility, spend-aware selection, context/receipt contracts, and named decision reasons |
 | [`verdict-node`](https://github.com/mrnicholasbcarter-code/verdict-node) | Thin typed client and Express/Next.js integration; no duplicate policy engine |
-| [`verdict-cockpit`](https://github.com/mrnicholasbcarter-code/verdict-cockpit) | Visual inspection of Trusted Change Reports, candidate funnels, verification, route comparisons, and lifecycle state |
-| [`verdict-ecosystem`](https://github.com/mrnicholasbcarter-code/verdict-ecosystem) | This portfolio map, demo guide, and evidence index |
+| [`verdict-cockpit`](https://github.com/mrnicholasbcarter-code/verdict-cockpit) | Shipped fixture-mode React/TypeScript viewer; BOD-14 owns the planned canonical receipt explorer |
+| [`verdict-ecosystem`](https://github.com/mrnicholasbcarter-code/verdict-ecosystem) | Cross-repository V2 product truth, compatibility evidence, process, and demo/release planning |
 
-### Separate quantitative-systems case study
+### Legacy quantitative case-study repositories (not V2 runtime)
 
 | Repository | Role |
 |---|---|
@@ -98,16 +78,16 @@ In one line:
 | [`verdict-strategy`](https://github.com/mrnicholasbcarter-code/verdict-strategy) | strategy composition and validation |
 | [`verdict-backtest`](https://github.com/mrnicholasbcarter-code/verdict-backtest) | reproducible and Monte Carlo validation |
 
-The quantitative repositories demonstrate policy, risk, and evaluation
-engineering. They are not runtime dependencies of AutoDev Route Lab.
+The quantitative repositories are historical case studies. They are not V2 runtime
+dependencies.
 
-`verdict-core-memory` is archived or experimental. The shared Codex/Claude
-memory initiative is abandoned and is not a portfolio pillar, installation
-dependency, or release blocker.
+`verdict-core-memory` is not an active V2 product repository. Its final archive or
+experimental status still requires explicit repository/Linear reconciliation; it is
+not an installation dependency or release blocker for V2.
 
-## Portfolio demonstration
+## Historical AutoDev demonstration plan (not shipped V2)
 
-The intended credential-free demo uses a small repository with a failing API
+The historical intended credential-free demo uses a small repository with a failing API
 authorization test and a protected policy file:
 
 1. Verdict binds the objective to an immutable source snapshot and bounded work
@@ -135,10 +115,9 @@ a clean checkout that produces accepted, denied, route-recommendation, and
 rollback reports. This placeholder must be replaced with the verified command
 before the portfolio is described as presentable.
 
-## Evidence status
+## Historical AutoDev evidence status
 
-The current repositories already contain useful primitives, but the integrated
-flagship demo is still in development.
+This table preserves the older AutoDev planning state. It is non-canonical for V2; the integrated demo described here was not shipped.
 
 | Capability | Current evidence |
 |---|---|
@@ -172,7 +151,9 @@ never implies a higher one.
 
 ## Documentation
 
-- [Portfolio product strategy](PORTFOLIO_PRODUCT_STRATEGY.md) — product boundary, capability audit, flagship flow, delivery plan, and release gate
+- [Spec Kit Lite](docs/SPEC_KIT_LITE.md) — canonical lightweight change contract for significant Verdict V2 work
+- [Ecosystem constitution](.specify/memory/constitution.md) — cross-repository governance and proof requirements
+- [Portfolio product strategy](PORTFOLIO_PRODUCT_STRATEGY.md) — historical product direction that is under V2 truth audit; do not treat planned AutoDev/Ruflo behavior as shipped
 - [Compatibility matrix](docs/COMPATIBILITY_MATRIX.md) — generated from [`compatibility-manifest.json`](compatibility-manifest.json); CI fails on drift, link rot, or a published artifact that does not install
 - [Core repository](https://github.com/mrnicholasbcarter-code/verdict-core) — implementation workstream; installation claims require current default-branch and clean-install verification
 - [Node repository](https://github.com/mrnicholasbcarter-code/verdict-node) — typed integration boundary
@@ -180,9 +161,7 @@ never implies a higher one.
 
 ## Current status
 
-Active development. The near-term objective is one reproducible, honest
-vertical demo with an accepted change, a denied change, source-bound evidence,
-an advisory route recommendation, and a tested rollback path.
+Active V2 truth and integration closeout. Canonical scope is Prime + Verdict + OmniRoute. The credential-free demo, Cockpit receipt explorer, current compatibility proof, and public interview surface remain tracked work rather than shipped claims.
 
 ## Release gate
 
