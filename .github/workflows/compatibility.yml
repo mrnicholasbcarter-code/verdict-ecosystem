@@ -52,6 +52,9 @@ jobs:
       - name: Verify generated compatibility matrix is current
         working-directory: verdict-ecosystem
         run: python scripts/generate_compatibility_matrix.py
+      - name: Verify ADR lifecycle immutable source manifest
+        working-directory: verdict-ecosystem
+        run: python scripts/verify_adr_sources.py
       # Run here rather than in ci.yml: tests/test_check_compatibility.py
       # resolves the manifest's `../verdict-*` paths, so it needs the
       # sibling checkouts this job already provides.
