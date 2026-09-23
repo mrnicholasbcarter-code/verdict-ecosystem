@@ -25,6 +25,16 @@ jobs:
           fetch-depth: 0
       - uses: actions/checkout@v4
         with:
+          repository: mrnicholasbcarter-code/verdict-core-memory
+          path: verdict-core-memory
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: mrnicholasbcarter-code/verdict-continuity
+          path: verdict-continuity
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
           repository: mrnicholasbcarter-code/verdict-risk
           path: verdict-risk
           fetch-depth: 0
@@ -52,6 +62,9 @@ jobs:
       - name: Verify generated compatibility matrix is current
         working-directory: verdict-ecosystem
         run: python scripts/generate_compatibility_matrix.py
+      - name: Verify ADR lifecycle sources at exact pinned commits
+        working-directory: verdict-ecosystem
+        run: python scripts/verify_adr_sources.py --repo-root ..
       # Run here rather than in ci.yml: tests/test_check_compatibility.py
       # resolves the manifest's `../verdict-*` paths, so it needs the
       # sibling checkouts this job already provides.
