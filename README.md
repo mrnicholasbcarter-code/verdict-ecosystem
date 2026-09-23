@@ -99,9 +99,9 @@ runtime proof is recorded, and it explicitly marks `verdict-continuity`
 decisions as V3-deferred for the frozen V2 scope. Re-running the deterministic
 check is part of CI (see
 [`scripts/check_adr_lifecycle.py`](scripts/check_adr_lifecycle.py) and
-[`tests/test_adr_lifecycle.py`](tests/test_adr_lifecycle.py)). Exact source hashes and
-citation existence can be rechecked from local pinned Git objects with
-[`scripts/verify_adr_sources.py`](scripts/verify_adr_sources.py).
+[`tests/test_adr_lifecycle.py`](tests/test_adr_lifecycle.py)). Default CI checks the independently generated immutable
+[`evidence/ADR_SOURCE_MANIFEST.json`](evidence/ADR_SOURCE_MANIFEST.json), including exact repository/commit/path/content hashes, the full ADR inventory, the excluded fixture, and every citation path. Run
+[`scripts/verify_adr_sources.py`](scripts/verify_adr_sources.py) without arguments for that credential-free check, or pass `--repo-root <directory>` to recheck the same facts from local pinned Git objects during refresh or audit.
 
 ## Historical AutoDev demonstration plan (not shipped V2)
 

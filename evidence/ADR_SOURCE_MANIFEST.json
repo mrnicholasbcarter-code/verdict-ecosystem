@@ -1,0 +1,629 @@
+{
+  "repositories": {
+    "verdict-continuity": {
+      "adr_inventory": [
+        "docs/adr/001-independent-core.md",
+        "docs/adr/002-foundation-contract-boundary.md"
+      ],
+      "commit": "9d07081661efa51f7570b13b1e54f69975de7cfb",
+      "repository_url": "https://github.com/mrnicholasbcarter-code/verdict-continuity",
+      "required_paths": [
+        {
+          "path": "docs/adr/001-independent-core.md",
+          "sha256": "21b994c0dbc6f48769825f00f3f1879f507c793c16b6606b26a8928eea6b5573"
+        },
+        {
+          "path": "docs/adr/002-foundation-contract-boundary.md",
+          "sha256": "d42cc57ec7230921c7378ecf5162eaf1c3bdffde987b29bec8ecd3e7918f2a2b"
+        },
+        {
+          "path": "src/verdict_continuity/__init__.py",
+          "sha256": "2d976007f2598e340bc702a40dd0b81fddd75cac2c179d487ed72b52fe48414e"
+        },
+        {
+          "path": "src/verdict_continuity/cli.py",
+          "sha256": "bce3c078db5a7b0482b1fd013145c717cdcc567e30e95584c13ea751949c9441"
+        },
+        {
+          "path": "src/verdict_continuity/contracts.py",
+          "sha256": "8152945d208f81b85614c761b627ca94ba1b92745104a50c3b3d23d055907380"
+        },
+        {
+          "path": "tests/test_foundation_checks.py",
+          "sha256": "a198253c983a8bb9f8244766a3657ced9a52be458d8b90da9a77df6f37ba8732"
+        },
+        {
+          "path": "tests/test_isolation.py",
+          "sha256": "68203e30717ed0d73166381a9e92fac4edef482740038c5458b4c64b8cd83038"
+        },
+        {
+          "path": "tests/test_packaging.py",
+          "sha256": "3e5b99d68d7eb5a1608e65c23070685c4852adb3d1c223d719561120341ac66d"
+        }
+      ]
+    },
+    "verdict-core": {
+      "adr_inventory": [
+        "benchmarks/fixtures/legit_workspace/docs/adr/ADR-001-spend.md",
+        "docs/adr/0001-verdict-control-plane-invariants.md",
+        "docs/adr/ADR-001-evidence-ledger.md",
+        "docs/adr/ADR-002-orchestrator-routing.md",
+        "docs/adr/ADR-003-platform-neutral-guidance-boundary.md",
+        "docs/adr/ADR-004-local-first-memory-plane.md",
+        "docs/adr/ADR-005-code-intelligence-graph-memory-bridge.md",
+        "docs/adr/ADR-006-authoritative-documentation-preflight.md",
+        "docs/adr/ADR-007-omniroute-catalog-qualification.md",
+        "docs/adr/ADR-008-global-runtime-ownership.md",
+        "docs/adr/ADR-009-durable-memory-write-gate.md",
+        "docs/adr/ADR-010-fail-closed-capability-passports.md",
+        "docs/adr/ADR-011-omniroute-catalog-qualification-baseline.md",
+        "docs/adr/ADR-012-consented-budgeted-probes.md",
+        "docs/adr/ADR-013-independent-protocol-surface-qualification.md",
+        "docs/adr/ADR-014-tool-and-structured-output-qualification.md",
+        "docs/adr/ADR-015-evidence-authority-and-portable-receipts.md",
+        "docs/adr/ADR-016-deterministic-policy-and-transition-graphs.md",
+        "docs/adr/ADR-017-durable-privacy-safe-receipt-ledger.md",
+        "docs/adr/ADR-018-shadow-and-counterfactual-evaluation.md",
+        "docs/adr/ADR-019-runtime-negotiated-passports.md",
+        "docs/adr/ADR-020-gateway-adapter-contracts.md",
+        "docs/adr/ADR-021-deterministic-provider-receipts.md",
+        "docs/adr/ADR-022-context-provider-conformance.md",
+        "docs/adr/ADR-023-governed-swarm-supervision.md",
+        "docs/adr/ADR-024-cross-repo-compatibility-gate.md",
+        "docs/adr/ADR-025-node-envelope-enforcement.md",
+        "docs/adr/ADR-026-responses-compatibility-boundary.md",
+        "docs/adr/ADR-027-observed-free-status-and-context-omissions.md",
+        "docs/adr/ADR-028-launch-gate-tooling.md",
+        "docs/adr/ADR-029-portfolio-repositioning-plan.md",
+        "docs/adr/ADR-030-proof-carrying-decision-plane.md",
+        "docs/adr/ADR-031-prime-workflow-skills.md",
+        "docs/adr/ADR-032-core-model-metadata-store.md",
+        "docs/adr/ADR-033-shared-memory-provider.md",
+        "docs/adr/ADR-034-memory-outbox-mirror-and-fail-open-shared-recall.md",
+        "docs/adr/ADR-ORCHESTRATOR-ROUTING.md",
+        "docs/adr/README.md",
+        "docs/architecture/ADR-EVIDENCE-LEDGER.md",
+        "docs/architecture/ADR-ORCHESTRATOR-ROUTING.md"
+      ],
+      "commit": "cae6aa673f606ac9a5315ae1e968acac5652a957",
+      "repository_url": "https://github.com/mrnicholasbcarter-code/verdict-core",
+      "required_paths": [
+        {
+          "path": "benchmarks/fixtures/legit_workspace/docs/adr/ADR-001-spend.md",
+          "sha256": "a3ec2752e48d3d22f9fff0530529647d64c2c64b6f5540623799bfdb8579db6c"
+        },
+        {
+          "path": "docs/adr/0001-verdict-control-plane-invariants.md",
+          "sha256": "5a92d3a1ff67adcf51c12953b881d928a022bf8f3ae5d43f9d41ae319a4b1527"
+        },
+        {
+          "path": "docs/adr/ADR-001-evidence-ledger.md",
+          "sha256": "3be4c9d2954ed8a0738e519df505b53d73647be0e5c52a69445696774ad00dc2"
+        },
+        {
+          "path": "docs/adr/ADR-002-orchestrator-routing.md",
+          "sha256": "6e0572fc0fd31fe35dbb54a962df39d239950202deb6e2d859542157338ad9ed"
+        },
+        {
+          "path": "docs/adr/ADR-003-platform-neutral-guidance-boundary.md",
+          "sha256": "6382fbe129880216758144f36a8ba17dd33b7fe06106fda5e120013ae2cf0f66"
+        },
+        {
+          "path": "docs/adr/ADR-004-local-first-memory-plane.md",
+          "sha256": "d13ec2046b366276086ff5e377991faad4fdbb21ae0827a0ed1f0420b6978e8e"
+        },
+        {
+          "path": "docs/adr/ADR-005-code-intelligence-graph-memory-bridge.md",
+          "sha256": "6d9f56cfb3003585a15195eed58406609a50c9bd1d375fd053cc2234c0063708"
+        },
+        {
+          "path": "docs/adr/ADR-006-authoritative-documentation-preflight.md",
+          "sha256": "d013ebc0766270b66d768e9225f9b18774d49db63e80d2621746e373111121bd"
+        },
+        {
+          "path": "docs/adr/ADR-007-omniroute-catalog-qualification.md",
+          "sha256": "70733379bfd633a315fbb60f9f4e8d2a8c69fc852d31bd89ba59adfee15bd425"
+        },
+        {
+          "path": "docs/adr/ADR-008-global-runtime-ownership.md",
+          "sha256": "917f5f4579a80e07a8ba92f1aee8f2827d9e3b6bec3ba3b22174b3635d6e5d4e"
+        },
+        {
+          "path": "docs/adr/ADR-009-durable-memory-write-gate.md",
+          "sha256": "f12e30cf2c5d35edd5ece3f38a78a381f25467c8bd5a40372710a115d912e76e"
+        },
+        {
+          "path": "docs/adr/ADR-010-fail-closed-capability-passports.md",
+          "sha256": "c191771f586dec0f3d18683d40c7a13ce1070982a4d4b36ec52038453d451a1f"
+        },
+        {
+          "path": "docs/adr/ADR-011-omniroute-catalog-qualification-baseline.md",
+          "sha256": "90d71976b2cad235702fc71cebc69087af473d7f3eaf4a40555aaff90fadea7a"
+        },
+        {
+          "path": "docs/adr/ADR-012-consented-budgeted-probes.md",
+          "sha256": "03a4d602cdc79dfa899bf8086e69fb5aa5b384a927f316b22db13f30a8174bd1"
+        },
+        {
+          "path": "docs/adr/ADR-013-independent-protocol-surface-qualification.md",
+          "sha256": "01005c6f195d224a4a94cbb8b7fc38ce80c32ec1c0724ec346a7eb998b132c63"
+        },
+        {
+          "path": "docs/adr/ADR-014-tool-and-structured-output-qualification.md",
+          "sha256": "8530b8b4a9b8b3d1a84d255f9d10894a014b4bdd1a85858b02162e4cf7402dc3"
+        },
+        {
+          "path": "docs/adr/ADR-015-evidence-authority-and-portable-receipts.md",
+          "sha256": "6e78000b0a92a8aadc46dfd53964d4d1dd3a19660e373620913f21d22c5258c7"
+        },
+        {
+          "path": "docs/adr/ADR-016-deterministic-policy-and-transition-graphs.md",
+          "sha256": "94edd2c9272a193f7ec1782c2069acdd53a7ffd21e275909e1d84f8facd7dd65"
+        },
+        {
+          "path": "docs/adr/ADR-017-durable-privacy-safe-receipt-ledger.md",
+          "sha256": "ae12172b2727eb87aa5a4b0682fd36efd8ab25b71ba4f8d84291d112fc2287b9"
+        },
+        {
+          "path": "docs/adr/ADR-018-shadow-and-counterfactual-evaluation.md",
+          "sha256": "e94da5b809df9fd4eee3e5046604097cc232ef33b9f27b4bc8c70103cc1c0a4b"
+        },
+        {
+          "path": "docs/adr/ADR-019-runtime-negotiated-passports.md",
+          "sha256": "750c9668611ece8594dd32163e38509d69395728dda807d679a26d1955f61370"
+        },
+        {
+          "path": "docs/adr/ADR-020-gateway-adapter-contracts.md",
+          "sha256": "59a6bcc31076252981c27bc72d569d80810192de51a3232b0df0c67f67d80ed5"
+        },
+        {
+          "path": "docs/adr/ADR-021-deterministic-provider-receipts.md",
+          "sha256": "f5b693720db0452ed3c4a7b10a5fc2a5e266ecedabb067a99cd1d5452c2e8121"
+        },
+        {
+          "path": "docs/adr/ADR-022-context-provider-conformance.md",
+          "sha256": "6e43ab9ca78a727505c148776a9f517428449e35327185d4a5e28a713bd157fa"
+        },
+        {
+          "path": "docs/adr/ADR-023-governed-swarm-supervision.md",
+          "sha256": "1eae9efa51b24fa0283b20642e267ebf1a690f0b02abeda8bf9b2f4172b2b6fb"
+        },
+        {
+          "path": "docs/adr/ADR-024-cross-repo-compatibility-gate.md",
+          "sha256": "d1b11fcfb0817414e608c9b1a9a8f143465d161a341230b77efc62529e1a04c0"
+        },
+        {
+          "path": "docs/adr/ADR-025-node-envelope-enforcement.md",
+          "sha256": "603c1fc9fde15b9678c4f1983b60976c27fca9464383e4faecdf970b95c17b13"
+        },
+        {
+          "path": "docs/adr/ADR-026-responses-compatibility-boundary.md",
+          "sha256": "3640e14be5b9b9b400517f500fb077c1986f2e2aa059cea8503537d73ed6050d"
+        },
+        {
+          "path": "docs/adr/ADR-027-observed-free-status-and-context-omissions.md",
+          "sha256": "9bf9b4ba9832fa7933d74d1ac8845cfb95dfc11e5f7302ff4d3443484df2472b"
+        },
+        {
+          "path": "docs/adr/ADR-028-launch-gate-tooling.md",
+          "sha256": "1aa28d20f8073b36520a507933ceb61e78376570221a6938281f31aa62c5d282"
+        },
+        {
+          "path": "docs/adr/ADR-029-portfolio-repositioning-plan.md",
+          "sha256": "4dab8d2bdf422c3a23f973f14b5d91f87bd260d886bdb589c32240f940f8c6b3"
+        },
+        {
+          "path": "docs/adr/ADR-030-proof-carrying-decision-plane.md",
+          "sha256": "aaad8aa2372fcb5eb1e0420ea4c8269cdd171da93c466d8834c67cc85ef7e9ed"
+        },
+        {
+          "path": "docs/adr/ADR-031-prime-workflow-skills.md",
+          "sha256": "42cbcfb270e7c034356f3b65ab59480a590556720f814bc01cfe63cd9cd0a407"
+        },
+        {
+          "path": "docs/adr/ADR-032-core-model-metadata-store.md",
+          "sha256": "254db64095fc8e180a50260872adbacac6b1af6accbcb3d52712cac4fca8dc5c"
+        },
+        {
+          "path": "docs/adr/ADR-033-shared-memory-provider.md",
+          "sha256": "3395093bd42f73fd78999025038c2d457f1062203aa05b093f9fa97eca8d4acd"
+        },
+        {
+          "path": "docs/adr/ADR-034-memory-outbox-mirror-and-fail-open-shared-recall.md",
+          "sha256": "e83169af5874c5c619fcc04cc5c1d785c5e35b120963eb95021e05d302afb763"
+        },
+        {
+          "path": "docs/adr/ADR-ORCHESTRATOR-ROUTING.md",
+          "sha256": "21bc533fe47a5dc16a65b9c5a0583621d001f3804d2574c94e01cff14f70d1c5"
+        },
+        {
+          "path": "docs/adr/README.md",
+          "sha256": "5d9e0043952f9cea1c4676de2c2ee01395226259cb61da966ed9d8068b56be7e"
+        },
+        {
+          "path": "docs/architecture/ADR-EVIDENCE-LEDGER.md",
+          "sha256": "9208cb3771111f2d608840acddf50622dafb85e990bcc8c045681a80a062e12d"
+        },
+        {
+          "path": "docs/architecture/ADR-ORCHESTRATOR-ROUTING.md",
+          "sha256": "f851d6c077f5e99d6689bcfb7310f9cde1575d75a32e58313205c146400d0396"
+        },
+        {
+          "path": "scripts/prime_workflow.py",
+          "sha256": "b89e3a9e13873d1b1fef03acd3bd7ae7473b2bbbd66848b0bd618150887dc80c"
+        },
+        {
+          "path": "tests/test_capability_passports.py",
+          "sha256": "d6523808748c7a9c0a7405ccae141c4e3cb64d0f2e4ddeb8e181ec0edf01072d"
+        },
+        {
+          "path": "tests/test_context_provider_conformance.py",
+          "sha256": "8f954c91faddad4a56be4455c9bfd834d8fbe4fa5e071829c64a387d6ccfc69e"
+        },
+        {
+          "path": "tests/test_dispatcher.py",
+          "sha256": "7d44515143e809b88688fa75a41ae7a0294f5dc09b7b0f9cbfc78755e228367f"
+        },
+        {
+          "path": "tests/test_durable_receipts.py",
+          "sha256": "f30013e525a02656172d63a716ccfb2a75df6bab07a04c1fc6f37708252be5ca"
+        },
+        {
+          "path": "tests/test_eligibility_gate.py",
+          "sha256": "0b0a89648ede3931984baeab7996268b8dda95e1dd299ac6f00446311180b016"
+        },
+        {
+          "path": "tests/test_envelope_parity.py",
+          "sha256": "953fb3cb3f8a9b9a6f91771f3bb182e20327c1047eedc142ca65ff99e024ac63"
+        },
+        {
+          "path": "tests/test_evidence.py",
+          "sha256": "93c990f27d715b2dbc4a371a7f0998e309eb4824ef36567a5e6a54d608e2ad82"
+        },
+        {
+          "path": "tests/test_guidance.py",
+          "sha256": "a8f54e003b403814a8162780569aa209f2cd4bdd2db744982352157ca2b16923"
+        },
+        {
+          "path": "tests/test_memory_bridge.py",
+          "sha256": "d4b29b039950103ce721dd6f19aa5790ce7a21b3e32f2759c601956d43e8b852"
+        },
+        {
+          "path": "tests/test_memory_gate.py",
+          "sha256": "4568552522560d31ccefd3ceeb29a32571f9e5e53d5ad4e83869743264e2a28b"
+        },
+        {
+          "path": "tests/test_memory_outbox.py",
+          "sha256": "2c25637c3650037b6a04957c1d7b414d122d7a6a9bed067aa3d291222b17223a"
+        },
+        {
+          "path": "tests/test_memory_plane.py",
+          "sha256": "fe1a2e08394ce9abf82d8f964e3d555c038f9737ca65bc65aedd39534a09340d"
+        },
+        {
+          "path": "tests/test_model_metadata.py",
+          "sha256": "ed596231ab9e3ecbf983393d5e7454d3fc8c9e3bd272b24e14d0bd03a8cece90"
+        },
+        {
+          "path": "tests/test_omniroute_catalog.py",
+          "sha256": "02d55ea61feb88de0b667a60b0d8b92334f9d3715fd8d85e87fccecceb761e77"
+        },
+        {
+          "path": "tests/test_passport_eligibility.py",
+          "sha256": "7c42004d8afa176982b8aeb4595638a141b4802fba0ceeae4661aabc8e02c747"
+        },
+        {
+          "path": "tests/test_policy_transitions.py",
+          "sha256": "716af3a92e333ff2b0ee38f56449249185324fa65f3692f411531fbc684e9085"
+        },
+        {
+          "path": "tests/test_prime_workflow.py",
+          "sha256": "d5d8d38b9570820501c43d5fa4c0d36846b236fc52fdb3bc8ede9b71c08eee21"
+        },
+        {
+          "path": "tests/test_probes.py",
+          "sha256": "ca214aa34cf8a5747a049951961a8575e238a9bc8f779986a9e7cd8c90eb20b8"
+        },
+        {
+          "path": "tests/test_protocol_probes.py",
+          "sha256": "1cb7e448caba115903a3f9eee46c105ca9028c3b55197d3f161d285c07202438"
+        },
+        {
+          "path": "tests/test_provider_receipts.py",
+          "sha256": "3c27bac4a99ca84204f65ce037ff71eaa3ce5098838134b443e7256a3995693d"
+        },
+        {
+          "path": "tests/test_receipt_store.py",
+          "sha256": "6d4e4fc56be51c8ef1cbfa45540023180d4b366c6d660c4b5ab8f66028916dd8"
+        },
+        {
+          "path": "tests/test_runtime_passports.py",
+          "sha256": "e79e0f1c41872e5f72838842e8a2b613c69a4d2e83036d4e285c67904be36f2f"
+        },
+        {
+          "path": "tests/test_shared_memory_provider.py",
+          "sha256": "cfa777cc8967df43e610e3545ccc4be6dfcc896eebd7a7b4ae71bf46d729bd80"
+        },
+        {
+          "path": "tests/test_tool_qualification.py",
+          "sha256": "1bf930502d60d442bca4de36d396d5784c8efa94e6c1f04ff3230aaaefa68a33"
+        },
+        {
+          "path": "verdict/capability_passports.py",
+          "sha256": "a21e475ce4100bd14b8380938c18809f47f9f398316e05550b7cbf370e8bab78"
+        },
+        {
+          "path": "verdict/code_graph.py",
+          "sha256": "421e8c625e371469ced4154606c9fa5d0c5bbfe7395530947b0156ec6e7acdff"
+        },
+        {
+          "path": "verdict/context_envelope.py",
+          "sha256": "681afbff9de8ce9b10f1b37fd122c28bf9ab0b48692d00bcf65e80ec736102f2"
+        },
+        {
+          "path": "verdict/contracts.py",
+          "sha256": "aba33c84eb8d2480a8984b3b1996f7673e9741bce7872ad5470f6fa28bfb59cf"
+        },
+        {
+          "path": "verdict/dispatcher.py",
+          "sha256": "c43930c2cf97658a1fe49687b13f1a756693c1dac8a877b30bf822f11cf0f83c"
+        },
+        {
+          "path": "verdict/eligibility.py",
+          "sha256": "0c24d5d7ca95bcb5a3661dfd93cf243e0c0f247700af4540bb4aa190c6c3436b"
+        },
+        {
+          "path": "verdict/evidence.py",
+          "sha256": "5f511ca51a2b798d7753f4f8e0fc27e539203e0604709d591cbc67336258ca64"
+        },
+        {
+          "path": "verdict/evidence_receipts.py",
+          "sha256": "0793b8ce508bc33f4192df65e7cd0ad8549b4c51ec6793bfd717fe0cbc75c33e"
+        },
+        {
+          "path": "verdict/guidance.py",
+          "sha256": "0a2f2734062e6422649a8dd122266b5b4bd37b042002d0a23e206e3b7e85347d"
+        },
+        {
+          "path": "verdict/memory_bridge.py",
+          "sha256": "807cf19fbf05708302c59f38dfdfd7470e4ca0fdb2fdcad77bf7ad1a36d5cc06"
+        },
+        {
+          "path": "verdict/memory_gate.py",
+          "sha256": "58ff2e12e61d223f47f2e881f4c9de95c4c534c5af792f3184dec7c5ad7f039b"
+        },
+        {
+          "path": "verdict/memory_outbox.py",
+          "sha256": "1759691853be509ed1a3eb8c57007f2ecd84cfed89b9cd3cc3bbf3aa1449de67"
+        },
+        {
+          "path": "verdict/memory_plane.py",
+          "sha256": "786f132001ab3d29d170eed1c050edff09155f25a0e192ad200821cd71fd9edd"
+        },
+        {
+          "path": "verdict/omniroute_catalog.py",
+          "sha256": "9141b6c2b175b702254403305bbef48947b81b017ec918ce17e768b6a9f21349"
+        },
+        {
+          "path": "verdict/omniroute_catalog_stats.py",
+          "sha256": "657851de30ed92d4f42b15da69409aef73d63535a5d2551885cc6c3a2972b560"
+        },
+        {
+          "path": "verdict/passport_eligibility.py",
+          "sha256": "b9ad27da64e0ff68fe6bcfa7603f161dabcda3d142b81d221c78d9a2ed068263"
+        },
+        {
+          "path": "verdict/probes.py",
+          "sha256": "320b9f995b1d84352269f66daad78d41c90a500c74e0a1c3fa53804da212f275"
+        },
+        {
+          "path": "verdict/protocol_probes.py",
+          "sha256": "62884a8cc2bda429ceab30090c310794a2530ace61c0c2cdce3bad9f3aa01a6f"
+        },
+        {
+          "path": "verdict/provider_receipts.py",
+          "sha256": "cc333b611ee08d5dd4359e54a3ed9b41ffdcce44949f7cc5b7f7e792f4962922"
+        },
+        {
+          "path": "verdict/receipt_store.py",
+          "sha256": "312fbe16b926b07df06e12f6077cec4a1d0acb05cbd4803c1290ca47e9b5e524"
+        },
+        {
+          "path": "verdict/responses_compatibility.py",
+          "sha256": "9e1e99afce095d8bb67f8ecb7c17adb27358313dec553f23bc9e35d6a02facf4"
+        },
+        {
+          "path": "verdict/router.py",
+          "sha256": "3fa3e804e51fc3a2ff66a21e88f71b15abcad56353a3f8fc97970abb31417469"
+        },
+        {
+          "path": "verdict/runtime_passports.py",
+          "sha256": "18521517e02f77ca740710a3e02a97b76298cc500eb0a4f58473e317dc7afd55"
+        },
+        {
+          "path": "verdict/shared_memory.py",
+          "sha256": "7d6c329785a110c6b16f35e5a493e71c486b4d3368d59a16f33ed4eb28543666"
+        },
+        {
+          "path": "verdict/tool_qualification.py",
+          "sha256": "f2abc969327a67a09c008d64ccd72700373d52baf5c006dfa00bab8ba853b221"
+        },
+        {
+          "path": "verdict/transitions.py",
+          "sha256": "988f58e0cf9890e7602d5d88b7d1b529c276f836ea336e5c1dcf276d8aae88b0"
+        }
+      ]
+    },
+    "verdict-core-memory": {
+      "adr_inventory": [
+        "docs/adr/ADR-001-evidence-ledger.md",
+        "docs/adr/ADR-002-orchestrator-routing.md",
+        "docs/adr/ADR-003-platform-neutral-guidance-boundary.md",
+        "docs/adr/ADR-004-local-first-memory-plane.md",
+        "docs/adr/ADR-005-code-intelligence-graph-memory-bridge.md",
+        "docs/adr/ADR-006-authoritative-documentation-preflight.md",
+        "docs/adr/ADR-006-hybrid-code-intelligence-graph.md",
+        "docs/adr/ADR-007-omniroute-catalog-qualification.md",
+        "docs/adr/ADR-007-unified-memory-replacement.md",
+        "docs/adr/ADR-008-global-runtime-ownership.md",
+        "docs/adr/ADR-008-infinite-context-and-observability.md",
+        "docs/adr/ADR-009-durable-memory-write-gate.md",
+        "docs/adr/ADR-009-governed-learning-and-retirement.md",
+        "docs/adr/ADR-010-fail-closed-capability-passports.md",
+        "docs/adr/ADR-011-omniroute-catalog-qualification-baseline.md",
+        "docs/adr/ADR-012-consented-budgeted-probes.md",
+        "docs/adr/ADR-013-independent-protocol-surface-qualification.md",
+        "docs/adr/ADR-014-tool-and-structured-output-qualification.md",
+        "docs/adr/ADR-015-evidence-authority-and-portable-receipts.md",
+        "docs/adr/ADR-016-deterministic-policy-and-transition-graphs.md",
+        "docs/adr/ADR-017-durable-privacy-safe-receipt-ledger.md",
+        "docs/adr/ADR-018-shadow-and-counterfactual-evaluation.md",
+        "docs/adr/ADR-019-runtime-negotiated-passports.md",
+        "docs/adr/ADR-020-gateway-adapter-contracts.md",
+        "docs/adr/ADR-020-responses-compatibility-boundary.md",
+        "docs/adr/ADR-021-deterministic-provider-receipts.md",
+        "docs/adr/ADR-ORCHESTRATOR-ROUTING.md",
+        "docs/architecture/ADR-EVIDENCE-LEDGER.md",
+        "docs/architecture/ADR-ORCHESTRATOR-ROUTING.md"
+      ],
+      "commit": "c8935bb5222f3962f48e36567114d0a3e5f9d1b4",
+      "repository_url": "https://github.com/mrnicholasbcarter-code/verdict-core-memory",
+      "required_paths": [
+        {
+          "path": "docs/adr/ADR-001-evidence-ledger.md",
+          "sha256": "3be4c9d2954ed8a0738e519df505b53d73647be0e5c52a69445696774ad00dc2"
+        },
+        {
+          "path": "docs/adr/ADR-002-orchestrator-routing.md",
+          "sha256": "6e0572fc0fd31fe35dbb54a962df39d239950202deb6e2d859542157338ad9ed"
+        },
+        {
+          "path": "docs/adr/ADR-003-platform-neutral-guidance-boundary.md",
+          "sha256": "6382fbe129880216758144f36a8ba17dd33b7fe06106fda5e120013ae2cf0f66"
+        },
+        {
+          "path": "docs/adr/ADR-004-local-first-memory-plane.md",
+          "sha256": "d13ec2046b366276086ff5e377991faad4fdbb21ae0827a0ed1f0420b6978e8e"
+        },
+        {
+          "path": "docs/adr/ADR-005-code-intelligence-graph-memory-bridge.md",
+          "sha256": "6d9f56cfb3003585a15195eed58406609a50c9bd1d375fd053cc2234c0063708"
+        },
+        {
+          "path": "docs/adr/ADR-006-authoritative-documentation-preflight.md",
+          "sha256": "d013ebc0766270b66d768e9225f9b18774d49db63e80d2621746e373111121bd"
+        },
+        {
+          "path": "docs/adr/ADR-006-hybrid-code-intelligence-graph.md",
+          "sha256": "7fd3bf33c17c5842a9880727b5deb9c29fe943d2046bb4d0c81d6a7b6b7f4feb"
+        },
+        {
+          "path": "docs/adr/ADR-007-omniroute-catalog-qualification.md",
+          "sha256": "70733379bfd633a315fbb60f9f4e8d2a8c69fc852d31bd89ba59adfee15bd425"
+        },
+        {
+          "path": "docs/adr/ADR-007-unified-memory-replacement.md",
+          "sha256": "8614099b1ec996cc1cdd0ad0712fb1278f8f5bd31f06997f0ff6bf59e84fc33c"
+        },
+        {
+          "path": "docs/adr/ADR-008-global-runtime-ownership.md",
+          "sha256": "917f5f4579a80e07a8ba92f1aee8f2827d9e3b6bec3ba3b22174b3635d6e5d4e"
+        },
+        {
+          "path": "docs/adr/ADR-008-infinite-context-and-observability.md",
+          "sha256": "0d599975f929d212fc4a9976142a823481c84d2a1dc13233965c1fcc213398be"
+        },
+        {
+          "path": "docs/adr/ADR-009-durable-memory-write-gate.md",
+          "sha256": "f12e30cf2c5d35edd5ece3f38a78a381f25467c8bd5a40372710a115d912e76e"
+        },
+        {
+          "path": "docs/adr/ADR-009-governed-learning-and-retirement.md",
+          "sha256": "c2d61dda2af73b08196c68b36a892b55048292f2cd4f315e73763144107c763e"
+        },
+        {
+          "path": "docs/adr/ADR-010-fail-closed-capability-passports.md",
+          "sha256": "c191771f586dec0f3d18683d40c7a13ce1070982a4d4b36ec52038453d451a1f"
+        },
+        {
+          "path": "docs/adr/ADR-011-omniroute-catalog-qualification-baseline.md",
+          "sha256": "90d71976b2cad235702fc71cebc69087af473d7f3eaf4a40555aaff90fadea7a"
+        },
+        {
+          "path": "docs/adr/ADR-012-consented-budgeted-probes.md",
+          "sha256": "03a4d602cdc79dfa899bf8086e69fb5aa5b384a927f316b22db13f30a8174bd1"
+        },
+        {
+          "path": "docs/adr/ADR-013-independent-protocol-surface-qualification.md",
+          "sha256": "01005c6f195d224a4a94cbb8b7fc38ce80c32ec1c0724ec346a7eb998b132c63"
+        },
+        {
+          "path": "docs/adr/ADR-014-tool-and-structured-output-qualification.md",
+          "sha256": "8530b8b4a9b8b3d1a84d255f9d10894a014b4bdd1a85858b02162e4cf7402dc3"
+        },
+        {
+          "path": "docs/adr/ADR-015-evidence-authority-and-portable-receipts.md",
+          "sha256": "6e78000b0a92a8aadc46dfd53964d4d1dd3a19660e373620913f21d22c5258c7"
+        },
+        {
+          "path": "docs/adr/ADR-016-deterministic-policy-and-transition-graphs.md",
+          "sha256": "94edd2c9272a193f7ec1782c2069acdd53a7ffd21e275909e1d84f8facd7dd65"
+        },
+        {
+          "path": "docs/adr/ADR-017-durable-privacy-safe-receipt-ledger.md",
+          "sha256": "ae12172b2727eb87aa5a4b0682fd36efd8ab25b71ba4f8d84291d112fc2287b9"
+        },
+        {
+          "path": "docs/adr/ADR-018-shadow-and-counterfactual-evaluation.md",
+          "sha256": "e94da5b809df9fd4eee3e5046604097cc232ef33b9f27b4bc8c70103cc1c0a4b"
+        },
+        {
+          "path": "docs/adr/ADR-019-runtime-negotiated-passports.md",
+          "sha256": "750c9668611ece8594dd32163e38509d69395728dda807d679a26d1955f61370"
+        },
+        {
+          "path": "docs/adr/ADR-020-gateway-adapter-contracts.md",
+          "sha256": "59a6bcc31076252981c27bc72d569d80810192de51a3232b0df0c67f67d80ed5"
+        },
+        {
+          "path": "docs/adr/ADR-020-responses-compatibility-boundary.md",
+          "sha256": "9385d6bc88035388f23d436443b8ab1d73fe5f891c37010052ee90af42736b22"
+        },
+        {
+          "path": "docs/adr/ADR-021-deterministic-provider-receipts.md",
+          "sha256": "f5b693720db0452ed3c4a7b10a5fc2a5e266ecedabb067a99cd1d5452c2e8121"
+        },
+        {
+          "path": "docs/adr/ADR-ORCHESTRATOR-ROUTING.md",
+          "sha256": "ca8222f9f3108a4a4b85c50d004831ca364c92bdb23a9d3df2965141de8c9d08"
+        },
+        {
+          "path": "docs/architecture/ADR-EVIDENCE-LEDGER.md",
+          "sha256": "9208cb3771111f2d608840acddf50622dafb85e990bcc8c045681a80a062e12d"
+        },
+        {
+          "path": "docs/architecture/ADR-ORCHESTRATOR-ROUTING.md",
+          "sha256": "f851d6c077f5e99d6689bcfb7310f9cde1575d75a32e58313205c146400d0396"
+        }
+      ]
+    },
+    "verdict-node": {
+      "adr_inventory": [
+        "docs/adr/ADR-001-execution-envelope-enforcement.md"
+      ],
+      "commit": "3e1a5ba78ba3a24de85d48e663113a3a7bf7e3c2",
+      "repository_url": "https://github.com/mrnicholasbcarter-code/verdict-node",
+      "required_paths": [
+        {
+          "path": "docs/adr/ADR-001-execution-envelope-enforcement.md",
+          "sha256": "01df0165065c99a002165a39465df052cf45ae5cef3d4232485464ada10515b6"
+        },
+        {
+          "path": "src/middleware/forwarder.ts",
+          "sha256": "0082a02d9b52d12f2e5a52c37eba2ee302f523227102431d201754bc8281df87"
+        }
+      ]
+    }
+  },
+  "schema_version": 1
+}

@@ -218,6 +218,54 @@ class ADRLifecycleTests(unittest.TestCase):
         )
 
 
+class ADRSourceManifestTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.data = load()
+        self.path = ROOT / "evidence" / "ADR_SOURCE_MANIFEST.json"
+        self.raw = self.path.read_bytes()
+        self.manifest = json.loads(self.raw)
+
+    def verify(self, manifest=None, raw=None):
+        manifest = manifest or self.manifest
+        if raw is None:
+            raw = json.dumps(manifest, indent=2, sort_keys=True).encode() + b"\n"
+        return source_verifier.verify_manifest(self.data, manifest, raw)
+
+    def test_checked_in_manifest_accepts_without_repository_access(self) -> None:
+        self.assertEqual(source_verifier.verify_manifest(self.data, self.manifest, self.raw), [])
+
+    def test_manifest_digest_is_independently_pinned(self) -> None:
+        tampered = json.loads(json.dumps(self.manifest))
+        item = tampered["repositories"]["verdict-core"]["required_paths"][0]
+        item["sha256"] = "0" * 64
+        errors = self.verify(tampered)
+        self.assertIn("source manifest differs from the independently reviewed digest", errors)
+        self.assertTrue(any("hash mismatch" in error for error in errors))
+
+    def test_missing_citation_path_fails_closed(self) -> None:
+        tampered = json.loads(json.dumps(self.manifest))
+        required = tampered["repositories"]["verdict-core"]["required_paths"]
+        citation_paths = {
+            citation.split("/", 1)[1]
+            for record in self.data["lifecycle_index"]
+            for citation in record["citations"]
+            if citation.startswith("verdict-core/")
+        }
+        required.remove(next(item for item in required if item["path"] in citation_paths))
+        errors = self.verify(tampered)
+        self.assertTrue(any("required path set mismatch" in error for error in errors))
+        self.assertTrue(any("citation absent" in error for error in errors))
+
+    def test_inventory_addition_and_commit_drift_fail_closed(self) -> None:
+        tampered = json.loads(json.dumps(self.manifest))
+        repo = tampered["repositories"]["verdict-core-memory"]
+        repo["commit"] = "0" * 40
+        repo["adr_inventory"].append("docs/adr/ADR-999-unreviewed.md")
+        errors = self.verify(tampered)
+        self.assertIn("source manifest commit mismatch: verdict-core-memory", errors)
+        self.assertIn("source manifest ADR inventory mismatch: verdict-core-memory", errors)
+
+
 class ADRSourceVerifierNegativeTests(unittest.TestCase):
     def setUp(self) -> None:
         self.data = load()

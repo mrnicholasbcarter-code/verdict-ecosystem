@@ -27,6 +27,7 @@ jobs:
           python3 -m unittest discover -s tests -v
           git diff --check
           python3 scripts/check_adr_lifecycle.py
+          python3 scripts/verify_adr_sources.py
 
   drift-check:
     runs-on: ubuntu-latest

@@ -159,8 +159,13 @@ Each source locator has the form `repository@exact-commit:path`. These are immut
   because their code is disproved.
 - Continuity decisions are `V3_DEFERRED`.
 
-Full machine-readable data is in `evidence/ADR_LIFECYCLE.json`. The default CI
-validator protects the reviewed semantic digest and rendered index. Reviewers with
-local repositories containing the pinned commits can additionally run
-`python3 scripts/verify_adr_sources.py --repo-root <directory>` to recompute every
-source hash and verify every citation path.
+Full machine-readable data is in `evidence/ADR_LIFECYCLE.json`. Default CI protects
+the reviewed semantic digest and rendered index, then verifies the independently
+generated immutable `evidence/ADR_SOURCE_MANIFEST.json`. That manifest binds the
+exact repository URL, commit, complete ADR inventory, source and fixture hashes,
+and every required citation path without requiring private-repository credentials.
+It is pinned by a trusted code digest, so source/index/manifest drift fails closed.
+Run `python3 scripts/verify_adr_sources.py` for this default check. Reviewers with
+local repositories containing the pinned commits run
+`python3 scripts/verify_adr_sources.py --repo-root <directory>` to independently
+recompute the manifest facts from exact Git objects during refresh or audit.
