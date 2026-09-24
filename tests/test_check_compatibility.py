@@ -251,7 +251,7 @@ class SchemaHashValidationTests(unittest.TestCase):
             )
             self.assertEqual(errors, [])
 
-    def test_schema_hash_source_missing_file_skips_silently(self) -> None:
+    def test_schema_hash_source_missing_file_fails(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             repo_path = Path(temporary_directory)
             item = {
@@ -262,7 +262,9 @@ class SchemaHashValidationTests(unittest.TestCase):
             CHECKER.validate_schema_hash(
                 item, "repositories[0]", "verdict-core", repo_path, True, errors
             )
-            self.assertEqual(errors, [])
+            self.assertTrue(
+                any("verdict/contracts.py is missing from the checkout" in error for error in errors)
+            )
 
 
 class SourcePinResolutionTests(unittest.TestCase):

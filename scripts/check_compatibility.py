@@ -293,11 +293,13 @@ def validate_schema_hash(
     if not exists or path is None:
         return
     resolved_source = path / source_path
+    if not resolved_source.is_file():
+        errors.append(f"{repo_id}: schema_hash_source {schema_hash_source} is missing from the checkout")
+        return
     try:
-        if not resolved_source.is_file():
-            return
         digest = hashlib.sha256(resolved_source.read_bytes()).hexdigest()
-    except OSError:
+    except OSError as error:
+        errors.append(f"{repo_id}: schema_hash_source {schema_hash_source} could not be read ({error})")
         return
     if digest != schema_hash:
         errors.append(
