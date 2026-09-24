@@ -1,5 +1,7 @@
 # Verdict Implementation Lift Analysis
 
+> **Archived snapshot, not current.** This document records the ecosystem state on its audit date (2026-08-02, partly reconciled 2026-08-18). Later merged work may have changed it. For current direction see the [README](README.md) and [Spec Kit Lite](docs/SPEC_KIT_LITE.md).
+
 - **Date:** 2026-08-02
 - **Estimate scale:** XS < 1 engineer-week; S 1–2; M 3–5; L 6–10; XL 11+ engineer-weeks
 - **Order rule:** Reuse → Extend → Integrate → Replace → Build New

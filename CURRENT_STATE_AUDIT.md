@@ -1,5 +1,7 @@
 # Verdict Ecosystem Current-State Audit
 
+> **Archived snapshot, not current.** This document records the ecosystem state on its audit date (2026-08-02, partly reconciled 2026-08-18). Later merged work may have changed it. For current direction see the [README](README.md) and [Spec Kit Lite](docs/SPEC_KIT_LITE.md).
+
 - **Audit date:** 2026-08-02
 - **Scope:** `verdict-core`, `verdict-node`, `verdict-risk`, `verdict-strategy`, `verdict-backtest`, `verdict-cockpit`, and `verdict-ecosystem`
 - **Evidence:** local repository snapshots, source files, tests, manifests, ADRs, CI workflows, README files, Git history, and existing GitHub issue metadata
