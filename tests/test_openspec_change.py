@@ -253,8 +253,8 @@ class OpenSpecValidationTests(unittest.TestCase):
 
             errors = validator.validate_change(change_dir)
             self.assertTrue(
-                any("security/trust" in e.reason.lower() and "BOD-167 field 8" in e.reason for e in errors),
-                "Should require security/trust implications (BOD-167 field 8)"
+                any("Security / trust implications" in e.reason and "BOD-167 field 8" in e.reason for e in errors),
+                "Should require Security / trust implications section (BOD-167 field 8)"
             )
 
     def test_bod167_field_9_routing_context_memory_required(self) -> None:
@@ -420,6 +420,100 @@ class OpenSpecValidationTests(unittest.TestCase):
                 "Should require at least one of New Capabilities or Modified Capabilities"
             )
 
+    def test_leak_security_section_removed_word_elsewhere_fails(self) -> None:
+        """Leak test: removing ## Security section but keeping word 'security' elsewhere should FAIL."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            change_dir = Path(tmpdir)
+            (change_dir / ".openspec.yaml").write_text("skip_specs: true\n", encoding="utf-8")
+            (change_dir / "proposal.md").write_text(
+                "# Proposal\n\n## Why\nContent\n\n## What Changes\nContent\n\n"
+                "## Capabilities\n### New Capabilities\nContent\n\n## Impact\nContent\n\n"
+                "## Acceptance criteria\n- [ ] Item\n\nKNOWN: evidence\n",
+                encoding="utf-8"
+            )
+            # Design with Security word in Decisions but NO ## Security / trust implications section
+            (change_dir / "design.md").write_text(
+                "# Design\n\n## Context\nBackground\n\n## Goals / Non-Goals\nContent\n\n"
+                "## Decisions\nNo security impact was analysed here.\n\n"
+                "## Risks / Trade-offs\nContent\n\n"
+                "## Routing / context / memory implications\nNot applicable.\n\n"
+                "## Migration / rollback\nNone.\n\n"
+                "## ADR impact\nNone.\n",
+                encoding="utf-8"
+            )
+            (change_dir / "tasks.md").write_text("# Tasks\n\n## 1. Work\n- [ ] Do something and verify\n", encoding="utf-8")
+
+            errors = validator.validate_change(change_dir)
+            self.assertTrue(
+                any("Security / trust implications" in e.reason for e in errors),
+                f"Should require ## Security / trust implications section, got: {errors}"
+            )
+
+    def test_section_with_empty_body_fails(self) -> None:
+        """Section present but with empty body should fail."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            change_dir = Path(tmpdir)
+            (change_dir / ".openspec.yaml").write_text("skip_specs: true\n", encoding="utf-8")
+            (change_dir / "proposal.md").write_text(
+                "# Proposal\n\n## Why\nContent\n\n## What Changes\nContent\n\n"
+                "## Capabilities\n### New Capabilities\nContent\n\n## Impact\nContent\n\n"
+                "## Acceptance criteria\n- [ ] Item\n\nKNOWN: evidence\n",
+                encoding="utf-8"
+            )
+            # Design with Security section but EMPTY body (next section immediately follows)
+            (change_dir / "design.md").write_text(
+                "# Design\n\n## Context\nBackground\n\n## Goals / Non-Goals\nContent\n\n"
+                "## Decisions\nContent\n\n"
+                "## Risks / Trade-offs\nContent\n\n"
+                "## Security / trust implications\n\n## Routing / context / memory implications\nContent\n\n"
+                "## Migration / rollback\nNone.\n\n"
+                "## ADR impact\nNone.\n",
+                encoding="utf-8"
+            )
+            (change_dir / "tasks.md").write_text("# Tasks\n\n## 1. Work\n- [ ] Do something and verify\n", encoding="utf-8")
+
+            errors = validator.validate_change(change_dir)
+            self.assertTrue(
+                any("empty body" in e.reason.lower() and "Security / trust implications" in e.reason for e in errors),
+                f"Should fail on empty Security section body, got: {errors}"
+            )
+
+    def test_task_group_without_own_proof_fails(self) -> None:
+        """One task group without proof should fail even if another has proof."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            change_dir = Path(tmpdir)
+            (change_dir / ".openspec.yaml").write_text("skip_specs: true\n", encoding="utf-8")
+            (change_dir / "proposal.md").write_text(
+                "# Proposal\n\n## Why\nContent\n\n## What Changes\nContent\n\n"
+                "## Capabilities\n### New Capabilities\nContent\n\n## Impact\nContent\n\n"
+                "## Acceptance criteria\n- [ ] Item\n\nKNOWN: evidence\n",
+                encoding="utf-8"
+            )
+            (change_dir / "design.md").write_text(
+                "# Design\n\n## Context\nBackground\n\n## Goals / Non-Goals\nContent\n\n"
+                "## Decisions\nContent\n\n"
+                "## Risks / Trade-offs\nContent\n\n"
+                "## Security / trust implications\nNone.\n\n"
+                "## Routing / context / memory implications\nNot applicable.\n\n"
+                "## Migration / rollback\nNone.\n\n"
+                "## ADR impact\nNone.\n",
+                encoding="utf-8"
+            )
+            # Tasks with group 1 having proof, but group 2 without proof
+            (change_dir / "tasks.md").write_text(
+                "# Tasks\n\n"
+                "## 1. First Group\n- [ ] Do something and verify\n\n"
+                "## 2. Second Group\n- [ ] Do another thing\n",
+                encoding="utf-8"
+            )
+
+            errors = validator.validate_change(change_dir)
+            self.assertTrue(
+                any("## 2. Second Group" in e.reason and "verification" in e.reason.lower() for e in errors),
+                f"Should fail on group 2 missing verification, got: {errors}"
+            )
+
+
 
 class AblationTests(unittest.TestCase):
     """Ablation tests: removing each required section should fail validation."""
@@ -583,27 +677,53 @@ class AblationTests(unittest.TestCase):
             )
 
     def test_ablation_design_security_mention(self) -> None:
-        """Removing security mentions from design should fail."""
+        """Removing Security / trust implications section from design should fail."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            modified_design = self.design.replace("security", "removed").replace("Security", "Removed").replace("trust", "removed").replace("Trust", "Removed")
+            # Remove the entire Security section from design
+            lines = self.design.split("\n")
+            modified_lines = []
+            skip_section = False
+            for line in lines:
+                if "## Security / trust implications" in line or "## Security/trust implications" in line:
+                    skip_section = True
+                elif line.startswith("##") and not line.startswith("###"):
+                    skip_section = False
+                    modified_lines.append(line)
+                elif not skip_section:
+                    modified_lines.append(line)
+
+            modified_design = "\n".join(modified_lines)
             change_dir = self._create_change_with_modified_content(tmpdir, design=modified_design)
 
             errors = validator.validate_change(change_dir)
             self.assertTrue(
-                any("security/trust" in e.reason.lower() for e in errors),
-                "Should fail when security mentions are removed"
+                any("Security / trust implications" in e.reason for e in errors),
+                "Should fail when Security / trust implications section is removed"
             )
 
     def test_ablation_design_migration_mention(self) -> None:
-        """Removing migration mentions from design should fail."""
+        """Removing Migration / rollback section from design should fail."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            modified_design = self.design.replace("migration", "removed").replace("Migration", "Removed").replace("rollback", "removed").replace("Rollback", "Removed")
+            # Remove the entire Migration section from design
+            lines = self.design.split("\n")
+            modified_lines = []
+            skip_section = False
+            for line in lines:
+                if "## Migration" in line or "## migration" in line.lower():
+                    skip_section = True
+                elif line.startswith("##") and not line.startswith("###"):
+                    skip_section = False
+                    modified_lines.append(line)
+                elif not skip_section:
+                    modified_lines.append(line)
+
+            modified_design = "\n".join(modified_lines)
             change_dir = self._create_change_with_modified_content(tmpdir, design=modified_design)
 
             errors = validator.validate_change(change_dir)
             self.assertTrue(
-                any("migration/rollback" in e.reason.lower() for e in errors),
-                "Should fail when migration mentions are removed"
+                any("Migration / rollback" in e.reason for e in errors),
+                "Should fail when Migration / rollback section is removed"
             )
 
     def test_ablation_design_adr_mention(self) -> None:

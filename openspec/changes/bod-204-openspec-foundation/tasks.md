@@ -40,7 +40,7 @@
 
 ## 6. Documentation
 
-- [ ] 6.1 Create docs/OPENSPEC.md with authority boundaries section
+- [ ] 6.1 Create docs/OPENSPEC.md with authority boundaries section and verify all sections present
 - [ ] 6.2 Add significant-change triggers and exemptions to OPENSPEC.md
 - [ ] 6.3 Add BOD-167 to verdict-change-v1 field mapping table
 - [ ] 6.4 Add exact commands section (init, fork, validate, change creation)
@@ -64,7 +64,7 @@
 
 - [ ] 8.1 Push branch to origin
 - [ ] 8.2 Clone branch into /tmp directory
-- [ ] 8.3 Run validator on sample change and capture output
+- [ ] 8.3 Run validator on sample change and verify exit code 0 with captured output
 - [ ] 8.4 Run validator on malformed fixture and capture output
 - [ ] 8.5 Record exact commands, outputs, and head SHA for PR body
 

@@ -39,6 +39,14 @@ REQUIRED_ARTIFACTS = {
     ],
 }
 
+# Required design.md sections with non-empty bodies (BOD-167 fields)
+DESIGN_REQUIRED_SECTIONS = [
+    ("Security / trust implications", ["security / trust implications", "security/trust implications"]),
+    ("Routing / context / memory implications", ["routing / context / memory implications", "routing/context/memory implications"]),
+    ("Migration / rollback", ["migration / rollback", "migration/rollback", "migration plan"]),
+    ("ADR impact", ["adr impact"]),
+]
+
 # Evidence boundary labels (proposal must use these)
 EVIDENCE_LABELS = ["KNOWN", "INFERRED", "NOT AVAILABLE"]
 
@@ -48,40 +56,43 @@ class ValidationError(NamedTuple):
     reason: str
 
 
-def has_routing_context_memory_content(content: str) -> bool:
+def extract_sections(content: str) -> dict[str, str]:
     """
-    Check if design.md addresses routing/context/memory implications.
-    Must have either:
-    - Explicit mention of routing/context/memory in a relevant way
-    - Statement that it's "Not applicable" or "N/A"
+    Extract sections from markdown content.
+    Returns dict of {heading: body} where body is content until next heading.
     """
-    content_lower = content.lower()
+    sections = {}
+    lines = content.split('\n')
+    current_heading = None
+    current_body_lines = []
 
-    # Check for explicit mentions of routing
-    routing_pattern = r'routing[^a-z]'
-    if re.search(routing_pattern, content_lower):
-        return True
+    for line in lines:
+        # Check for headings (## level or higher, but not #### scenarios)
+        if line.startswith('##') and not line.startswith('####'):
+            # Save previous section
+            if current_heading is not None:
+                sections[current_heading.lower()] = '\n'.join(current_body_lines).strip()
 
-    # Check for "not applicable" or "n/a" related to routing/context/memory
-    na_patterns = [
-        r'routing.*not applicable',
-        r'routing.*n/a',
-        r'context.*memory.*not applicable',
-        r'not applicable.*routing',
-        r'n/a.*routing',
-    ]
-    if any(re.search(pattern, content_lower) for pattern in na_patterns):
-        return True
+            # Start new section
+            current_heading = line.lstrip('#').strip()
+            current_body_lines = []
+        elif current_heading is not None:
+            current_body_lines.append(line)
 
-    # Check for substantive discussion of context/memory semantics
-    # (not just section headings like "## Context")
-    substantive_patterns = [
-        r'context\s+(budget|provenance|management|handling|semantics)',
-        r'memory\s+(reads?|writes?|retention|semantics)',
-    ]
-    if any(re.search(pattern, content_lower) for pattern in substantive_patterns):
-        return True
+    # Save last section
+    if current_heading is not None:
+        sections[current_heading.lower()] = '\n'.join(current_body_lines).strip()
 
+    return sections
+
+
+def has_non_empty_body(body: str) -> bool:
+    """Check if section body has at least one non-blank, non-heading line."""
+    lines = body.split('\n')
+    for line in lines:
+        stripped = line.strip()
+        if stripped and not stripped.startswith('#'):
+            return True
     return False
 
 
@@ -135,6 +146,59 @@ def check_requirements_have_scenarios(content: str, rel_path: str) -> list[Valid
                 f"Requirement {requirement_num} must have at least one '#### Scenario:' (BOD-167 field 6)"
             )
         )
+
+    return errors
+
+
+def validate_task_groups(content: str) -> list[ValidationError]:
+    """
+    Validate that EVERY task group (## N.) has its own verification and ownership mention.
+    BOD-167 fields 10, 14 require verification per task; field 7 requires ownership where non-obvious.
+    """
+    errors: list[ValidationError] = []
+
+    # Extract task groups
+    lines = content.split('\n')
+    task_groups = []
+    current_group_heading = None
+    current_group_lines = []
+
+    for line in lines:
+        # Match ## N. pattern (task group heading)
+        if re.match(r'^##\s+\d+\.', line):
+            # Save previous group
+            if current_group_heading:
+                task_groups.append({
+                    'heading': current_group_heading,
+                    'body': '\n'.join(current_group_lines)
+                })
+
+            # Start new group
+            current_group_heading = line.strip()
+            current_group_lines = []
+        elif current_group_heading:
+            current_group_lines.append(line)
+
+    # Save last group
+    if current_group_heading:
+        task_groups.append({
+            'heading': current_group_heading,
+            'body': '\n'.join(current_group_lines)
+        })
+
+    # Validate each group
+    for group in task_groups:
+        body_lower = group['body'].lower()
+
+        # Check for verification mention (verify, proof, test)
+        has_verification = any(keyword in body_lower for keyword in ['verify', 'proof', 'test'])
+        if not has_verification:
+            errors.append(
+                ValidationError(
+                    "tasks.md",
+                    f"Task group '{group['heading']}' must state verification method (BOD-167 fields 10, 14)"
+                )
+            )
 
     return errors
 
@@ -197,60 +261,53 @@ def validate_change(change_dir: Path) -> list[ValidationError]:
                     )
                 )
 
-        # Additional checks for design.md (BOD-167 field mapping)
+        # Additional checks for design.md (BOD-167 field mapping - SECTION-BASED)
         if artifact == "design.md":
-            # Security/trust implications (field 8)
-            has_security = any(keyword in content_lower for keyword in ["security", "trust"])
-            if not has_security:
-                errors.append(
-                    ValidationError(
-                        artifact,
-                        "Must address security/trust implications (BOD-167 field 8)"
-                    )
-                )
+            sections = extract_sections(content)
 
-            # Routing/context/memory implications (field 9)
-            if not has_routing_context_memory_content(content):
-                errors.append(
-                    ValidationError(
-                        artifact,
-                        "Must address routing/context/memory implications or state 'Not applicable' (BOD-167 field 9)"
-                    )
-                )
+            # Check each required section exists with non-empty body
+            for field_name, heading_variants in DESIGN_REQUIRED_SECTIONS:
+                # Try each variant of the heading
+                found = False
+                for variant in heading_variants:
+                    if variant in sections:
+                        body = sections[variant]
+                        if has_non_empty_body(body):
+                            found = True
+                            break
+                        else:
+                            # Heading exists but body is empty
+                            errors.append(
+                                ValidationError(
+                                    artifact,
+                                    f"Section '{field_name}' exists but has empty body - must have substantive content"
+                                )
+                            )
+                            found = True  # Don't report as missing
+                            break
 
-            # Migration/rollback (field 13)
-            has_migration = any(keyword in content_lower for keyword in ["migration", "rollback"])
-            if not has_migration:
-                errors.append(
-                    ValidationError(
-                        artifact,
-                        "Must address migration/rollback or state 'Not applicable' (BOD-167 field 13)"
-                    )
-                )
+                if not found:
+                    bod_field = ""
+                    if field_name == "Security / trust implications":
+                        bod_field = " (BOD-167 field 8)"
+                    elif field_name == "Routing / context / memory implications":
+                        bod_field = " (BOD-167 field 9)"
+                    elif field_name == "Migration / rollback":
+                        bod_field = " (BOD-167 field 13)"
+                    elif field_name == "ADR impact":
+                        bod_field = " (BOD-167 field 11)"
 
-            # ADR impact (field 11)
-            has_adr = "adr" in content_lower or "architecture decision" in content_lower
-            if not has_adr:
-                errors.append(
-                    ValidationError(
-                        artifact,
-                        "Must document ADR impact (BOD-167 field 11)"
+                    errors.append(
+                        ValidationError(
+                            artifact,
+                            f"Missing required section '{field_name}' with non-empty body{bod_field}"
+                        )
                     )
-                )
 
-        # Additional checks for tasks.md (BOD-167 field mapping)
+        # Additional checks for tasks.md (BOD-167 field mapping - PER-GROUP)
         if artifact == "tasks.md":
-            # Check for verification/proof in task descriptions (fields 10, 14)
-            # Tasks must state how to verify completion
-            has_verification = "verify" in content_lower or "proof" in content_lower or "test" in content_lower
-
-            if not has_verification:
-                errors.append(
-                    ValidationError(
-                        artifact,
-                        "Task descriptions must state verification method (BOD-167 field 10, 14)"
-                    )
-                )
+            task_errors = validate_task_groups(content)
+            errors.extend(task_errors)
 
     # Validate spec files (unless skipped)
     specs_dir = change_dir / "specs"
