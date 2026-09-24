@@ -171,6 +171,7 @@ never implies a higher one.
 
 - [Spec Kit Lite](docs/SPEC_KIT_LITE.md) — canonical lightweight change contract for significant Verdict V2 work
 - [Ecosystem constitution](.specify/memory/constitution.md) — cross-repository governance and proof requirements
+- August 2026 audit snapshots (dated, **not current**): [current-state audit](CURRENT_STATE_AUDIT.md), [gap analysis](ARCHITECTURE_GAP_ANALYSIS.md), [lift analysis](IMPLEMENTATION_LIFT_ANALYSIS.md), [research](IMPLEMENTATION_RESEARCH.md), [story status](IMPLEMENTATION_STATUS.md), [roadmap](ROADMAP.md)
 - [Portfolio product strategy](PORTFOLIO_PRODUCT_STRATEGY.md) — historical product direction that is under V2 truth audit; do not treat planned AutoDev/Ruflo behavior as shipped
 - [Compatibility matrix](docs/COMPATIBILITY_MATRIX.md) — generated from [`compatibility-manifest.json`](compatibility-manifest.json); CI fails on drift, link rot, or a published artifact that does not install
 - [Core repository](https://github.com/mrnicholasbcarter-code/verdict-core) — implementation workstream; installation claims require current default-branch and clean-install verification

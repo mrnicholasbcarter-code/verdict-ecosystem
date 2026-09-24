@@ -1,5 +1,7 @@
 # Verdict Autonomous AI Control-Plane Roadmap
 
+> **Archived snapshot, not current.** This document records the ecosystem state on its audit date (2026-08-02, partly reconciled 2026-08-18). Later merged work may have changed it. For current direction see the [README](README.md) and [Spec Kit Lite](docs/SPEC_KIT_LITE.md).
+
 - **Date:** 2026-08-02
 - **Status:** Proposed execution roadmap derived from the current-state audit and lift analysis
 - **Scope note:** Memory-unification work is intentionally deferred from this execution batch because another effort owns it. Do not create duplicate memory tickets; resume with integration and verification after that work lands.

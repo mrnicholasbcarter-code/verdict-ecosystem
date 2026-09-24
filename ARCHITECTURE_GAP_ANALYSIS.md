@@ -1,5 +1,7 @@
 # Verdict Target Architecture Gap Analysis
 
+> **Archived snapshot, not current.** This document records the ecosystem state on its audit date (2026-08-02, partly reconciled 2026-08-18). Later merged work may have changed it. For current direction see the [README](README.md) and [Spec Kit Lite](docs/SPEC_KIT_LITE.md).
+
 - **Date:** 2026-08-02
 - **Target:** Verdict Core as an ecosystem-neutral AI execution control plane and enforcement layer
 - **Baseline:** `CURRENT_STATE_AUDIT.md`

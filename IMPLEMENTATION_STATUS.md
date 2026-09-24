@@ -1,5 +1,7 @@
 # Verdict Ecosystem Story Completion
 
+> **Archived snapshot, not current.** This document records the ecosystem state on its audit date (2026-08-02, partly reconciled 2026-08-18). Later merged work may have changed it. For current direction see the [README](README.md) and [Spec Kit Lite](docs/SPEC_KIT_LITE.md).
+
 - **Date:** 2026-08-02
 - **Status reconciled:** 2026-08-18
 - **Scope:** CON-001, NOD-002, CTX-002, PRO-001, SWARM-001
