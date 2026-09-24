@@ -1,0 +1,51 @@
+schema: verdict-change-v1
+
+# Project context for Verdict ecosystem
+context: |
+  Verdict V2 ecosystem: Prime Agent + Verdict execution/verification + OmniRoute.
+  
+  This is the Verdict significant-change contract. Every change must preserve the
+  authority boundaries: Linear = planning/priority; OpenSpec = change contract;
+  Git/GitHub = source/PR/merge truth; Verdict = plan/admit/execute/verify/review/receipt.
+  
+  Required field mapping from BOD-167 Spec Kit Lite:
+  - proposal.md: Linear issue, goal/outcome, evidence boundary (KNOWN/INFERRED/NOT AVAILABLE),
+    scope, non-goals, acceptance criteria
+  - spec.md: observable requirements, scenarios, compatibility, failure behavior
+  - design.md: contracts, architecture, security/trust, routing/context/memory implications,
+    concurrency, migration/rollback, ADR impact
+  - tasks.md: bounded units with repo/write ownership, dependencies, required proof
+  
+  Evidence labels must be precise: KNOWN (authoritative source/deterministic check/receipt),
+  INFERRED (reasoned conclusion), NOT AVAILABLE (missing evidence + blocker/claim limit).
+  
+  Significant-change triggers: public behavior, architecture, cross-repo/package/schema contract,
+  security/trust, routing/context/memory semantics, persistence/migration, deployment/release,
+  benchmark/public claim, multi-repo. Small local refactors and typo-only docs are exempt.
+  
+  Stack: Python 3.11+, stdlib validation scripts, unittest, no external dependencies for validators.
+
+# Per-artifact rules
+rules:
+  proposal:
+    - Must include evidence boundary using KNOWN/INFERRED/NOT AVAILABLE labels
+    - Must state scope and non-goals explicitly
+    - Must list acceptance criteria as verifiable outcomes (not just PR state)
+    - Must preserve authority boundaries (Linear/OpenSpec/Git-GitHub/Verdict separation)
+  specs:
+    - Requirements must use SHALL/MUST for normative statements
+    - Every requirement MUST have at least one scenario
+    - Scenarios MUST use WHEN/THEN format
+    - Must cover compatibility and failure behavior
+  design:
+    - Must address security/trust implications
+    - Must address routing/context/memory implications when applicable
+    - Must document ADR impact (none/update/supersede/add)
+    - Must include migration/rollback plan when applicable
+    - Open questions are for genuinely deferrable unknowns only
+  tasks:
+    - Each task MUST state verification method (test/command/behavior/artifact)
+    - Must establish repo/write ownership
+    - Must document dependencies between tasks
+    - Each task group MUST include its own tests and documentation (no final cleanup phase)
+

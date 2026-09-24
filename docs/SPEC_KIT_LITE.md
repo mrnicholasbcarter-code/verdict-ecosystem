@@ -4,6 +4,11 @@
 **Owner:** [`verdict-ecosystem`](../README.md)  
 **Linear owner:** [BOD-167](https://linear.app/bodanglin/issue/BOD-167/ecosystemp0-restore-canonical-spec-kit-lite-change-contract-for)
 
+> **Note:** For new significant changes, use [OpenSpec with verdict-change-v1 schema](OPENSPEC.md).
+> This Spec Kit Lite definition remains historical reference and is not deleted.
+> See [BOD-204](https://linear.app/bodanglin/issue/BOD-204) for the OpenSpec adoption.
+
+
 ## Definition
 
 **Spec Kit Lite** is Verdict project shorthand for the minimum written contract

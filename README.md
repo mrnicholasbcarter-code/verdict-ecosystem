@@ -174,6 +174,8 @@ never implies a higher one.
 
 ## Documentation
 
+- [OpenSpec Integration](docs/OPENSPEC.md) — Significant-change contract using verdict-change-v1 schema
+
 - [Spec Kit Lite](docs/SPEC_KIT_LITE.md) — canonical lightweight change contract for significant Verdict V2 work
 - [Ecosystem constitution](.specify/memory/constitution.md) — cross-repository governance and proof requirements
 - August 2026 audit snapshots (dated, **not current**): [current-state audit](CURRENT_STATE_AUDIT.md), [gap analysis](ARCHITECTURE_GAP_ANALYSIS.md), [lift analysis](IMPLEMENTATION_LIFT_ANALYSIS.md), [research](IMPLEMENTATION_RESEARCH.md), [story status](IMPLEMENTATION_STATUS.md), [roadmap](ROADMAP.md)
