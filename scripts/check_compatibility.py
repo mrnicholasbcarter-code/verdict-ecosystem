@@ -292,7 +292,16 @@ def validate_schema_hash(
         return
     if not exists or path is None:
         return
-    resolved_source = path / source_path
+    check_schema_source_digest(repo_id, path / source_path, schema_hash_source, schema_hash, errors)
+
+
+def check_schema_source_digest(
+    repo_id: str,
+    resolved_source: Path,
+    schema_hash_source: str,
+    schema_hash: str,
+    errors: list[str],
+) -> None:
     if not resolved_source.is_file():
         errors.append(f"{repo_id}: schema_hash_source {schema_hash_source} is missing from the checkout")
         return

@@ -38,7 +38,7 @@ class CompatibilityManifestTests(unittest.TestCase):
                 repository["path"] = CHECKER.CANONICAL_PATHS[repository["id"]]
         with patch.object(Path, "is_dir", return_value=True), patch.object(
             CHECKER, "validate_source_pin", return_value=([], "a" * 40, "a" * 40)
-        ):
+        ), patch.object(CHECKER, "check_schema_source_digest"):
             errors, _, _ = CHECKER.validate_manifest(self.validation_root, manifest)
         return errors
 
@@ -48,7 +48,7 @@ class CompatibilityManifestTests(unittest.TestCase):
             repository["path"] = CHECKER.CANONICAL_PATHS[repository["id"]]
         with patch.object(Path, "is_dir", return_value=True), patch.object(
             CHECKER, "validate_source_pin", return_value=([], "a" * 40, "a" * 40)
-        ):
+        ), patch.object(CHECKER, "check_schema_source_digest"):
             errors, _, rows = CHECKER.validate_manifest(self.validation_root, manifest)
         self.assertEqual(errors, [])
         self.assertEqual(len(rows), 7)
