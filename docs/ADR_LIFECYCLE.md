@@ -28,6 +28,13 @@ Captured at `2026-09-23T03:01:40.745326Z`. Branch refs are provenance labels at
 capture time; the exact commit SHAs are the durable authority and may no longer
 match moving default branches.
 
+## Status after 2026-09-24
+
+**verdict-core-memory archived.** The repository was archived on GitHub 2026-09-24 and is read-only. Its ADR rows are historical **DUPLICATES** of verdict-core; the pinned c8935bb snapshot remains the authoritative evidence source.
+
+**verdict-core snapshot predates ADR-036.** The core snapshot (cae6aa6) is from 2026-09-23, before ADR-036 (goal-to-receipt orchestration, merged via #590 at 4617445, status corrected on main at 9a45e21). ADR-036 is the current orchestration authority and is not yet row-classified here. A full re-snapshot to capture ADR-036 is a separate follow-up.
+
+
 ## Counts (production files only)
 
 | Metric | Value |
