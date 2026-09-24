@@ -1,7 +1,8 @@
 # Verdict V2 Ecosystem — Prime + Verdict + OmniRoute
 
 > **Verdict is the policy-gated decision and evidence layer for model routing.**
-> Prime owns the agent experience and work orchestration. OmniRoute exposes and
+> Verdict Core owns the goal-to-receipt orchestration (UNDERSTAND → PLAN/DAG → HYDRATE → hard eligibility → exact route selection → bounded execution/recovery → VERIFY → independent review → receipt).
+> Prime is the user-facing agent surface and execution harness. OmniRoute exposes and
 > executes model routes. Verdict applies hard eligibility and spend policy, selects
 > only from admitted routes, and records why a route was accepted or dropped.
 
@@ -17,27 +18,33 @@ Verdict V2 combines three explicit owners:
 
 | System | V2 ownership |
 |---|---|
-| **Prime** | user-facing agent/controller, task execution, tools, bounded worker orchestration, and presentation of the result |
-| **Verdict** | task and spend policy, hard eligibility, model metadata authority, context-plan/receipt contracts, deterministic selection reasons, and verification/evidence policy |
+| **Prime** | user-facing agent surface, tools and execution harness for work Verdict dispatches |
+| **Verdict** | goal-to-receipt orchestration (UNDERSTAND → PLAN/DAG → HYDRATE, hard eligibility, exact route selection, bounded execution/recovery, VERIFY → independent review → receipt), task and spend policy, hard eligibility, model metadata authority, context-plan/receipt contracts, deterministic selection reasons, and verification/evidence policy |
 | **OmniRoute** | model/provider inventory, protocol transport, route execution, and observed route health; it is not Verdict's policy or model-metadata authority |
 
 ```text
 User task in Prime
         |
         v
-Verdict task requirements + hard eligibility + spend policy
+Verdict: UNDERSTAND task requirements
         |
         v
-Verdict-selected admitted route and context/proof contract
+Verdict: PLAN/DAG + HYDRATE → hard eligibility + spend policy
         |
         v
-OmniRoute transport and model execution
+Verdict: Select exact route and context/proof contract
         |
         v
-Prime tools / bounded work execution
+OmniRoute: Transport and model execution
         |
         v
-Verification + Verdict receipt / named failure or drop reason
+Prime: Tools / bounded work execution
+        |
+        v
+Verdict: VERIFY + independent review + receipt
+        |
+        v
+Named decision reason or drop reason
 ```
 
 This is the frozen V2 boundary. Generic harness orchestration, Ruflo/swarm
@@ -81,9 +88,7 @@ planned.
 The quantitative repositories are historical case studies. They are not V2 runtime
 dependencies.
 
-`verdict-core-memory` is not an active V2 product repository. Its final archive or
-experimental status still requires explicit repository/Linear reconciliation; it is
-not an installation dependency or release blocker for V2.
+`verdict-core-memory` is archived (read-only) as a retired duplicate identity. It is not an installation dependency. Useful memory ideas are tracked for verdict-continuity.
 
 ## ADR lifecycle index
 
