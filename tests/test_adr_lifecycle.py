@@ -28,7 +28,15 @@ class ADRLifecycleTests(unittest.TestCase):
         self.assertEqual(validate(self.data), [])
 
     def test_exact_snapshots_and_71_production_records(self) -> None:
-        self.assertEqual(self.data["source_snapshots"], EXPECTED_SNAPSHOTS)
+        self.assertEqual(
+            self.data["source_snapshots"],
+            {
+                "verdict-core": "e17a92062bc5ba9d7d0d8709535bc3412be31ba9",
+                "verdict-core-memory": "c8935bb5222f3962f48e36567114d0a3e5f9d1b4",
+                "verdict-node": "3e1a5ba78ba3a24de85d48e663113a3a7bf7e3c2",
+                "verdict-continuity": "9d07081661efa51f7570b13b1e54f69975de7cfb",
+            }
+        )
         self.assertEqual(len(self.records), 71)
         self.assertEqual(self.data["corrected_counts"]["production_files"], 71)
 
@@ -53,8 +61,8 @@ class ADRLifecycleTests(unittest.TestCase):
         self.assertFalse(any(record["classification"] == "CURRENT" for record in self.records))
 
     def test_exact_duplicate_groups_bind_content_hashes(self) -> None:
-        self.assertEqual(len(self.data["duplicate_groups"]), 23)
-        self.assertEqual(sum(len(group["files"]) for group in self.data["duplicate_groups"]), 46)
+        self.assertEqual(len(self.data["duplicate_groups"]), 21)
+        self.assertEqual(sum(len(group["files"]) for group in self.data["duplicate_groups"]), 42)
         records = {f"{r['repository']}/{r['path']}": r for r in self.records}
         for group in self.data["duplicate_groups"]:
             for name in group["files"]:
@@ -80,10 +88,12 @@ class ADRLifecycleTests(unittest.TestCase):
         self.assertTrue(continuity)
         self.assertTrue(all(r["v2_relevance"] == "V3_DEFERRED" for r in continuity))
 
-    def test_adr023_has_no_invented_successor(self) -> None:
+    def test_adr023_successor_is_adr035(self) -> None:
+        # At verdict-core e17a920, ADR-023 itself reads:
+        # 'Status: SUPERSEDED (BOD-17 / BOD-127) ... Successor ADR: ADR-035 — Authorized selected-route dispatch (closes BOD-169 MISSING_SUCCESSOR)'
         adr023 = next(r for r in self.records if r["repository"] == "verdict-core" and "ADR-023" in r["path"])
-        self.assertEqual(adr023["classification"], "MISSING_SUCCESSOR")
-        self.assertIsNone(adr023["successor"])
+        self.assertEqual(adr023["classification"], "SUPERSEDED")
+        self.assertEqual(adr023["successor"], "verdict-core/docs/adr/ADR-035-authorized-selected-route-dispatch.md")
 
     def test_every_record_has_hash_and_exact_sha_link(self) -> None:
         for record in self.records:
@@ -235,8 +245,10 @@ class ADRSourceManifestTests(unittest.TestCase):
         self.assertEqual(source_verifier.verify_manifest(self.data, self.manifest, self.raw), [])
 
     def test_manifest_digest_is_independently_pinned(self) -> None:
+        # Select the fixture path by name (not index) to ensure tampering triggers hash mismatch detection
         tampered = json.loads(json.dumps(self.manifest))
-        item = tampered["repositories"]["verdict-core"]["required_paths"][0]
+        fixture_path = "benchmarks/fixtures/legit_workspace/docs/adr/ADR-001-spend.md"
+        item = next(p for p in tampered["repositories"]["verdict-core"]["required_paths"] if p["path"] == fixture_path)
         item["sha256"] = "0" * 64
         errors = self.verify(tampered)
         self.assertIn("source manifest differs from the independently reviewed digest", errors)

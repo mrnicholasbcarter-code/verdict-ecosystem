@@ -80,14 +80,18 @@
         "docs/adr/ADR-032-core-model-metadata-store.md",
         "docs/adr/ADR-033-shared-memory-provider.md",
         "docs/adr/ADR-034-memory-outbox-mirror-and-fail-open-shared-recall.md",
+        "docs/adr/ADR-035-authorized-selected-route-dispatch.md",
+        "docs/adr/ADR-036-goal-to-receipt-orchestration.md",
         "docs/adr/ADR-ORCHESTRATOR-ROUTING.md",
-        "docs/adr/README.md",
-        "docs/architecture/ADR-EVIDENCE-LEDGER.md",
-        "docs/architecture/ADR-ORCHESTRATOR-ROUTING.md"
+        "docs/adr/README.md"
       ],
-      "commit": "cae6aa673f606ac9a5315ae1e968acac5652a957",
+      "commit": "e17a92062bc5ba9d7d0d8709535bc3412be31ba9",
       "repository_url": "https://github.com/mrnicholasbcarter-code/verdict-core",
       "required_paths": [
+        {
+          "path": "AGENTS.md",
+          "sha256": "4d1061a8748ca9dac92990609f6ad8354f88a57c4fd24a5a42a3e3a0b219b269"
+        },
         {
           "path": "benchmarks/fixtures/legit_workspace/docs/adr/ADR-001-spend.md",
           "sha256": "a3ec2752e48d3d22f9fff0530529647d64c2c64b6f5540623799bfdb8579db6c"
@@ -186,7 +190,7 @@
         },
         {
           "path": "docs/adr/ADR-023-governed-swarm-supervision.md",
-          "sha256": "1eae9efa51b24fa0283b20642e267ebf1a690f0b02abeda8bf9b2f4172b2b6fb"
+          "sha256": "5716b4cc7a03338b36ac239c2c71c595d2b9e18730285f5d9d51146d3d8f7ea9"
         },
         {
           "path": "docs/adr/ADR-024-cross-repo-compatibility-gate.md",
@@ -233,20 +237,20 @@
           "sha256": "e83169af5874c5c619fcc04cc5c1d785c5e35b120963eb95021e05d302afb763"
         },
         {
+          "path": "docs/adr/ADR-035-authorized-selected-route-dispatch.md",
+          "sha256": "088b4036b984588acd2d8d0e8da33df9710d16cc67923e699b469119200d14af"
+        },
+        {
+          "path": "docs/adr/ADR-036-goal-to-receipt-orchestration.md",
+          "sha256": "9ddb4eec6db282db28947956e529e95538290630ef89f4a653460eea15558075"
+        },
+        {
           "path": "docs/adr/ADR-ORCHESTRATOR-ROUTING.md",
           "sha256": "21bc533fe47a5dc16a65b9c5a0583621d001f3804d2574c94e01cff14f70d1c5"
         },
         {
           "path": "docs/adr/README.md",
-          "sha256": "5d9e0043952f9cea1c4676de2c2ee01395226259cb61da966ed9d8068b56be7e"
-        },
-        {
-          "path": "docs/architecture/ADR-EVIDENCE-LEDGER.md",
-          "sha256": "9208cb3771111f2d608840acddf50622dafb85e990bcc8c045681a80a062e12d"
-        },
-        {
-          "path": "docs/architecture/ADR-ORCHESTRATOR-ROUTING.md",
-          "sha256": "f851d6c077f5e99d6689bcfb7310f9cde1575d75a32e58313205c146400d0396"
+          "sha256": "e656b271222b1874879f40785c1d827e509faa8b9531438f9eeb5e075733c911"
         },
         {
           "path": "scripts/prime_workflow.py",
@@ -302,11 +306,15 @@
         },
         {
           "path": "tests/test_model_metadata.py",
-          "sha256": "ed596231ab9e3ecbf983393d5e7454d3fc8c9e3bd272b24e14d0bd03a8cece90"
+          "sha256": "8d9edf3371b71899963353587e33bc18d4e3ae2803a717e85ebc97e92c2e5a28"
         },
         {
           "path": "tests/test_omniroute_catalog.py",
           "sha256": "02d55ea61feb88de0b667a60b0d8b92334f9d3715fd8d85e87fccecceb761e77"
+        },
+        {
+          "path": "tests/test_orchestration_dispatch.py",
+          "sha256": "e8417fc88afe289a5325d57824fb2e27a71a8d3117c59e7bd63a95cb7f3cf471"
         },
         {
           "path": "tests/test_passport_eligibility.py",
@@ -362,7 +370,7 @@
         },
         {
           "path": "verdict/contracts.py",
-          "sha256": "aba33c84eb8d2480a8984b3b1996f7673e9741bce7872ad5470f6fa28bfb59cf"
+          "sha256": "9a1f26c68ebe4e4f9fc4a4bdb489e0233194b2cd56513138265721602c20d83e"
         },
         {
           "path": "verdict/dispatcher.py",
@@ -409,6 +417,30 @@
           "sha256": "657851de30ed92d4f42b15da69409aef73d63535a5d2551885cc6c3a2972b560"
         },
         {
+          "path": "verdict/orchestration/__init__.py",
+          "sha256": "e6af2c238cef000d50cad00086910b343283d94296e5e835200fad4abd78d9fe"
+        },
+        {
+          "path": "verdict/orchestration/eligibility.py",
+          "sha256": "7c99b8d53cbc06131dca562344d3f110ddc149331cc4f66b92b1d5b0e88f9929"
+        },
+        {
+          "path": "verdict/orchestration/planner.py",
+          "sha256": "d8fb64c8b2ac9a9f4deb75dbf84df156dd383ec8dde853e2101709fb4eb44632"
+        },
+        {
+          "path": "verdict/orchestration/recovery.py",
+          "sha256": "e0cef266b9a4b1b217ea47460956cfdcdb3d1f18516dc0307a1c3932c30a4de6"
+        },
+        {
+          "path": "verdict/orchestration/review.py",
+          "sha256": "3caae2121c11aeb0f9d944a41281a29c8021970bb3423e6282454d91a880d1fc"
+        },
+        {
+          "path": "verdict/orchestration/run.py",
+          "sha256": "d7e98873fd2707cccf29b05b97ce3b40da9d7d19250c0f1f7a947398c2d005cc"
+        },
+        {
           "path": "verdict/passport_eligibility.py",
           "sha256": "b9ad27da64e0ff68fe6bcfa7603f161dabcda3d142b81d221c78d9a2ed068263"
         },
@@ -439,6 +471,10 @@
         {
           "path": "verdict/runtime_passports.py",
           "sha256": "18521517e02f77ca740710a3e02a97b76298cc500eb0a4f58473e317dc7afd55"
+        },
+        {
+          "path": "verdict/serve_path.py",
+          "sha256": "df5c767d13a394f7e6b3ee4e6d17c3c72ef2006d3cafa5268644dedabb8f5a2c"
         },
         {
           "path": "verdict/shared_memory.py",

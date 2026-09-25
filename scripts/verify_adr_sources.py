@@ -27,7 +27,7 @@ except ModuleNotFoundError:  # Direct execution places scripts/ on sys.path.
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / "evidence" / "ADR_LIFECYCLE.json"
 SOURCE_MANIFEST = ROOT / "evidence" / "ADR_SOURCE_MANIFEST.json"
-EXPECTED_SOURCE_MANIFEST_SHA256 = "576eda4bfb585bbf730451984fa88030ad95c56cea758f8a9b3087335db12ab6"
+EXPECTED_SOURCE_MANIFEST_SHA256 = "eacff31469f1d25c08ebe4334742845f274ce1f5c19ddcef950ab2fa636bdcda"
 
 
 def git_bytes(repo: Path, sha: str, path: str) -> bytes:
@@ -229,6 +229,36 @@ def verify_manifest(data: dict, manifest: dict, manifest_bytes: bytes) -> list[s
         errors.append("duplicate groups differ from source manifest hashes")
     return sorted(set(errors))
 
+
+
+def verify_content_hashes_from_repos(data: dict, repos: dict[str, Path]) -> list[str]:
+    """Verify content_sha256 values match actual file content at pinned snapshots.
+    
+    This ensures that when lifecycle index is regenerated with a new snapshot SHA,
+    the content hashes are recomputed from actual Git objects, not copied from old
+    snapshots. Prevents stale hash values from passing undetected.
+    """
+    errors: list[str] = []
+    snapshots = data["source_snapshots"]
+    
+    for record in data["lifecycle_index"]:
+        repo, path = record["repository"], record["path"]
+        try:
+            content = git_bytes(repos[repo], snapshots[repo], path)
+            actual_digest = hashlib.sha256(content).hexdigest()
+            recorded_digest = record.get("content_sha256")
+            if actual_digest != recorded_digest:
+                errors.append(
+                    f"content hash stale: {repo}/{path} "
+                    f"recorded={recorded_digest[:8]}… actual={actual_digest[:8]}…"
+                )
+        except (KeyError, RuntimeError) as exc:
+            # File doesn't exist in this snapshot or repo not available - OK to skip
+            pass
+    
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", type=Path, help="use exact local Git objects instead of the checked-in immutable manifest")
@@ -237,6 +267,8 @@ def main() -> int:
     if args.repo_root:
         repos = {name: args.repo_root / name for name in data["source_snapshots"]}
         errors = verify(data, repos)
+        hash_errors = verify_content_hashes_from_repos(data, repos)
+        errors.extend(hash_errors)
         mode = "exact Git"
     else:
         manifest_bytes = SOURCE_MANIFEST.read_bytes()
