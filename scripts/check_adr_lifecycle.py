@@ -17,7 +17,7 @@ DOC = ROOT / "docs" / "ADR_LIFECYCLE.md"
 VALID_CLASSES = {"CURRENT", "PARTIALLY_TRUE", "SUPERSEDED", "DUPLICATE", "STALE", "MISSING_SUCCESSOR", "INVALID"}
 VALID_LEVELS = {"VERIFIED", "INFERRED", "NOT_VERIFIED"}
 EXPECTED_SNAPSHOTS = {
-    "verdict-core": "cae6aa673f606ac9a5315ae1e968acac5652a957",
+    "verdict-core": "e17a92062bc5ba9d7d0d8709535bc3412be31ba9",
     "verdict-core-memory": "c8935bb5222f3962f48e36567114d0a3e5f9d1b4",
     "verdict-node": "3e1a5ba78ba3a24de85d48e663113a3a7bf7e3c2",
     "verdict-continuity": "9d07081661efa51f7570b13b1e54f69975de7cfb",
@@ -29,16 +29,16 @@ EXPECTED_REFS = {
     "verdict-continuity": "origin/main",
 }
 EXPECTED_CLASSIFICATIONS = {
-    "PARTIALLY_TRUE": 35,
-    "DUPLICATE": 25,
+    "PARTIALLY_TRUE": 37,
+    "DUPLICATE": 23,
     "STALE": 8,
-    "MISSING_SUCCESSOR": 1,
-    "SUPERSEDED": 1,
+    "MISSING_SUCCESSOR": 0,
+    "SUPERSEDED": 2,
     "INVALID": 1,
 }
-EXPECTED_EVIDENCE_LEVELS = {"VERIFIED": 55, "NOT_VERIFIED": 8, "INFERRED": 8}
-EXPECTED_DUPLICATE_GROUPS = 23
-EXPECTED_DUPLICATE_FILES = 46
+EXPECTED_EVIDENCE_LEVELS = {"VERIFIED": 57, "NOT_VERIFIED": 8, "INFERRED": 6}
+EXPECTED_DUPLICATE_GROUPS = 21
+EXPECTED_DUPLICATE_FILES = 42
 EXPECTED_REPOSITORY_URLS = {
     "verdict-core": "https://github.com/mrnicholasbcarter-code/verdict-core",
     "verdict-core-memory": "https://github.com/mrnicholasbcarter-code/verdict-core-memory",
@@ -48,7 +48,7 @@ EXPECTED_REPOSITORY_URLS = {
 SHA256 = re.compile(r"[0-9a-f]{64}")
 # Immutable authority for the independently reviewed canonical semantic payload.
 # Evidence metadata is a redundant copy, not the trust root.
-EXPECTED_REVIEWED_AUDIT_SHA256 = "49304a69f9c0bad3a426781cd05f87bab74cf51dc2683907992cb6209ce9c6a0"
+EXPECTED_REVIEWED_AUDIT_SHA256 = "dbf24ab9f60276955b53fff59ec1a87a38f0e7616c79c98978679e9485b50838"
 
 
 def load() -> dict:
@@ -197,8 +197,8 @@ def validate(data: dict) -> list[str]:
     if not continuity or any(r.get("v2_relevance") != "V3_DEFERRED" for r in continuity):
         errors.append("all Continuity decisions must remain V3_DEFERRED")
     adr023 = [r for r in records if r.get("repository") == "verdict-core" and "ADR-023" in r.get("path", "")]
-    if len(adr023) != 1 or adr023[0].get("classification") != "MISSING_SUCCESSOR" or adr023[0].get("successor") is not None:
-        errors.append("Core ADR-023 must remain MISSING_SUCCESSOR with null successor")
+    if len(adr023) != 1 or adr023[0].get("classification") != "SUPERSEDED" or adr023[0].get("successor") != "verdict-core/docs/adr/ADR-035-authorized-selected-route-dispatch.md":
+        errors.append("Core ADR-023 must be SUPERSEDED with ADR-035 as successor (BOD-193 closes MISSING_SUCCESSOR)")
 
     document = DOC.read_text(encoding="utf-8") if DOC.exists() else ""
     if not document:
