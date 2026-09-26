@@ -56,7 +56,7 @@ class LinkCollectionTests(unittest.TestCase):
     def test_manifest_urls_cover_repositories_registries_and_blockers(self) -> None:
         urls = LINKS.collect_manifest_urls(MANIFEST)
         self.assertIn("https://github.com/mrnicholasbcarter-code/verdict-core", urls)
-        self.assertIn("https://pypi.org/project/verdict-core/0.2.0/", urls)
+        self.assertIn("https://pypi.org/project/verdict-core/0.3.0/", urls)
         self.assertIn("https://www.npmjs.com/package/@bodanglin/verdict-node", urls)
         self.assertTrue(any("/issues/" in url for url in urls))
 
@@ -75,8 +75,8 @@ class LinkCollectionTests(unittest.TestCase):
     def test_registry_probe_pins_published_version(self) -> None:
         probes = LINKS.registry_probes(MANIFEST)
         self.assertEqual([probe["id"] for probe in probes], ["verdict-core", "verdict-node"])
-        self.assertEqual(probes[0]["version"], "0.2.0")
-        self.assertEqual(probes[1]["version"], "0.1.0")
+        self.assertEqual(probes[0]["version"], "0.3.0")
+        self.assertEqual(probes[1]["version"], "0.2.0")
 
 
 class ConsumerPlanTests(unittest.TestCase):
@@ -91,7 +91,7 @@ class ConsumerPlanTests(unittest.TestCase):
             [action["id"] for action in installs],
             ["verdict-core", "verdict-node"],
         )
-        self.assertEqual(installs[1]["version"], "0.1.0")
+        self.assertEqual(installs[1]["version"], "0.2.0")
 
     def test_unreleased_entries_are_skipped_with_reason(self) -> None:
         actions = SMOKE.plan_actions(MANIFEST)

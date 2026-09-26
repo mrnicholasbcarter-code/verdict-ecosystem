@@ -1,6 +1,6 @@
 {
   "contract_version": "1",
-  "evidence_timestamp": "2026-09-04T00:00:00Z",
+  "evidence_timestamp": "2026-09-26T00:36:22Z",
   "policy_version": "1",
   "release_train": {
     "deferred_checks": [
@@ -27,50 +27,50 @@
       "support_level": "experimental"
     },
     {
-      "artifact_version": "0.1.0",
+      "artifact_version": "0.2.0",
       "contract_version": "1",
       "id": "verdict-cockpit",
       "maturity": "alpha",
       "package": "verdict-cockpit",
       "policy_version": "1",
       "publication_status": "private-application",
-      "release_train_pin": "4dbdf403adfbd68f97ed61a10aae64835c0a2e21",
+      "release_train_pin": "d5682d5d1c5beac5400ce47e8d5d38dfd77c15ad",
       "status": "required",
       "support_level": "experimental"
     },
     {
-      "artifact_version": "0.2.0",
+      "artifact_version": "0.3.0",
       "contract_version": "1",
       "id": "verdict-core",
       "maturity": "alpha",
       "package": "verdict-core",
       "policy_version": "1",
       "publication_status": "published",
-      "release_train_pin": "762335eef314ffd7e7fff4c098e586533d2ca3d6",
-      "status": "required",
-      "support_level": "experimental"
-    },
-    {
-      "artifact_version": "unreleased",
-      "contract_version": "1",
-      "id": "verdict-ecosystem",
-      "maturity": "alpha",
-      "package": "verdict-ecosystem",
-      "policy_version": "1",
-      "publication_status": "documentation-only",
-      "release_train_pin": "e0743cea8c9f63a0cd4bbf0d2177ff4c442e03cb",
+      "release_train_pin": "d0da31a8f0747a7928f45c57f158cb728559e1ce",
       "status": "required",
       "support_level": "experimental"
     },
     {
       "artifact_version": "0.1.0",
       "contract_version": "1",
+      "id": "verdict-ecosystem",
+      "maturity": "alpha",
+      "package": "verdict-ecosystem",
+      "policy_version": "1",
+      "publication_status": "documentation-only",
+      "release_train_pin": "ee2e00b97eb1d1da04e3d75a95823288d6a09535",
+      "status": "required",
+      "support_level": "experimental"
+    },
+    {
+      "artifact_version": "0.2.0",
+      "contract_version": "1",
       "id": "verdict-node",
       "maturity": "alpha",
       "package": "@bodanglin/verdict-node",
       "policy_version": "1",
       "publication_status": "published",
-      "release_train_pin": "48f8189c0e69bd915f1a1dfd7beec7e5e3e05e62",
+      "release_train_pin": "65feea5f62f9d219ddfaffeb0e6b03e31b987e70",
       "status": "required",
       "support_level": "experimental"
     },

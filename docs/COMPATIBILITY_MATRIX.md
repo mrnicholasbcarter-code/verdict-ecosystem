@@ -5,19 +5,19 @@
 > Regenerate with `python3 scripts/generate_compatibility_matrix.py --write`;
 > CI fails if this file drifts from the manifest.
 
-Release train `rel-001-schema-hashes-2026-09-04` · schema `4` · contract `1` · policy `1` · validation scope `local-source-directories` · evidence timestamp `2026-09-04T00:00:00Z`
+Release train `rel-001-schema-hashes-2026-09-04` · schema `4` · contract `1` · policy `1` · validation scope `local-source-directories` · evidence timestamp `2026-09-26T00:36:22Z`
 
 ## Repositories
 
 | Repository | Package | Import | CLI | Version | Publication | Registry | Runtime | Maturity | Support | Evidence date | Release-train pin | Schema hash |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [verdict-core](https://github.com/mrnicholasbcarter-code/verdict-core) | `verdict-core` | `verdict` | `verdict` | `0.2.0` | published | [registry](https://pypi.org/project/verdict-core/0.2.0/) | python >=3.10 | alpha | experimental | 2026-09-04T00:00:00Z | `762335eef314ffd7e7fff4c098e586533d2ca3d6` | `aba33c84eb8d…` (`verdict/contracts.py`) |
-| [verdict-node](https://github.com/mrnicholasbcarter-code/verdict-node) | `@bodanglin/verdict-node` | `@bodanglin/verdict-node` | — | `0.1.0` | published | [registry](https://www.npmjs.com/package/@bodanglin/verdict-node) | node >=18 | alpha | experimental | 2026-08-18T00:00:00Z | `48f8189c0e69bd915f1a1dfd7beec7e5e3e05e62` | not applicable |
+| [verdict-core](https://github.com/mrnicholasbcarter-code/verdict-core) | `verdict-core` | `verdict` | `verdict` | `0.3.0` | published | [registry](https://pypi.org/project/verdict-core/0.3.0/) | python >=3.10 | alpha | experimental | 2026-09-26T00:36:22Z | `d0da31a8f0747a7928f45c57f158cb728559e1ce` | `efd4f3babdb4…` (`verdict/contracts.py`) |
+| [verdict-node](https://github.com/mrnicholasbcarter-code/verdict-node) | `@bodanglin/verdict-node` | `@bodanglin/verdict-node` | — | `0.2.0` | published | [registry](https://www.npmjs.com/package/@bodanglin/verdict-node) | node >=18 | alpha | experimental | 2026-09-26T00:36:22Z | `65feea5f62f9d219ddfaffeb0e6b03e31b987e70` | not applicable |
 | [verdict-risk](https://github.com/mrnicholasbcarter-code/verdict-risk) | `llm-gate-risk` | `trade_risk_engine` | `verdict-risk-benchmark` | `0.1.0` | source-only — no released artifact | **not published** | python >=3.10 | alpha | experimental | 2026-08-20T00:00:00Z | `65477ec4a487d5893c988802e559a823202018e7` | not applicable |
 | [verdict-strategy](https://github.com/mrnicholasbcarter-code/verdict-strategy) | `verdict-edge` | `edge_mining_framework` | — | `0.1.0` | source-only — no released artifact | **not published** | python >=3.10 | alpha | experimental | 2026-08-18T00:00:00Z | `d393ca0a829658e5b7078ed34dddde2aa9830114` | not applicable |
 | [verdict-backtest](https://github.com/mrnicholasbcarter-code/verdict-backtest) | `llm-gate-backtest` | `backtest_harness` | — | `0.1.0` | source-only — no released artifact | **not published** | python >=3.10 | alpha | experimental | 2026-08-20T00:00:00Z | `3c89fb8d4dca086a4ac05e476177243148279a91` | not applicable |
-| [verdict-cockpit](https://github.com/mrnicholasbcarter-code/verdict-cockpit) | `verdict-cockpit` | — | — | `0.1.0` | private application — not distributed | **not published** | node unspecified | alpha | experimental | 2026-08-18T00:00:00Z | `4dbdf403adfbd68f97ed61a10aae64835c0a2e21` | not applicable |
-| [verdict-ecosystem](https://github.com/mrnicholasbcarter-code/verdict-ecosystem) | `verdict-ecosystem` | — | — | **unreleased** | documentation only — not distributed | **not published** | python unspecified | alpha | experimental | 2026-08-18T00:00:00Z | `e0743cea8c9f63a0cd4bbf0d2177ff4c442e03cb` | not applicable |
+| [verdict-cockpit](https://github.com/mrnicholasbcarter-code/verdict-cockpit) | `verdict-cockpit` | — | — | `0.2.0` | private application — not distributed | **not published** | node unspecified | alpha | experimental | 2026-09-26T01:19:37Z | `d5682d5d1c5beac5400ce47e8d5d38dfd77c15ad` | not applicable |
+| [verdict-ecosystem](https://github.com/mrnicholasbcarter-code/verdict-ecosystem) | `verdict-ecosystem` | — | — | `0.1.0` | documentation only — not distributed | **not published** | python unspecified | alpha | experimental | 2026-09-26T00:36:22Z | `ee2e00b97eb1d1da04e3d75a95823288d6a09535` | not applicable |
 
 Rows marked **not published** or **unreleased** have no released artifact; they are validated from pinned local source only.
 
