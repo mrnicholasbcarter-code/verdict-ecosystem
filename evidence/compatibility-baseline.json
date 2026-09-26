@@ -27,14 +27,14 @@
       "support_level": "experimental"
     },
     {
-      "artifact_version": "0.1.0",
+      "artifact_version": "0.2.0",
       "contract_version": "1",
       "id": "verdict-cockpit",
       "maturity": "alpha",
       "package": "verdict-cockpit",
       "policy_version": "1",
       "publication_status": "private-application",
-      "release_train_pin": "53cd186186b8725614f94667a2acdb8d7048456e",
+      "release_train_pin": "d5682d5d1c5beac5400ce47e8d5d38dfd77c15ad",
       "status": "required",
       "support_level": "experimental"
     },
