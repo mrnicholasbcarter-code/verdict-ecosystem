@@ -28,12 +28,8 @@
       "publication_status": "published",
       "contract_version": "1",
       "policy_version": "1",
-      "runtime_constraints": {
-        "python": ">=3.10"
-      },
-      "provider_compatibility": [
-        "provider-agnostic-policy-authority"
-      ],
+      "runtime_constraints": {"python": ">=3.10"},
+      "provider_compatibility": ["provider-agnostic-policy-authority"],
       "maturity": "alpha",
       "support_level": "experimental",
       "evidence_timestamp": "2026-09-26T00:36:22Z",
@@ -58,13 +54,8 @@
       "publication_status": "published",
       "contract_version": "1",
       "policy_version": "1",
-      "runtime_constraints": {
-        "node": ">=18"
-      },
-      "provider_compatibility": [
-        "openai-compatible-http",
-        "omniroute"
-      ],
+      "runtime_constraints": {"node": ">=18"},
+      "provider_compatibility": ["openai-compatible-http", "omniroute"],
       "maturity": "alpha",
       "support_level": "experimental",
       "evidence_timestamp": "2026-09-26T00:36:22Z",
@@ -89,12 +80,8 @@
       "publication_status": "source-only",
       "contract_version": "1",
       "policy_version": "1",
-      "runtime_constraints": {
-        "python": ">=3.10"
-      },
-      "provider_compatibility": [
-        "provider-agnostic-receipts"
-      ],
+      "runtime_constraints": {"python": ">=3.10"},
+      "provider_compatibility": ["provider-agnostic-receipts"],
       "maturity": "alpha",
       "support_level": "experimental",
       "evidence_timestamp": "2026-08-20T00:00:00Z",
@@ -134,12 +121,8 @@
       "publication_status": "source-only",
       "contract_version": "1",
       "policy_version": "1",
-      "runtime_constraints": {
-        "python": ">=3.10"
-      },
-      "provider_compatibility": [
-        "provider-agnostic-receipts"
-      ],
+      "runtime_constraints": {"python": ">=3.10"},
+      "provider_compatibility": ["provider-agnostic-receipts"],
       "maturity": "alpha",
       "support_level": "experimental",
       "evidence_timestamp": "2026-08-18T00:00:00Z",
@@ -164,12 +147,8 @@
       "publication_status": "source-only",
       "contract_version": "1",
       "policy_version": "1",
-      "runtime_constraints": {
-        "python": ">=3.10"
-      },
-      "provider_compatibility": [
-        "provider-agnostic-receipts"
-      ],
+      "runtime_constraints": {"python": ">=3.10"},
+      "provider_compatibility": ["provider-agnostic-receipts"],
       "maturity": "alpha",
       "support_level": "experimental",
       "evidence_timestamp": "2026-08-20T00:00:00Z",
@@ -202,12 +181,8 @@
       "publication_status": "private-application",
       "contract_version": "1",
       "policy_version": "1",
-      "runtime_constraints": {
-        "node": "unspecified"
-      },
-      "provider_compatibility": [
-        "verdict-core-api"
-      ],
+      "runtime_constraints": {"node": "unspecified"},
+      "provider_compatibility": ["verdict-core-api"],
       "maturity": "alpha",
       "support_level": "experimental",
       "evidence_timestamp": "2026-09-26T00:36:22Z",
@@ -232,12 +207,8 @@
       "publication_status": "documentation-only",
       "contract_version": "1",
       "policy_version": "1",
-      "runtime_constraints": {
-        "python": "unspecified"
-      },
-      "provider_compatibility": [
-        "not-applicable"
-      ],
+      "runtime_constraints": {"python": "unspecified"},
+      "provider_compatibility": ["not-applicable"],
       "maturity": "alpha",
       "support_level": "experimental",
       "evidence_timestamp": "2026-09-26T00:36:22Z",
