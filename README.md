@@ -61,10 +61,10 @@ must be checked against each repository's default branch, registry, CI, and runt
 evidence. The ecosystem compatibility manifest is a bounded source-pin/schema check;
 it does not by itself prove end-to-end runtime compatibility.
 
-A credential-free, cross-repository V2 demo and canonical Cockpit receipt explorer
-remain planned work. The [Compatibility matrix](docs/COMPATIBILITY_MATRIX.md) and
-owning Linear stories record narrower states; planned work must remain labeled
-planned.
+A credential-free Core demo is shipped (`verdict quickstart` and `scripts/demo_orchestrate.py`).
+A cross-repository V2 demo integrating Node and Cockpit, and a canonical Cockpit receipt
+explorer, remain planned work. The [Compatibility matrix](docs/COMPATIBILITY_MATRIX.md) and
+owning Linear stories record narrower states; planned work must remain labeled planned.
 
 ## Repositories
 
@@ -74,7 +74,7 @@ planned.
 |---|---|
 | [`verdict-core`](https://github.com/mrnicholasbcarter-code/verdict-core) | V2 policy authority: task requirements, hard eligibility, spend-aware selection, context/receipt contracts, and named decision reasons |
 | [`verdict-node`](https://github.com/mrnicholasbcarter-code/verdict-node) | Thin typed client and Express/Next.js integration; no duplicate policy engine |
-| [`verdict-cockpit`](https://github.com/mrnicholasbcarter-code/verdict-cockpit) | Shipped fixture-mode React/TypeScript viewer; BOD-14 owns the planned canonical receipt explorer |
+| [`verdict-cockpit`](https://github.com/mrnicholasbcarter-code/verdict-cockpit) | Source-available fixture-mode React/TypeScript viewer (not published); BOD-14 owns the planned canonical receipt explorer |
 | [`verdict-ecosystem`](https://github.com/mrnicholasbcarter-code/verdict-ecosystem) | Cross-repository V2 product truth, compatibility evidence, process, and demo/release planning |
 
 ### Legacy quantitative case-study repositories (not V2 runtime)
@@ -133,10 +133,11 @@ unprovable runtime state as `unknown`.
 
 ## Demo command
 
-Not available yet. The release gate requires one credential-free command from
-a clean checkout that produces accepted, denied, route-recommendation, and
-rollback reports. This placeholder must be replaced with the verified command
-before the portfolio is described as presentable.
+```bash
+pip install verdict-core
+verdict quickstart --non-interactive --dry-run
+```
+For the full goal-to-receipt fixture demo see [verdict-core README § Demo](https://github.com/mrnicholasbcarter-code/verdict-core#demo-goal-to-receipt).
 
 ## Historical AutoDev evidence status
 
@@ -187,7 +188,7 @@ never implies a higher one.
 
 ## Current status
 
-Active V2 truth and integration closeout. Canonical scope is Prime + Verdict + OmniRoute. The credential-free demo, Cockpit receipt explorer, current compatibility proof, and public interview surface remain tracked work rather than shipped claims.
+Active V2 truth and integration closeout. Canonical scope is Prime + Verdict + OmniRoute. The Cockpit receipt explorer and public interview surface remain tracked work. The credential-free Core demo is shipped; a cross-repository integrated demo remains planned.
 
 ## Release gate
 
