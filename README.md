@@ -62,8 +62,10 @@ evidence. The ecosystem compatibility manifest is a bounded source-pin/schema ch
 it does not by itself prove end-to-end runtime compatibility.
 
 A credential-free Core demo is shipped (`verdict quickstart` and `scripts/demo_orchestrate.py`).
-A cross-repository V2 demo integrating Node and Cockpit, and a canonical Cockpit receipt
-explorer, remain planned work. The [Compatibility matrix](docs/COMPATIBILITY_MATRIX.md) and
+Cockpit ships a read-only **fixture-mode** explorer for Trusted Change Reports and the
+canonical `ExecutionEnvelope` v1 contract (visible "FIXTURE" badges; no live Cockpit API).
+A production/report-contract explorer and a cross-repository V2 demo integrating Node and
+Cockpit remain planned work. The [Compatibility matrix](docs/COMPATIBILITY_MATRIX.md) and
 owning Linear stories record narrower states; planned work must remain labeled planned.
 
 ## Repositories
@@ -152,6 +154,7 @@ This table preserves the older AutoDev planning state. It is non-canonical for V
 | `unqualified -> shadow -> candidate -> canary -> active` lifecycle | Source and tests exist on a feature branch with degradation, quarantine, kill switch, and rollback; not yet a shipped claim |
 | End-to-end Trusted Change Report | Planned integration slice |
 | Per-task-category Route Lab recommendations | Planned integration slice |
+| Cockpit fixture-mode receipt / ExecutionEnvelope explorer | Shipped on Cockpit default branch (deterministic fixtures; no live API) |
 | Cockpit using production report contracts | Planned integration slice |
 
 The strategy audit distinguishes four evidence states: documented,
@@ -188,7 +191,7 @@ never implies a higher one.
 
 ## Current status
 
-Active V2 truth and integration closeout. Canonical scope is Prime + Verdict + OmniRoute. The Cockpit receipt explorer and public interview surface remain tracked work. The credential-free Core demo is shipped; a cross-repository integrated demo remains planned.
+Active V2 truth and integration closeout. Canonical scope is Prime + Verdict + OmniRoute. Cockpit's fixture-mode receipt / ExecutionEnvelope explorer is shipped; a production report-contract explorer and the public interview surface remain tracked work. The credential-free Core demo is shipped; a cross-repository integrated demo remains planned.
 
 ## Release gate
 
