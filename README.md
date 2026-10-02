@@ -58,8 +58,11 @@ be cited as shipped V2 behavior.
 The current default branches contain Core routing and receipt primitives plus Node
 and Cockpit integration surfaces. This statement is source-level only. Exact behavior, package, and release claims
 must be checked against each repository's default branch, registry, CI, and runtime
-evidence. The ecosystem compatibility manifest is a bounded source-pin/schema check;
-it does not by itself prove end-to-end runtime compatibility.
+evidence. The ecosystem compatibility manifest and generated matrix describe a **historical,
+dated release train** (`rel-001`, 2026-09-26), not the latest default branches or
+latest registry versions. Their Core 0.3.0 pin must not be read as a claim that
+Core is still at 0.3.0; check Core's current tag and default branch separately.
+The pinned source/schema check does not prove end-to-end runtime compatibility.
 
 A credential-free Core demo is shipped (`verdict quickstart` and `scripts/demo_orchestrate.py`).
 Cockpit ships a read-only **fixture-mode** explorer for Trusted Change Reports and the

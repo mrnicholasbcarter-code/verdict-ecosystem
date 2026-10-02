@@ -33,6 +33,8 @@ HEADER = """# Verdict Ecosystem Compatibility Matrix
 > Source of truth: [`compatibility-manifest.json`](../compatibility-manifest.json).
 > Regenerate with `python3 scripts/generate_compatibility_matrix.py --write`;
 > CI fails if this file drifts from the manifest.
+> This is dated release-train evidence, not a live default-branch or latest-registry
+> version report. Verify current versions against each repository and registry.
 """
 
 

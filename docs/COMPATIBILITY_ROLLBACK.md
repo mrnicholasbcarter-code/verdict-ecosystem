@@ -27,8 +27,9 @@ remains deferred to
 ## verdict-core
 
 Restore the previous Core commit pin and the matching policy/version metadata.
-Roll back the manifest from published `verdict-core 0.2.0` to the previous
-pinned source state only after recording a replacement compatibility receipt.
+Roll back the dated rel-001 manifest from its published `verdict-core 0.3.0`
+artifact and matching source pin only after recording a replacement compatibility
+receipt. This does not roll back any later release or default branch.
 
 ## verdict-node
 

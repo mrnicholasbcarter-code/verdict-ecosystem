@@ -30,12 +30,13 @@ isolated consumer project and marks unreleased entries as skipped.
 
 ## verdict-core
 
-Use the `verdict` Python import and `verdict` CLI. The manifest records source
-package version `0.2.0`. The published PyPI artifact at that exact version was
-installed in an isolated consumer environment and bound to release-train pin
-`762335eef314ffd7e7fff4c098e586533d2ca3d6`. The manifest also records a
-SHA-256 schema hash of `verdict/contracts.py`, recomputed and compared against
-the local checkout on every checker run.
+Use the `verdict` Python import and `verdict` CLI. The dated rel-001 manifest
+records published Core artifact `0.3.0` at source pin
+`d0da31a8f0747a7928f45c57f158cb728559e1ce`. Its released-artifacts
+consumer check installs that exact pinned version; it does not certify later
+versions or the current default branch. The manifest also records a SHA-256
+schema hash of `verdict/contracts.py`, recomputed against the pinned checkout
+on every compatibility checker run.
 
 ## verdict-node
 
