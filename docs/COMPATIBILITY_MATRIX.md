@@ -4,6 +4,8 @@
 > Source of truth: [`compatibility-manifest.json`](../compatibility-manifest.json).
 > Regenerate with `python3 scripts/generate_compatibility_matrix.py --write`;
 > CI fails if this file drifts from the manifest.
+> This is dated release-train evidence, not a live default-branch or latest-registry
+> version report. Verify current versions against each repository and registry.
 
 Release train `rel-001-schema-hashes-2026-09-04` · schema `4` · contract `1` · policy `1` · validation scope `local-source-directories` · evidence timestamp `2026-09-26T00:36:22Z`
 
